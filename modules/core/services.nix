@@ -44,6 +44,11 @@
       enable = true;
       dates = "weekly";
     };
+    daemon.settings = {
+      ipv6 = true;
+      "fixed-cidr-v6" = "fd00:30::/64";
+      ip6tables = true;
+    };
   };
 
   programs.nix-ld.enable = true;

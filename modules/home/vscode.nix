@@ -38,6 +38,7 @@ let
         "editor.suggestOnTriggerCharacters" = true;
         "editor.quickSuggestions" = { other = true; comments = false; strings = true; };
         "git.autofetch" = true;
+        "workbench.editor.enablePreview" = false;
       };
     };
 
