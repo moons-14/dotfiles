@@ -86,6 +86,7 @@
             in {
                 next-web = import ./shells/next-web.nix { inherit pkgs; };
                 jupyter = import ./shells/jupyter.nix { inherit pkgs; };
+                rust = import ./shells/rust/default.nix { inherit pkgs; };
             };
         };
     };

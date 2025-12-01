@@ -3,6 +3,18 @@ let
   vsc = pkgs.vscode-extensions;
   inherit (lib) recursiveUpdate;
 
+  rustLibclangPath = pkgs.lib.makeLibraryPath [ pkgs.llvmPackages_latest.libclang.lib ];
+
+  rustBindgenExtraClangArgs = lib.concatStringsSep " " (
+    (builtins.map (a: ''-I"${a}/include"'') [
+      pkgs.glibc.dev
+    ]) ++ [
+      ''-I"${pkgs.llvmPackages_latest.libclang.lib}/lib/clang/${pkgs.llvmPackages_latest.libclang.version}/include"''
+      ''-I"${pkgs.glib.dev}/include/glib-2.0"''
+      ''-I${pkgs.glib.out}/lib/glib-2.0/include/''
+    ]
+  );
+
   layers = rec {
     common = {
       extensions = (with vsc; [
@@ -103,6 +115,8 @@ let
       extensions = (with vsc; [
         vscjava.vscode-java-pack
         sonarsource.sonarlint-vscode
+        vscjava.vscode-java-debug
+        redhat.java
       ]);
 
       userSettings = {
@@ -115,8 +129,10 @@ let
           }
         ];
 
-        "java.jdt.ls.vmargs" =
-          "-Xms256m -Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication";
+        "editor.codeLens" = true;
+        "java.debug.settings.enableRunDebugCodeLens" = true;
+
+        "java.jdt.ls.vmargs" = "-Xms256m -Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication";
 
         "java.configuration.updateBuildConfiguration" = "interactive";
 
@@ -124,6 +140,49 @@ let
         "java.eclipse.downloadSources" = true;
 
         "maven.executable.path" = "${pkgs.maven}/bin/mvn";
+      };
+    };
+
+    rust = {
+      extensions = with vsc; [
+        rust-lang.rust-analyzer
+        vadimcn.vscode-lldb
+        serayuzgur.crates
+        tamasfe.even-better-toml
+      ];
+
+      userSettings = {
+        "[rust]" = {
+          "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+          "editor.formatOnSave" = true;
+          "editor.codeActionsOnSave" = {
+            "source.organizeImports" = true;
+            "source.fixAll" = true;
+          };
+        };
+
+        "rust-analyzer.checkOnSave" = true;
+        "rust-analyzer.check.command" = "clippy";
+
+        "rust-analyzer.cargo.buildScripts.enable" = true;
+        "rust-analyzer.procMacro.enable" = true;
+
+        "rust-analyzer.cargo.targetDir" = true;
+
+        "rust-analyzer.cargo.extraEnv" = {
+          "LIBCLANG_PATH" = rustLibclangPath;
+          "BINDGEN_EXTRA_CLANG_ARGS" = rustBindgenExtraClangArgs;
+        };
+
+        "rust-analyzer.lens.enable" = true;
+        "rust-analyzer.lens.implementations.enable" = true;
+        "rust-analyzer.lens.references.adt.enable" = true;
+        "rust-analyzer.lens.references.enumVariant.enable" = true;
+        "rust-analyzer.lens.references.method.enable" = true;
+        "rust-analyzer.lens.references.trait.enable" = true;
+
+        "files.watcherExclude" = { "**/target/**" = true; };
+        "search.exclude" = { "**/target/**" = true; };
       };
     };
   };
@@ -159,6 +218,8 @@ in {
       jupyter = mkProfile [ layers.common layers.jupyter ] { };
 
       java = mkProfile [ layers.common layers.java ] { };
+
+      rust = mkProfile [ layers.common layers.rust ] { };
     };
   };
 
