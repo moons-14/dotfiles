@@ -22,7 +22,7 @@ in
       enable = true; 
     };
     java.enable = true;
-    java.package = pkgs.jdk21;
+    java.package = pkgs.jdk24;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -48,6 +48,6 @@ in
     sbctl
     xwayland-satellite slurp grim wf-recorder
     sqlite # Vscode Raycast Extension Dependency
-    jdk21 maven gradle
+    jdk24 maven gradle
   ];
 }

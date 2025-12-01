@@ -106,11 +106,11 @@ let
       ]);
 
       userSettings = {
-        "java.jdt.ls.java.home" = "${pkgs.jdk21.home}";
+        "java.jdt.ls.java.home" = "${pkgs.jdk24.home}";
         "java.configuration.runtimes" = [
           {
-            "name" = "JavaSE-21";
-            "path" = "${pkgs.jdk21.home}";
+            "name" = "JavaSE-24";
+            "path" = "${pkgs.jdk24.home}";
             "default" = true;
           }
         ];
