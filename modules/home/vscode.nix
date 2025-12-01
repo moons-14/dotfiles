@@ -140,6 +140,10 @@ let
         "java.eclipse.downloadSources" = true;
 
         "maven.executable.path" = "${pkgs.maven}/bin/mvn";
+
+        "[java]" = {
+          "editor.defaultFormatter" = "redhat.java";
+        };
       };
     };
 
