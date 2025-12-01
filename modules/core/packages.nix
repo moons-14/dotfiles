@@ -21,6 +21,8 @@ in
     zsh = {
       enable = true; 
     };
+    java.enable = true;
+    java.package = pkgs.jdk21;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -45,5 +47,7 @@ in
     unstable.ghostty
     sbctl
     xwayland-satellite slurp grim wf-recorder
+    sqlite # Vscode Raycast Extension Dependency
+    jdk21 maven gradle
   ];
 }

@@ -98,6 +98,34 @@ let
       ];
       userSettings = {};
     };
+
+    java = {
+      extensions = (with vsc; [
+        vscjava.vscode-java-pack
+        sonarsource.sonarlint-vscode
+      ]);
+
+      userSettings = {
+        "java.jdt.ls.java.home" = "${pkgs.jdk21.home}";
+        "java.configuration.runtimes" = [
+          {
+            "name" = "JavaSE-21";
+            "path" = "${pkgs.jdk21.home}";
+            "default" = true;
+          }
+        ];
+
+        "java.jdt.ls.vmargs" =
+          "-Xms256m -Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication";
+
+        "java.configuration.updateBuildConfiguration" = "interactive";
+
+        "java.maven.downloadSources" = true;
+        "java.eclipse.downloadSources" = true;
+
+        "maven.executable.path" = "${pkgs.maven}/bin/mvn";
+      };
+    };
   };
 
   combine = (ls:
@@ -129,6 +157,8 @@ in {
       web = mkProfile [ layers.common layers.web ] { };
 
       jupyter = mkProfile [ layers.common layers.jupyter ] { };
+
+      java = mkProfile [ layers.common layers.java ] { };
     };
   };
 
