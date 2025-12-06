@@ -38,7 +38,6 @@ in
     alacritty # A GPU Accelerated Terminal Emulator
     fuzzel # A Simple And Lightweight Application Launcher
     git # Version Control System
-    tailscale # Zero-Config VPN
     unstable.msedit # Microsoft Editor
     nil # Nix Language Server
     docker # Containerization Platform
