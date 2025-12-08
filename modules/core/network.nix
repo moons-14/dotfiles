@@ -2,7 +2,6 @@
 {
   networking = {
     hostName = "${host}";
-
     nameservers = [ "127.0.0.1" "::1" ];
 
     networkmanager = {
@@ -10,10 +9,8 @@
       dns = "none";
       wifi.powersave = false;
       wifi.backend = "wpa_supplicant";
-
       settings = {
         "device"."wifi.scan-rand-mac-address" = "no";
-
         "connection"."wifi.cloned-mac-address" = "permanent";
       };
     };
@@ -29,10 +26,10 @@
 
   services.resolved.enable = false;
 
-  environment.systemPackages = [
-    pkgs.networkmanagerapplet
-  ];
+  environment.systemPackages = [ pkgs.networkmanagerapplet ];
   programs.nm-applet.enable = true;
+
+  security.pki.certificateFiles = [ ./ca/root_ca.crt ];
 
   services.dnscrypt-proxy2 = {
     enable = true;
@@ -40,21 +37,13 @@
       doh_servers = true;
       dnscrypt_servers = false;
 
-      ipv6_servers = true;
-      require_dnssec = true;
-      require_nolog = true;
-      require_nofilter = true;
+      server_names = [ "moons14-doh" ];
 
-      sources.public-resolvers = {
-        urls = [
-          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-        ];
-        cache_file = "/var/cache/dnscrypt-proxy/public-resolvers.md";
-        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-      };
+      static."moons14-doh".stamp = "sdns://AgcAAAAAAAAACzE3Mi4zMS4zMC4yAA9kbnMubW9vbnMxNC5jb20KL2Rucy1xdWVyeQ";
 
-      server_names = [ "cloudflare" "quad9-doh" ];
+      ignore_system_dns = true;
+      bootstrap_resolvers = [ "172.31.30.2:53" ];
+      fallback_resolvers  = [ "172.31.30.2:53" ];
 
       listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
     };
