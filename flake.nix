@@ -71,6 +71,12 @@
                 profile = "laptop";
                 extraModules = [ ];
             };
+            grafana = mkSystem {
+                host = "grafana";
+                system = "x86_64-linux";
+                profile = "cli-server";
+                extraModules = [ ];
+            };
             dev-1 = mkSystem {
                 host = "dev-1";
                 system = "x86_64-linux";
