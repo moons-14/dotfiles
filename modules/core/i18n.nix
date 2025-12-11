@@ -7,7 +7,7 @@
           addons = with pkgs; [
               fcitx5-mozc
               fcitx5-gtk
-              fcitx5-configtool
+              qt6Packages.fcitx5-configtool
           ];
           settings.inputMethod = {
             GroupOrder = {

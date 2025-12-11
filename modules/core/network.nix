@@ -31,7 +31,7 @@
 
   security.pki.certificateFiles = [ ./ca/root_ca.crt ];
 
-  services.dnscrypt-proxy2 = {
+  services.dnscrypt-proxy = {
     enable = true;
     settings = {
       doh_servers = true;

@@ -29,12 +29,12 @@
     };
 
     logind = {
-      lidSwitch = "suspend";          # Lock when lid is closed
-      lidSwitchDocked = "ignore";  # Ignore when docked
-      extraConfig = ''
-        HandleLidSwitchExternalPower=lock
-        LidSwitchIgnoreInhibited=no
-      '';
+      settings.Login = {
+        HandleLidSwitch = "suspend";
+        HandleLidSwitchDocked = "ignore";
+        HandleLidSwitchExternalPower = "ignore";
+        LidSwitchIgnoreInhibited = "no";
+      };
     };
   };
 
