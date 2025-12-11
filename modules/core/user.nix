@@ -11,7 +11,7 @@
       home = {
         username = "moons";
         homeDirectory = "/home/moons";
-        stateVersion = "25.05";
+        stateVersion = "25.11";
       };
     };
   };
