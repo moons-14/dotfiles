@@ -1,16 +1,23 @@
 { pkgs }:
 let
   py = pkgs.python312;
-  pyEnv = py.withPackages (ps: with ps; [
-    ipykernel
-    notebook
-    jupyterlab
-    numpy
-    pandas
-    matplotlib
-    scipy
-    scikit-learn
-  ]);
+  pyEnv = py.withPackages (
+    ps: with ps; [
+      ipykernel
+      notebook
+      jupyterlab
+      numpy
+      pandas
+      matplotlib
+      scipy
+      scikit-learn
+
+      pyathena
+      python-dotenv
+      plotly
+      seaborn
+    ]
+  );
 in
 pkgs.mkShell {
   name = "jupyter-notebook";
@@ -27,7 +34,6 @@ pkgs.mkShell {
   shellHook = ''
     set -e
 
-    # ---- show tool versions
     if command -v python >/dev/null; then
       echo "📓 jupyter shell → python $(python -V | awk '{print $2}')"
     fi

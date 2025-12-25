@@ -1,10 +1,31 @@
-{ config, lib, pkgs, host, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  host,
+  ...
+}:
 {
 
   home.packages = [ pkgs.openssh ];
 
   programs.ssh = {
     enable = true;
+
+    matchBlocks = {
+      "grafana.moons14.com" = {
+        host = "grafana.moons14.com";
+        identityFile = "~/.ssh/id_ed25519_sk_rk";
+        identitiesOnly = true;
+      };
+
+      "dev-1.moons14.com" = {
+        host = "dev-1.moons14.com";
+        identityFile = "~/.ssh/id_ed25519_sk_rk";
+        identitiesOnly = true;
+      };
+    };
+
     extraConfig = ''
       Host *
         AddKeysToAgent yes

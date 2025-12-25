@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services = {
 
     blueman.enable = true; # Bluetooth Support
@@ -17,7 +18,13 @@
       };
     };
 
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      extraUpFlags = [
+        "--accept-dns=false"
+        "--accept-routes"
+      ];
+    };
 
     pipewire = {
       enable = true;
@@ -63,8 +70,14 @@
     ];
     xdgOpenUsePortal = true;
     config = {
-      common.default = [ "wlr" "gtk" ];
-      niri.default   = [ "wlr" "gtk" ];
+      common.default = [
+        "wlr"
+        "gtk"
+      ];
+      niri.default = [
+        "wlr"
+        "gtk"
+      ];
     };
   };
 }
