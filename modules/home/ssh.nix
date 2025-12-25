@@ -24,6 +24,12 @@
         identityFile = "~/.ssh/id_ed25519_sk_rk";
         identitiesOnly = true;
       };
+
+      "service-1.moons14.com" = {
+        host = "service-1.moons14.com";
+        identityFile = "~/.ssh/id_ed25519_sk_rk";
+        identitiesOnly = true;
+      };
     };
 
     extraConfig = ''
