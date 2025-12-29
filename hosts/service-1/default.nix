@@ -14,7 +14,7 @@
     device = "unas.moons14.com:/var/nfs/shared/immich/mnt";
     fsType = "nfs";
     options = [
-      "nfsvers=4.2"          # 可能なら NFSv4 系を推奨
+      "nfsvers=3"
       "hard"
       "timeo=600"
       "retrans=2"
