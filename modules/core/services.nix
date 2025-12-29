@@ -43,9 +43,10 @@
         LidSwitchIgnoreInhibited = "no";
       };
     };
+
+    rpcbind.enable = true;
   };
 
-  rpcbind.enable = true;
 
   virtualisation.docker = {
     enable = true;
