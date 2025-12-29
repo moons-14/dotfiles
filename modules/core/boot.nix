@@ -4,7 +4,8 @@
     systemd-boot.enable = true;
     systemd-boot.configurationLimit = 8;
     efi.canTouchEfiVariables = true;
-    supportedFilesystems = [ "nfs" ];
   };
+
+  boot.supportedFilesystems = [ "nfs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest; 
 }
