@@ -45,6 +45,8 @@
     };
   };
 
+  rpcbind.enable = true;
+
   virtualisation.docker = {
     enable = true;
     autoPrune = {
