@@ -11,7 +11,7 @@
     ];
 
   fileSystems."/mnt/immich-nfs" = {
-    device = "unas.moons14.com:/var/nfs/shared/immich/mnt";
+    device = "unas.moons14.com:/var/nfs/shared/immich";
     fsType = "nfs";
     options = [
       "nfsvers=3"
