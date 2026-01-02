@@ -5,13 +5,28 @@
 { ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   fileSystems."/mnt/immich-nfs" = {
     device = "unas.moons14.com:/var/nfs/shared/immich";
+    fsType = "nfs";
+    options = [
+      "nfsvers=3"
+      "hard"
+      "timeo=600"
+      "retrans=2"
+      "noatime"
+      "_netdev"
+      "nofail"
+      "x-systemd.requires=network-online.target"
+      "x-systemd.after=network-online.target"
+    ];
+  };
+
+  fileSystems."/mnt/seafile-nfs" = {
+    device = "unas.moons14.com:/var/nfs/shared/seafile";
     fsType = "nfs";
     options = [
       "nfsvers=3"
