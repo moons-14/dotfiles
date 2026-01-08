@@ -24,4 +24,20 @@
       "x-systemd.after=network-online.target"
     ];
   };
+
+  fileSystems."/mnt/cloudreve-nfs" = {
+    device = "unas.moons14.com:/var/nfs/shared/cloudreve";
+    fsType = "nfs";
+    options = [
+      "nfsvers=3"
+      "hard"
+      "timeo=600"
+      "retrans=2"
+      "noatime"
+      "_netdev"
+      "nofail"
+      "x-systemd.requires=network-online.target"
+      "x-systemd.after=network-online.target"
+    ];
+  };
 }
