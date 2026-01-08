@@ -24,20 +24,4 @@
       "x-systemd.after=network-online.target"
     ];
   };
-
-  fileSystems."/mnt/test-nfs" = {
-    device = "unas.moons14.com:/var/nfs/shared/test";
-    fsType = "nfs";
-    options = [
-      "nfsvers=3"
-      "hard"
-      "timeo=600"
-      "retrans=2"
-      "noatime"
-      "_netdev"
-      "nofail"
-      "x-systemd.requires=network-online.target"
-      "x-systemd.after=network-online.target"
-    ];
-  };
 }
