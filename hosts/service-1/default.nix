@@ -25,8 +25,8 @@
     ];
   };
 
-  fileSystems."/mnt/seafile-nfs" = {
-    device = "unas.moons14.com:/var/nfs/shared/seafile";
+  fileSystems."/mnt/test-nfs" = {
+    device = "unas.moons14.com:/var/nfs/shared/test";
     fsType = "nfs";
     options = [
       "nfsvers=3"
