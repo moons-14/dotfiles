@@ -13,8 +13,8 @@
     enable = true;
 
     matchBlocks = {
-      "grafana.moons14.com" = {
-        host = "grafana.moons14.com";
+      "monitor.moons14.com" = {
+        host = "monitor.moons14.com";
         identityFile = "~/.ssh/id_ed25519_sk_rk";
         identitiesOnly = true;
       };

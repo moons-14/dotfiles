@@ -87,8 +87,8 @@
           profile = "laptop";
           extraModules = [ ];
         };
-        grafana = mkSystem {
-          host = "grafana";
+        monitor = mkSystem {
+          host = "monitor";
           system = "x86_64-linux";
           profile = "cli-server";
           extraModules = [ ];
