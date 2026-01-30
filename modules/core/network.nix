@@ -2,7 +2,10 @@
 {
   networking = {
     hostName = "${host}";
-    nameservers = [ "127.0.0.1" "::1" ];
+    nameservers = [
+      "127.0.0.1"
+      "::1"
+    ];
 
     networkmanager = {
       enable = true;
@@ -34,18 +37,17 @@
   services.dnscrypt-proxy = {
     enable = true;
     settings = {
-      doh_servers = true;
+      doh_servers = false;
       dnscrypt_servers = false;
 
-      server_names = [ "moons14-doh" ];
-
-      static."moons14-doh".stamp = "sdns://AgcAAAAAAAAACzE3Mi4zMS4zMC4yAA9kbnMubW9vbnMxNC5jb20KL2Rucy1xdWVyeQ";
+      server_names = [ "moons14-plain" ];
+      static."moons14-plain".stamp = "sdns://AAAAAAAAAAAACzE3Mi4zMS4zMC4y";
 
       ignore_system_dns = true;
-      bootstrap_resolvers = [ "172.31.30.2:53" ];
-      fallback_resolvers  = [ "172.31.30.2:53" ];
-
-      listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
+      listen_addresses = [
+        "127.0.0.1:53"
+        "[::1]:53"
+      ];
     };
   };
 }
