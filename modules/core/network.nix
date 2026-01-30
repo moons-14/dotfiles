@@ -3,8 +3,8 @@
   networking = {
     hostName = "${host}";
     nameservers = [
-      "127.0.0.1"
-      "::1"
+      "172.31.30.2"
+      "fd12:3456:789a:30::53"
     ];
 
     networkmanager = {
@@ -34,20 +34,4 @@
 
   security.pki.certificateFiles = [ ./ca/root_ca.crt ];
 
-  services.dnscrypt-proxy = {
-    enable = true;
-    settings = {
-      doh_servers = false;
-      dnscrypt_servers = false;
-
-      server_names = [ "moons14-plain" ];
-      static."moons14-plain".stamp = "sdns://AAAAAAAAAAAACzE3Mi4zMS4zMC4y";
-
-      ignore_system_dns = true;
-      listen_addresses = [
-        "127.0.0.1:53"
-        "[::1]:53"
-      ];
-    };
-  };
 }
