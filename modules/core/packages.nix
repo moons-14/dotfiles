@@ -49,5 +49,7 @@ in
     xwayland-satellite slurp grim wf-recorder
     sqlite # Vscode Raycast Extension Dependency
     jdk25 maven gradle
+    python312
+    uv
   ];
 }
