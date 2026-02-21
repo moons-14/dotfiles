@@ -105,6 +105,12 @@
           profile = "cli-server";
           extraModules = [ ];
         };
+        openclaw = mkSystem {
+          host = "openclaw";
+          system = "x86_64-linux";
+          profile = "cli-server";
+          extraModules = [ ];
+        };
       };
 
       devShells = {
