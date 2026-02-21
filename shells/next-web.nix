@@ -1,6 +1,6 @@
 { pkgs }:
 let
-  node = pkgs.nodejs_22;
+  node = pkgs.nodejs_24;
 in
 pkgs.mkShell {
   name = "next-web";
@@ -20,6 +20,14 @@ pkgs.mkShell {
     # corepack store under repo (avoid polluting home)
     export COREPACK_HOME="$PWD/.corepack"
 
+    # pnpm global bin dir (NixOS/zshでも確実に有効にする)
+    export PNPM_HOME="''${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+    mkdir -p "$PNPM_HOME"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+
     # Prisma engines from nixpkgs (avoid binaries.prisma.sh fetch on NixOS)
     export PKG_CONFIG_PATH="${pkgs.openssl.dev}/lib/pkgconfig"
     export PRISMA_SCHEMA_ENGINE_BINARY="${pkgs.prisma-engines}/bin/schema-engine"
@@ -33,6 +41,7 @@ pkgs.mkShell {
     fi
     if command -v pnpm >/dev/null; then
       echo "   pnpm $(pnpm --version)"
+      echo "   PNPM_HOME=$PNPM_HOME"
     fi
 
     # Activate packageManager from package.json if present.
