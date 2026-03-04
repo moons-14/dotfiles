@@ -70,7 +70,6 @@ let
     web = {
       extensions =
         (with vsc; [
-          biomejs.biome
           lokalise.i18n-ally
           bradlc.vscode-tailwindcss
           prisma.prisma
@@ -97,10 +96,33 @@ let
             hash = "sha256-lUSwtf7jncnrp6UXgmZU30e+CFRKqf0N41+Xna6daok=";
           }
         ];
+      userSettings = { };
+    };
+
+    web-biome = {
+      extensions = with vsc; [
+        biomejs.biome
+      ];
       userSettings = {
         "editor.defaultFormatter" = "biomejs.biome";
         "[typescript].editor.defaultFormatter" = "biomejs.biome";
         "[typescriptreact].editor.defaultFormatter" = "biomejs.biome";
+      };
+    };
+
+    web-oxc = {
+      extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "oxc-vscode";
+          publisher = "oxc";
+          version = "1.48.0";
+          hash = "sha256-RZ7mLcLJyn7lR6w6Au6fZeguB3wtk8sIXb67lPnPnrc=";
+        }
+      ];
+      userSettings = {
+        "editor.defaultFormatter" = "oxc.oxc-vscode";
+        "[typescript].editor.defaultFormatter" = "oxc.oxc-vscode";
+        "[typescriptreact].editor.defaultFormatter" = "oxc.oxc-vscode";
       };
     };
 
@@ -250,7 +272,9 @@ in
 
       nix = mkProfile [ layers.common layers.nix ] { };
 
-      web = mkProfile [ layers.common layers.web ] { };
+      web = mkProfile [ layers.common layers.web layers.web-biome ] { };
+
+      web-oxc = mkProfile [ layers.common layers.web layers.web-oxc ] { };
 
       jupyter = mkProfile [ layers.common layers.jupyter ] { };
 

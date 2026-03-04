@@ -116,7 +116,10 @@
       devShells = {
         x86_64-linux =
           let
-            pkgs = import nixpkgs { system = "x86_64-linux"; };
+            pkgs = import nixpkgs {
+              system = "x86_64-linux";
+              config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "ngrok" ];
+            };
           in
           {
             next-web = import ./shells/next-web.nix { inherit pkgs; };
