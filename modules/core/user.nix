@@ -28,6 +28,7 @@
       "scanner"
       "wheel" #subdo access
       "vboxusers" #Virtual Box
+      "dialout" #Serial Port Access
     ];
     shell = pkgs.zsh;
     ignoreShellProgramCheck = true;
