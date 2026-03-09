@@ -34,11 +34,16 @@ NixOS + Home Manager
   Shell environment.
 
 ## Declarative Defeat
+
 Necessary configurations not achievable with dotfiles
+
 ### Profile: cli-minimal
+
 - SSH key registration
   Please register the value of ~/.ssh/id_ed25519.pub on GitHub.
+
 ### Profile: laptop
+
 - Fingerprint registration
   Please register the user's fingerprints by running fprintd-enroll.
 
@@ -49,3 +54,5 @@ Necessary configurations not achievable with dotfiles
 - [AsianLovesLinux/Niri](https://github.com/AsianLovesLinux/Niri)
 - [natsukium/dotfiles](https://github.com/natsukium/dotfiles)
 - [dracula](https://github.com/dracula)
+- [akazdayo/nix-configs](https://github.com/akazdayo/nix-configs)
+

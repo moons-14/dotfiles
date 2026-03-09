@@ -13,7 +13,7 @@ keybind = ctrl+shift+c=copy_to_clipboard
 keybind = ctrl+shift+v=paste_from_clipboard
 
 # create new tab
-keybind = ctrl+t=new_tab
+keybind = ctrl+shift+t=new_tab
 
 # move tabs
 keybind = ctrl+alt+left_bracket=previous_tab
