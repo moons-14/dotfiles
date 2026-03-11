@@ -57,6 +57,7 @@ in {
     (mk "<leader>gd" "<cmd>DiffviewOpen<CR>" "差分を開く")
     (mk "<leader>gH" "<cmd>DiffviewFileHistory<CR>" "リポジトリ履歴")
     (mk "<leader>gh" "<cmd>DiffviewFileHistory %<CR>" "ファイル履歴")
+    (mk "<leader>gq" "<cmd>DiffviewClose<CR>" "差分を閉じる")
 
     # Telescope (explicit form for reliability)
     (mkRaw "<leader>ff" "function() require('telescope.builtin').find_files() end" "ファイルを探す")

@@ -17,6 +17,7 @@
       log.decorate = "full";
       log.date = "iso";
       merge.conflictStyle = "diff3";
+      commit.gpgsign = false;
       alias = {
         br = "branch --sort=-committerdate";
         co = "checkout";
