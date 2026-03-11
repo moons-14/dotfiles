@@ -8,5 +8,6 @@
     ./toggleterm.nix
     ./treesitter.nix
     ./barbar.nix
+    ./lightbulb.nix
   ];
 }

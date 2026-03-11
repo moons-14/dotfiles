@@ -12,8 +12,29 @@
         "<C-e>" = ["hide"];
         "<C-f>" = ["scroll_documentation_down"];
 
-        "<Tab>" = ["select_next" "fallback"];
+        "<Tab>" = [
+          "accept"
+          {
+            __raw = ''
+              function()
+                local ok, copilot = pcall(require, "copilot.suggestion")
+                if ok and copilot.is_visible() then
+                  copilot.accept()
+                  return true
+                end
+              end
+            '';
+          }
+          "fallback"
+        ];
         "<S-Tab>" = ["select_prev" "fallback"];
+        "<C-n>" = ["select_next" "fallback"];
+        "<C-p>" = ["select_prev" "fallback"];
+      };
+
+      completion.list.selection = {
+        preselect = true;
+        auto_insert = false;
       };
 
       sources.default = [

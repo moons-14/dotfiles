@@ -15,6 +15,7 @@
             "jsconfig.json"
             ".git"
           ];
+          extraOptions.settings.typescript.locale = "ja";
         };
 
         # Biome for lint / format
