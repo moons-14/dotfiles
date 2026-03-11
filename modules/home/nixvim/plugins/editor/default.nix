@@ -10,5 +10,6 @@
     ./copilot.nix
     ./trouble.nix
     ./conform.nix
+    ./surround.nix
   ];
 }

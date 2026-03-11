@@ -9,5 +9,6 @@
     ./treesitter.nix
     ./barbar.nix
     ./lightbulb.nix
+    ./colorizer.nix
   ];
 }
