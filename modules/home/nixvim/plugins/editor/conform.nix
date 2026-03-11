@@ -3,11 +3,11 @@
     enable = true;
     settings = {
       formatters_by_ft = {
-        javascript.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
-        javascriptreact.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
-        typescript.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
-        typescriptreact.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
-        json.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
+        javascript.__raw = ''{ "biome", "prettierd", "prettier", stop_after_first = true }'';
+        javascriptreact.__raw = ''{ "biome", "prettierd", "prettier", stop_after_first = true }'';
+        typescript.__raw = ''{ "biome", "prettierd", "prettier", stop_after_first = true }'';
+        typescriptreact.__raw = ''{ "biome", "prettierd", "prettier", stop_after_first = true }'';
+        json.__raw = ''{ "biome", "prettierd", "prettier", stop_after_first = true }'';
         yaml.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
         markdown.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
         lua = ["stylua"];
