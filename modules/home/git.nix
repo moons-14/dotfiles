@@ -2,34 +2,31 @@
 {
   programs.git = {
     enable = true;
-    userName = "moons-14";
-    userEmail = "moons@moons14.com";
-
     ignores = [
       ".direnv/"
       ".envrc"
       "!.envrc.example"
     ];
 
-    extraConfig = {
+    settings = {
+      user.name = "moons-14";
+      user.email = "moons@moons14.com";
       push.default = "simple";
       credential.helper = "cache --timeout=7200";
       init.defaultBranch = "main";
-      log.decorate = "full"; # Show branch/tag info in git log
-      log.date = "iso"; # ISO 8601 date format
-      # Conflict resolution style for readable diffs
+      log.decorate = "full";
+      log.date = "iso";
       merge.conflictStyle = "diff3";
-    };
-    # Optional: FOSS-friendly Git aliases
-    aliases = {
-      br = "branch --sort=-committerdate";
-      co = "checkout";
-      df = "diff";
-      com = "commit -a";
-      gs = "stash";
-      gp = "pull";
-      lg = "log --graph --pretty=format:'%Cred%h%Creset - %C(yellow)%d%Creset %s %C(green)(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit";
-      st = "status";
+      alias = {
+        br = "branch --sort=-committerdate";
+        co = "checkout";
+        df = "diff";
+        com = "commit -a";
+        gs = "stash";
+        gp = "pull";
+        lg = "log --graph --pretty=format:'%Cred%h%Creset - %C(yellow)%d%Creset %s %C(green)(%cr)%C(bold blue) <%an>%Creset' --abbrev-commit";
+        st = "status";
+      };
     };
   };
 }

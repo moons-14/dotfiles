@@ -32,11 +32,12 @@
       };
     };
 
-    extraConfig = ''
-      Host *
-        AddKeysToAgent yes
-        IdentityFile ~/.ssh/id_ed25519
-    '';
+    enableDefaultConfig = false;
+
+    matchBlocks."*" = {
+      identityFile = "~/.ssh/id_ed25519";
+      extraOptions.AddKeysToAgent = "yes";
+    };
   };
 
   home.activation.generateSshKey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -58,7 +59,7 @@
       signByDefault = true;
     };
 
-    extraConfig = {
+    settings = {
       gpg.format = "ssh";
       tag.gpgSign = true;
     };
