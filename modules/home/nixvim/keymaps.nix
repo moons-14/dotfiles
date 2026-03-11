@@ -59,6 +59,9 @@ in {
     (mk "<leader>gh" "<cmd>DiffviewFileHistory %<CR>" "ファイル履歴")
     (mk "<leader>gq" "<cmd>DiffviewClose<CR>" "差分を閉じる")
 
+    # Markview
+    (mk "<leader>mp" "<cmd>Markview splitToggle<CR>" "Markdownプレビュー")
+
     # Zen Mode
     (mk "<leader>zz" "<cmd>ZenMode<CR>" "Zen Modeを開く/閉じる")
 
