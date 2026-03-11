@@ -19,6 +19,23 @@
   };
 in {
   programs.nixvim.keymaps = [
+    # Search
+    (mk "<Esc>" "<cmd>nohlsearch<CR>" "検索ハイライトを解除")
+
+    # Screen line movement
+    {
+      mode = "n";
+      key = "j";
+      action.__raw = "v:count == 0 and 'gj' or 'j'";
+      options = { silent = true; expr = true; desc = "下へ移動（画面行優先）"; };
+    }
+    {
+      mode = "n";
+      key = "k";
+      action.__raw = "v:count == 0 and 'gk' or 'k'";
+      options = { silent = true; expr = true; desc = "上へ移動（画面行優先）"; };
+    }
+
     # LSP
     (mkRaw "K" "vim.lsp.buf.hover" "LSPエラーのホバー表示")
     (mk "gd" "<cmd>Glance definitions<CR>" "定義へ移動")

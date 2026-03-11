@@ -11,6 +11,12 @@
       mouse = "a";
       clipboard = "unnamedplus";
       updatetime = 200;
+      timeoutlen = 300;
+      undofile = true;
+
+      # display
+      wrap = false;
+      scrolloff = 8;
 
       # search
       ignorecase = true;

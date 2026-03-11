@@ -6,6 +6,7 @@
   imports = [
     inputs.nixvim.homeModules.nixvim
     ./options.nix
+    ./autocmds.nix
     ./keymaps.nix
     ./language.nix
     ./colorscheme.nix
