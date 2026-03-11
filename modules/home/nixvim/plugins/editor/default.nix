@@ -11,5 +11,6 @@
     ./trouble.nix
     ./conform.nix
     ./surround.nix
+    ./git.nix
   ];
 }

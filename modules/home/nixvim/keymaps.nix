@@ -52,6 +52,12 @@ in {
     (mk "]b" "<Cmd>BufferNext<CR>" "後のバッファーに移動")
     (mk "<leader>bc" "<Cmd>BufferClose<CR>" "バッファーを削除")
 
+    # Git
+    (mk "<leader>gl" "<cmd>LazyGit<CR>" "LazyGitを開く")
+    (mk "<leader>gd" "<cmd>DiffviewOpen<CR>" "差分を開く")
+    (mk "<leader>gH" "<cmd>DiffviewFileHistory<CR>" "リポジトリ履歴")
+    (mk "<leader>gh" "<cmd>DiffviewFileHistory %<CR>" "ファイル履歴")
+
     # Telescope (explicit form for reliability)
     (mkRaw "<leader>ff" "function() require('telescope.builtin').find_files() end" "ファイルを探す")
     (mkRaw "<leader>fg" "function() require('telescope.builtin').live_grep() end" "文字列を全文検索")
