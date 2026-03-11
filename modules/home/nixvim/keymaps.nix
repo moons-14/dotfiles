@@ -72,6 +72,21 @@ in {
     # Dropbar
     (mkRaw "<leader>dp" "function() require('dropbar.api').pick() end" "dropbarでナビゲート")
 
+    # Snacks
+    (mkRaw "<leader>sd" "function() Snacks.dim.toggle() end" "Dimモードをトグル")
+
+    # Flash
+    (mkRaw "s" "function() require('flash').jump() end" "Flashジャンプ")
+    (mkRaw "S" "function() require('flash').treesitter() end" "Flashツリーシッタ選択")
+
+    # Todo Comments
+    (mk "]t" "<cmd>TodoNext<CR>" "次のTODO")
+    (mk "[t" "<cmd>TodoPrev<CR>" "前のTODO")
+    (mkRaw "<leader>ft" "function() Snacks.picker.todo_comments() end" "TODO一覧")
+
+    # Spectre
+    (mkRaw "<leader>sr" "function() require('spectre').toggle() end" "検索・置換")
+
     # Snacks Picker
     (mkRaw "<leader>ff" "function() Snacks.picker.files() end" "ファイルを探す")
     (mkRaw "<leader>fg" "function() Snacks.picker.grep() end" "文字列を全文検索")

@@ -13,5 +13,8 @@
     ./surround.nix
     ./git.nix
     ./glance.nix
+    ./flash.nix
+    ./todo-comments.nix
+    ./spectre.nix
   ];
 }
