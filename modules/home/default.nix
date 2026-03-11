@@ -7,5 +7,7 @@
     ./nixvim
     ./zsh.nix
     ./environment.nix
+    ./zellij.nix
+    ./claude.nix
   ];
 }

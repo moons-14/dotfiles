@@ -7,5 +7,6 @@
     ./web-devicons.nix
     ./toggleterm.nix
     ./treesitter.nix
+    ./barbar.nix
   ];
 }

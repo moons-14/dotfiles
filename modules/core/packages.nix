@@ -59,6 +59,7 @@ in {
     gradle
     python312
     uv
-    zellij
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
   ];
 }

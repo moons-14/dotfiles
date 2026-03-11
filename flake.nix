@@ -37,100 +37,96 @@
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nixpkgs-unstable,
-      nixos-hardware,
-      home-manager,
-      ...
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    nixos-hardware,
+    home-manager,
+    ...
+  }: let
+    mkSystem = {
+      host,
+      system,
+      profile,
+      extraModules ? [],
     }:
-    let
-      mkSystem =
-        {
-          host,
-          system,
-          profile,
-          extraModules ? [ ],
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            inherit host;
-            inherit profile;
-          };
-          modules = [
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit inputs;
+          inherit host;
+          inherit profile;
+        };
+        modules =
+          [
             ./overlays
             ./modules/core
             ./profiles/${profile}.nix
             ./hosts/${host}
           ]
           ++ extraModules;
-        };
-    in
-    {
-      nixosConfigurations = {
-        x1g9 = mkSystem {
-          host = "x1g9";
-          system = "x86_64-linux";
-          profile = "laptop";
-          extraModules = [ ];
-        };
-        x1g13-wsl = mkSystem {
-          host = "x1g13-wsl";
-          system = "x86_64-linux";
-          profile = "cli";
-          extraModules = [ ];
-        };
-        x1g13 = mkSystem {
-          host = "x1g13";
-          system = "x86_64-linux";
-          profile = "laptop";
-          extraModules = [ ];
-        };
-        monitor = mkSystem {
-          host = "monitor";
-          system = "x86_64-linux";
-          profile = "cli-server";
-          extraModules = [ ];
-        };
-        dev-1 = mkSystem {
-          host = "dev-1";
-          system = "x86_64-linux";
-          profile = "cli-server";
-          extraModules = [ ];
-        };
-        service-1 = mkSystem {
-          host = "service-1";
-          system = "x86_64-linux";
-          profile = "cli-server";
-          extraModules = [ ];
-        };
-        openclaw = mkSystem {
-          host = "openclaw";
-          system = "x86_64-linux";
-          profile = "cli-server";
-          extraModules = [ ];
-        };
       };
-
-      devShells = {
-        x86_64-linux =
-          let
-            pkgs = import nixpkgs {
-              system = "x86_64-linux";
-              config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "ngrok" ];
-            };
-          in
-          {
-            next-web = import ./shells/next-web.nix { inherit pkgs; };
-            jupyter = import ./shells/jupyter.nix { inherit pkgs; };
-            rust = import ./shells/rust/default.nix { inherit pkgs; };
-          };
+  in {
+    nixosConfigurations = {
+      x1g9 = mkSystem {
+        host = "x1g9";
+        system = "x86_64-linux";
+        profile = "laptop";
+        extraModules = [];
+      };
+      x1g13-wsl = mkSystem {
+        host = "x1g13-wsl";
+        system = "x86_64-linux";
+        profile = "cli";
+        extraModules = [];
+      };
+      x1g13 = mkSystem {
+        host = "x1g13";
+        system = "x86_64-linux";
+        profile = "laptop";
+        extraModules = [];
+      };
+      monitor = mkSystem {
+        host = "monitor";
+        system = "x86_64-linux";
+        profile = "cli-server";
+        extraModules = [];
+      };
+      dev-1 = mkSystem {
+        host = "dev-1";
+        system = "x86_64-linux";
+        profile = "cli-server";
+        extraModules = [];
+      };
+      service-1 = mkSystem {
+        host = "service-1";
+        system = "x86_64-linux";
+        profile = "cli-server";
+        extraModules = [];
+      };
+      openclaw = mkSystem {
+        host = "openclaw";
+        system = "x86_64-linux";
+        profile = "cli-server";
+        extraModules = [];
       };
     };
+
+    devShells = {
+      x86_64-linux = let
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) ["ngrok"];
+        };
+      in {
+        next-web = import ./shells/next-web.nix {inherit pkgs;};
+        jupyter = import ./shells/jupyter.nix {inherit pkgs;};
+        rust = import ./shells/rust/default.nix {inherit pkgs;};
+      };
+    };
+  };
 }

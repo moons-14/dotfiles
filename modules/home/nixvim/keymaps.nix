@@ -34,5 +34,10 @@ in {
 
     # Diagnostics
     (mk "<leader>xx" "<cmd>Trouble diagnostics toggle<CR>" "エラー一覧")
+
+    # Buffer Bar
+    (mk "<leader>bh" "<Cmd>BufferPrevious<CR>" "前のバッファーに移動")
+    (mk "<leader>bl" "<Cmd>BufferNext<CR>" "後のバッファーに移動")
+    (mk "<leader>bc" "<Cmd>BufferClose<CR>" "バッファーを削除")
   ];
 }
