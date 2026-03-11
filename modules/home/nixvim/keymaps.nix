@@ -59,6 +59,9 @@ in {
     (mk "<leader>gh" "<cmd>DiffviewFileHistory %<CR>" "ファイル履歴")
     (mk "<leader>gq" "<cmd>DiffviewClose<CR>" "差分を閉じる")
 
+    # Dropbar
+    (mkRaw "<leader>dp" "function() require('dropbar.api').pick() end" "dropbarでナビゲート")
+
     # Telescope (explicit form for reliability)
     (mkRaw "<leader>ff" "function() require('telescope.builtin').find_files() end" "ファイルを探す")
     (mkRaw "<leader>fg" "function() require('telescope.builtin').live_grep() end" "文字列を全文検索")
