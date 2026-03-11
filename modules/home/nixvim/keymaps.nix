@@ -12,7 +12,6 @@
     mode = "n";
     key = key;
     action.__raw = raw;
-
     options = {
       silent = true;
       desc = desc;

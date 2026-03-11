@@ -54,6 +54,7 @@ in {
     grim
     wf-recorder
     sqlite # Vscode Raycast Extension Dependency
+    oxker # Docker TUI Tool
     jdk25
     maven
     gradle
