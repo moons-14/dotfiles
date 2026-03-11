@@ -1,18 +1,23 @@
-{pkgs, ...}: {
-  programs.nixvim = {
-    extraPlugins = [pkgs.vimPlugins.nvim-colorizer-lua];
-    extraConfigLua = ''
-      require("colorizer").setup({
-        filetypes = { "*" },
-        user_default_options = {
-          RGB = true,
-          RRGGBB = true,
-          names = false,
-          css = true,
-          tailwind = true,
-          mode = "background",
-        },
-      })
-    '';
+{...}: {
+  programs.nixvim.plugins.colorizer = {
+    enable = true;
+
+    settings = {
+      filetypes = ["*" "!markdown"];
+      user_commands = true;
+
+      options = {
+        parsers = {
+          css = true;
+          tailwind = {
+            enable = true;
+            lsp = true;
+            update_names = true;
+          };
+        };
+
+        display.mode = "background";
+      };
+    };
   };
 }
