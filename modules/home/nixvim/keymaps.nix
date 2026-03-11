@@ -69,6 +69,14 @@ in {
     (mk "]b" "<Cmd>BufferNext<CR>" "後のバッファーに移動")
     (mk "<leader>bc" "<Cmd>BufferClose<CR>" "バッファーを削除")
 
+    # Git Conflict
+    (mk "<leader>gco" "<cmd>GitConflictChooseOurs<CR>" "現在のブランチを選択")
+    (mk "<leader>gct" "<cmd>GitConflictChooseTheirs<CR>" "相手のブランチを選択")
+    (mk "<leader>gcb" "<cmd>GitConflictChooseBoth<CR>" "両方を選択")
+    (mk "<leader>gcx" "<cmd>GitConflictListQf<CR>" "コンフリクト一覧")
+    (mk "]x" "<cmd>GitConflictNextConflict<CR>" "次のコンフリクト")
+    (mk "[x" "<cmd>GitConflictPrevConflict<CR>" "前のコンフリクト")
+
     # Git
     (mk "<leader>gl" "<cmd>LazyGit<CR>" "LazyGitを開く")
     (mk "<leader>gd" "<cmd>DiffviewOpen<CR>" "差分を開く")

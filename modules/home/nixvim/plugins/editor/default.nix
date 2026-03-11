@@ -12,6 +12,7 @@
     ./conform.nix
     ./surround.nix
     ./git.nix
+    ./git-conflict.nix
     ./glance.nix
     ./flash.nix
     ./todo-comments.nix
