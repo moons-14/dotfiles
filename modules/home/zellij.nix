@@ -18,21 +18,21 @@
           bind "Alt k" "Alt Up"         { MoveFocus "Up"; }
           bind "Alt l" "Alt Right"      { MoveFocusOrTab "Right"; }
           bind "Alt n"                  { NewPane; }
-          bind "Alt H" "Alt S-Left"     { Resize "Increase Left"; }
-          bind "Alt J" "Alt S-Down"     { Resize "Increase Down"; }
-          bind "Alt K" "Alt S-Up"       { Resize "Increase Up"; }
-          bind "Alt L" "Alt S-Right"    { Resize "Increase Right"; }
+          bind "Alt H" { Resize "Increase Left"; }
+          bind "Alt J" { Resize "Increase Down"; }
+          bind "Alt K" { Resize "Increase Up"; }
+          bind "Alt L" { Resize "Increase Right"; }
         }
         normal {
-          bind "Alt h" "Alt Left"       { MoveFocusOrTab "Left"; }
-          bind "Alt j" "Alt Down"       { MoveFocus "Down"; }
-          bind "Alt k" "Alt Up"         { MoveFocus "Up"; }
-          bind "Alt l" "Alt Right"      { MoveFocusOrTab "Right"; }
-          bind "Alt n"                  { NewPane; }
-          bind "Alt H" "Alt S-Left"     { Resize "Increase Left"; }
-          bind "Alt J" "Alt S-Down"     { Resize "Increase Down"; }
-          bind "Alt K" "Alt S-Up"       { Resize "Increase Up"; }
-          bind "Alt L" "Alt S-Right"    { Resize "Increase Right"; }
+          bind "Alt h" "Alt Left"  { MoveFocusOrTab "Left"; }
+          bind "Alt j" "Alt Down"  { MoveFocus "Down"; }
+          bind "Alt k" "Alt Up"    { MoveFocus "Up"; }
+          bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+          bind "Alt n"             { NewPane; }
+          bind "Alt H" { Resize "Increase Left"; }
+          bind "Alt J" { Resize "Increase Down"; }
+          bind "Alt K" { Resize "Increase Up"; }
+          bind "Alt L" { Resize "Increase Right"; }
         }
       }
     '';
