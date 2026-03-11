@@ -14,5 +14,6 @@
     ./scrollbar.nix
     ./ufo.nix
     ./zen-mode.nix
+    ./markview.nix
   ];
 }
