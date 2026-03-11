@@ -10,5 +10,6 @@
     ./barbar.nix
     ./lightbulb.nix
     ./colorizer.nix
+    ./dropbar.nix
   ];
 }
