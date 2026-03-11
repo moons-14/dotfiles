@@ -17,5 +17,6 @@
     ./flash.nix
     ./todo-comments.nix
     ./spectre.nix
+    ./wakatime.nix
   ];
 }
