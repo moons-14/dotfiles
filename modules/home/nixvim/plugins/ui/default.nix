@@ -11,5 +11,6 @@
     ./lightbulb.nix
     ./colorizer.nix
     ./dropbar.nix
+    ./scrollbar.nix
   ];
 }
