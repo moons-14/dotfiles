@@ -11,6 +11,5 @@
     ./trouble.nix
     ./conform.nix
     ./surround.nix
-    ./project.nix
   ];
 }
