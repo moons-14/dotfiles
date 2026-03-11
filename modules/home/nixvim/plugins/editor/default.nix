@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./telescope.nix
+    ./snacks.nix
     ./treesitter.nix
     ./blink-cmp.nix
     ./gitsigns.nix

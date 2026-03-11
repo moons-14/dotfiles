@@ -72,10 +72,12 @@ in {
     # Dropbar
     (mkRaw "<leader>dp" "function() require('dropbar.api').pick() end" "dropbarでナビゲート")
 
-    # Telescope (explicit form for reliability)
-    (mkRaw "<leader>ff" "function() require('telescope.builtin').find_files() end" "ファイルを探す")
-    (mkRaw "<leader>fg" "function() require('telescope.builtin').live_grep() end" "文字列を全文検索")
-    (mkRaw "<leader>fb" "function() require('telescope.builtin').buffers() end" "開いているバッファを探す")
-    (mkRaw "<leader>fh" "function() require('telescope.builtin').help_tags() end" "ヘルプ項目を探す")
+    # Snacks Picker
+    (mkRaw "<leader>ff" "function() Snacks.picker.files() end" "ファイルを探す")
+    (mkRaw "<leader>fg" "function() Snacks.picker.grep() end" "文字列を全文検索")
+    (mkRaw "<leader>fb" "function() Snacks.picker.buffers() end" "開いているバッファを探す")
+    (mkRaw "<leader>fh" "function() Snacks.picker.help() end" "ヘルプ項目を探す")
+    (mkRaw "<leader>fk" "function() Snacks.picker.keymaps() end" "キーマップを探す")
+    (mkRaw "<leader>fc" "function() Snacks.picker.commands() end" "コマンドを探す")
   ];
 }
