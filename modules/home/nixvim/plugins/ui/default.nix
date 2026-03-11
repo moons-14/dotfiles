@@ -12,5 +12,6 @@
     ./colorizer.nix
     ./dropbar.nix
     ./scrollbar.nix
+    ./ufo.nix
   ];
 }
