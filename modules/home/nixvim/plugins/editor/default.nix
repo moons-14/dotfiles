@@ -12,5 +12,6 @@
     ./conform.nix
     ./surround.nix
     ./git.nix
+    ./glance.nix
   ];
 }

@@ -21,8 +21,8 @@ in {
   programs.nixvim.keymaps = [
     # LSP
     (mkRaw "K" "vim.lsp.buf.hover" "LSPエラーのホバー表示")
-    (mkRaw "gd" "vim.lsp.buf.definition" "定義へ移動")
-    (mkRaw "gr" "vim.lsp.buf.references" "参照を表示")
+    (mk "gd" "<cmd>Glance definitions<CR>" "定義へ移動")
+    (mk "gr" "<cmd>Glance references<CR>" "参照を表示")
     (mkRaw "<leader>rn" "vim.lsp.buf.rename" "シンボル名を一括変換")
     (mkRaw "<leader>cf" "function() require('conform').format({ timeout_ms = 1000, lsp_format = 'fallback' }) end" "コードをフォーマット")
     (mkRaw "<leader>ca" "function() vim.lsp.buf.code_action({ context = { diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 }) } }) end" "コードアクション")
