@@ -18,7 +18,7 @@ in {
     adb.enable = true;
     gnupg.agent = {
       enable = true;
-      enableSSHSupport = true;
+      enableSSHSupport = false;
     };
     zsh = {
       enable = true;
