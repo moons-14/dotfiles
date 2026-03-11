@@ -55,4 +55,4 @@ Necessary configurations not achievable with dotfiles
 - [natsukium/dotfiles](https://github.com/natsukium/dotfiles)
 - [dracula](https://github.com/dracula)
 - [akazdayo/nix-configs](https://github.com/akazdayo/nix-configs)
-
+- [yutakobayashidev/dotnix](https://github.com/yutakobayashidev/dotnix)
