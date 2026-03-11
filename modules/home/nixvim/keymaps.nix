@@ -59,6 +59,9 @@ in {
     (mk "<leader>gh" "<cmd>DiffviewFileHistory %<CR>" "ファイル履歴")
     (mk "<leader>gq" "<cmd>DiffviewClose<CR>" "差分を閉じる")
 
+    # Zen Mode
+    (mk "<leader>zz" "<cmd>ZenMode<CR>" "Zen Modeを開く/閉じる")
+
     # UFO (folding)
     (mkRaw "zR" "require('ufo').openAllFolds" "全て展開")
     (mkRaw "zM" "require('ufo').closeAllFolds" "全て折りたたむ")
