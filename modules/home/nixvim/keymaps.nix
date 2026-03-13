@@ -26,13 +26,13 @@ in {
     {
       mode = "n";
       key = "j";
-      action.__raw = "vim.v.count == 0 and 'gj' or 'j'";
+      action.__raw = "function() return vim.v.count == 0 and 'gj' or 'j' end";
       options = { silent = true; expr = true; desc = "下へ移動（画面行優先）"; };
     }
     {
       mode = "n";
       key = "k";
-      action.__raw = "vim.v.count == 0 and 'gk' or 'k'";
+      action.__raw = "function() return vim.v.count == 0 and 'gk' or 'k' end";
       options = { silent = true; expr = true; desc = "上へ移動（画面行優先）"; };
     }
 
