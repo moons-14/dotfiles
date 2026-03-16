@@ -63,6 +63,10 @@ in {
     (mk "<C-j>" "<C-w>j" "下のウィンドウへ")
     (mk "<C-k>" "<C-w>k" "上のウィンドウへ")
     (mk "<C-l>" "<C-w>l" "右のウィンドウへ")
+    (mk "<C-Left>" "<C-w>h" "左のウィンドウへ")
+    (mk "<C-Down>" "<C-w>j" "下のウィンドウへ")
+    (mk "<C-Up>" "<C-w>k" "上のウィンドウへ")
+    (mk "<C-Right>" "<C-w>l" "右のウィンドウへ")
 
     # Buffer Bar
     (mk "[b" "<Cmd>BufferPrevious<CR>" "前のバッファーに移動")

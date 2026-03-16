@@ -44,6 +44,7 @@
     globals = {
       mapleader = " ";
       maplocalleader = " ";
+      clipboard = "osc52";
     };
   };
 }
