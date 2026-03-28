@@ -18,6 +18,7 @@
           bind "Alt k" "Alt Up"         { MoveFocus "Up"; }
           bind "Alt l" "Alt Right"      { MoveFocusOrTab "Right"; }
           bind "Alt n"                  { NewPane; }
+          bind "Alt t"                  { NewTab; }
           bind "Alt H" { Resize "Increase Left"; }
           bind "Alt J" { Resize "Increase Down"; }
           bind "Alt K" { Resize "Increase Up"; }
@@ -29,6 +30,7 @@
           bind "Alt k" "Alt Up"    { MoveFocus "Up"; }
           bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
           bind "Alt n"             { NewPane; }
+          bind "Alt t"             { NewTab; }
           bind "Alt H" { Resize "Increase Left"; }
           bind "Alt J" { Resize "Increase Down"; }
           bind "Alt K" { Resize "Increase Up"; }
