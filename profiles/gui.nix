@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     ./cli.nix
     ./../modules/core/niri.nix
@@ -7,6 +6,7 @@
     ./../modules/core/greetd.nix
     ./../modules/core/noctalia.nix
     ./../modules/core/gui.nix
+    ./../modules/core/kde.nix
   ];
 
   home-manager.users.moons.imports = [
