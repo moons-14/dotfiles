@@ -7,6 +7,7 @@
     settings = {
       pane_frames = true;
       default_mode = "locked";
+      default_shell = "/run/current-system/sw/bin/zsh";
     };
 
     extraConfig = ''
