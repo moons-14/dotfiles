@@ -1,8 +1,7 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./boot.nix
+    ./cachix.nix
     ./environment.nix
     ./fonts.nix
     ./gc.nix
