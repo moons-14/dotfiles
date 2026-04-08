@@ -1,9 +1,12 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   vsc = pkgs.vscode-extensions;
   inherit (lib) recursiveUpdate;
 
-  rustLibclangPath = pkgs.lib.makeLibraryPath [ pkgs.llvmPackages_latest.libclang.lib ];
+  rustLibclangPath = pkgs.lib.makeLibraryPath [pkgs.llvmPackages_latest.libclang.lib];
 
   rustBindgenExtraClangArgs = lib.concatStringsSep " " (
     (builtins.map (a: ''-I"${a}/include"'') [
@@ -89,14 +92,8 @@ let
             version = "1.32.1";
             hash = "sha256-MAfjS/oFfFuiE+Q2w6leSlao436QSw2fKjd7/BE/Q8Y=";
           }
-          {
-            name = "native-preview";
-            publisher = "typescriptteam";
-            version = "0.20251104.1";
-            hash = "sha256-lUSwtf7jncnrp6UXgmZU30e+CFRKqf0N41+Xna6daok=";
-          }
         ];
-      userSettings = { };
+      userSettings = {};
     };
 
     web-biome = {
@@ -145,13 +142,12 @@ let
         ms-toolsai.jupyter
         ms-python.python
       ];
-      userSettings = { };
+      userSettings = {};
     };
 
     java = {
       extensions = (
-        with vsc;
-        [
+        with vsc; [
           vscjava.vscode-java-pack
           sonarsource.sonarlint-vscode
           vscjava.vscode-java-debug
@@ -237,50 +233,45 @@ let
 
   combine = (
     ls:
-    builtins.foldl'
+      builtins.foldl'
       (acc: l: {
-        extensions = acc.extensions ++ (l.extensions or [ ]);
-        userSettings = recursiveUpdate acc.userSettings (l.userSettings or { });
+        extensions = acc.extensions ++ (l.extensions or []);
+        userSettings = recursiveUpdate acc.userSettings (l.userSettings or {});
       })
       {
-        extensions = [ ];
-        userSettings = { };
+        extensions = [];
+        userSettings = {};
       }
       ls
   );
 
   #    mkProfile [layers...] { extensions = [...]; userSettings = { ... }; }
-  mkProfile =
-    layersList: extras:
-    let
-      base = combine layersList;
-    in
-    {
-      extensions = base.extensions ++ (extras.extensions or [ ]);
-      userSettings = recursiveUpdate base.userSettings (extras.userSettings or { });
-    };
-
-in
-{
+  mkProfile = layersList: extras: let
+    base = combine layersList;
+  in {
+    extensions = base.extensions ++ (extras.extensions or []);
+    userSettings = recursiveUpdate base.userSettings (extras.userSettings or {});
+  };
+in {
   nixpkgs.config.allowUnfree = true;
 
   programs.vscode = {
     enable = true;
 
     profiles = {
-      default = mkProfile [ layers.common ] { };
+      default = mkProfile [layers.common] {};
 
-      nix = mkProfile [ layers.common layers.nix ] { };
+      nix = mkProfile [layers.common layers.nix] {};
 
-      web = mkProfile [ layers.common layers.web layers.web-biome ] { };
+      web = mkProfile [layers.common layers.web layers.web-biome] {};
 
-      web-oxc = mkProfile [ layers.common layers.web layers.web-oxc ] { };
+      web-oxc = mkProfile [layers.common layers.web layers.web-oxc] {};
 
-      jupyter = mkProfile [ layers.common layers.jupyter ] { };
+      jupyter = mkProfile [layers.common layers.jupyter] {};
 
-      java = mkProfile [ layers.common layers.java ] { };
+      java = mkProfile [layers.common layers.java] {};
 
-      rust = mkProfile [ layers.common layers.rust ] { };
+      rust = mkProfile [layers.common layers.rust] {};
     };
   };
 
