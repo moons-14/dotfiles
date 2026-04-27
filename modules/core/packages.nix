@@ -48,6 +48,7 @@ in {
     unstable._1password-cli
     unstable._1password-gui
     unstable.ghostty
+    tio
     sbctl
     xwayland-satellite
     slurp
