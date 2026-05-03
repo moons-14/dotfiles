@@ -7,5 +7,9 @@
     enable = true;
     powertop.enable = true;
   };
+
+  services.tlp.enable = false;
+
+  networking.networkmanager.wifi.powersave = false;
 }
 
