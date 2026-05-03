@@ -8,8 +8,7 @@
     powertop.enable = true;
   };
 
+  services.power-profiles-daemon.enable = true;
   services.tlp.enable = false;
-
-  networking.networkmanager.wifi.powersave = false;
+  services.upower.enable = true;
 }
-
