@@ -17,9 +17,9 @@ in {
 
   home.file.".cache/noctalia/wallpapers.json" = {
     text = builtins.toJSON {
-      defaultWallpaper = "~/.wallpapers/";
+      defaultWallpaper = "~/.wallpapers/1.jpg";
       wallpapers = {
-        "DP-1" = "~/.wallpapers/";
+        "DP-1" = "~/.wallpapers/1.jpg";
       };
     };
   };

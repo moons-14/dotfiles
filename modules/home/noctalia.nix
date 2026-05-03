@@ -1,5 +1,8 @@
-{ pkgs, inputs, ... }:
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   # import the home manager module
   imports = [
     inputs.noctalia.homeModules.default
@@ -94,6 +97,9 @@
       wallpaper = {
         enabled = true;
         directory = "~/.wallpapers/";
+        setWallpaperOnAllMonitors = true;
+        linkLightAndDarkWallpapers = true;
+        fillMode = "crop";
         randomEnabled = true;
         randomIntervalSec = 60;
         transitionDuration = 1500;
@@ -105,57 +111,58 @@
         floatingRatio = 1;
         size = 1;
         onlySameOutput = true;
-        monitors = [ "eDP-1" ];
-        pinnedApps = [ "com.mitchellh.ghostty" "org.gnome.Nautilus" "google-chrome" "code" ];
+        monitors = ["eDP-1"];
+        pinnedApps = ["com.mitchellh.ghostty" "org.gnome.Nautilus" "google-chrome" "code"];
         colorizeIcons = false;
       };
       controlCenter = {
-          position = "close_to_bar_button";
-          shortcuts = {
-            left = [
-              {
-                id = "WiFi";
-              }
-              {
-                id = "Bluetooth";
-              }
-              {
-                id = "ScreenRecorder";
-              }
-              {
-                id = "WallpaperSelector";
-              }
-            ];
-            right = [
-              {
-                id = "Notifications";
-              }
-              {
-                id = "NightLight";
-              }
-            ];
-          };
-          cards = [
+        position = "close_to_bar_button";
+        shortcuts = {
+          left = [
             {
-              enabled = true;
-              id = "profile-card";
+              id = "WiFi";
             }
             {
-              enabled = true;
-              id = "shortcuts-card";
+              id = "Bluetooth";
             }
             {
-              enabled = true;
-              id = "audio-card";
+              id = "ScreenRecorder";
             }
             {
-              enabled = true;
-              id = "media-sysmon-card";
+              id = "WallpaperSelector";
+            }
+          ];
+          right = [
+            {
+              id = "Notifications";
+            }
+            {
+              id = "NightLight";
             }
           ];
         };
+        cards = [
+          {
+            enabled = true;
+            id = "profile-card";
+          }
+          {
+            enabled = true;
+            id = "shortcuts-card";
+          }
+          {
+            enabled = true;
+            id = "audio-card";
+          }
+          {
+            enabled = true;
+            id = "media-sysmon-card";
+          }
+        ];
+      };
     };
     # this may also be a string or a path to a JSON file,
     # but in this case must include *all* settings.
   };
 }
+
