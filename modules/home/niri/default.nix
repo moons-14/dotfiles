@@ -74,8 +74,8 @@ in {
             "noctalia-shell"
             "ipc"
             "call"
-            "lockScreen"
-            "lock"
+            "sessionMenu"
+            "lockAndSuspend"
           ];
           hotkey-overlay.title = "Lock the Screen: noctalia";
         };
