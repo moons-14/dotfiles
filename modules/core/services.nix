@@ -30,7 +30,7 @@
       settings.Login = {
         HandleLidSwitch = "suspend";
         HandleLidSwitchDocked = "ignore";
-        HandleLidSwitchExternalPower = "ignore";
+        HandleLidSwitchExternalPower = "suspend";
         LidSwitchIgnoreInhibited = "no";
       };
     };
