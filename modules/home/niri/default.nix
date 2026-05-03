@@ -1,9 +1,11 @@
-{ inputs, pkgs, ... }:
-let
-  defaultKeyBind = import ./defaultKeyBind.nix;
-in
 {
-  imports = [ inputs.niri-flake.homeModules.niri ];
+  inputs,
+  pkgs,
+  ...
+}: let
+  defaultKeyBind = import ./defaultKeyBind.nix;
+in {
+  imports = [inputs.niri-flake.homeModules.niri];
   programs.niri.package = pkgs.niri;
 
   programs.niri.settings = {
@@ -17,7 +19,7 @@ in
     };
 
     spawn-at-startup = [
-      { command = [ "noctalia-shell" ]; }
+      {command = ["qs -c noctalia-shell"];}
     ];
 
     outputs."eDP-1".scale = 1;
@@ -39,105 +41,107 @@ in
       };
     };
 
-    binds = defaultKeyBind // {
-      "Mod+T" = {
-        action.spawn = "ghostty";
-        hotkey-overlay.title = "Open a Terminal: ghostty";
-      };
-      "Mod+D" = {
-        action.spawn = [
-          "vicinae"
-          "toggle"
-        ];
-        hotkey-overlay.title = "Run an Application: vicinae";
-      };
-      "Mod+Space" = {
-        action.spawn = [
-          "vicinae"
-          "toggle"
-        ];
-        hotkey-overlay.title = "Run an Application: vicinae";
-      };
-      "Mod+E" = {
-        action.spawn = [
-          "nautilus"
-          "--new-window"
-        ];
-        hotkey-overlay.title = "Open File Manager: nautilus";
-      };
-      "Mod+L" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "lockScreen"
-          "lock"
-        ];
-        hotkey-overlay.title = "Lock the Screen: noctalia";
-      };
-      "Mod+V" = {
-        action.spawn = [
-          "vicinae"
-          "vicinae://extensions/vicinae/clipboard/history"
-        ];
-        hotkey-overlay.title = "Clipboard History";
-      };
+    binds =
+      defaultKeyBind
+      // {
+        "Mod+T" = {
+          action.spawn = "ghostty";
+          hotkey-overlay.title = "Open a Terminal: ghostty";
+        };
+        "Mod+D" = {
+          action.spawn = [
+            "vicinae"
+            "toggle"
+          ];
+          hotkey-overlay.title = "Run an Application: vicinae";
+        };
+        "Mod+Space" = {
+          action.spawn = [
+            "vicinae"
+            "toggle"
+          ];
+          hotkey-overlay.title = "Run an Application: vicinae";
+        };
+        "Mod+E" = {
+          action.spawn = [
+            "nautilus"
+            "--new-window"
+          ];
+          hotkey-overlay.title = "Open File Manager: nautilus";
+        };
+        "Mod+L" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "lockScreen"
+            "lock"
+          ];
+          hotkey-overlay.title = "Lock the Screen: noctalia";
+        };
+        "Mod+V" = {
+          action.spawn = [
+            "vicinae"
+            "vicinae://extensions/vicinae/clipboard/history"
+          ];
+          hotkey-overlay.title = "Clipboard History";
+        };
 
-      "XF86AudioRaiseVolume" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "volume"
-          "increase"
-        ];
-      };
-      "XF86AudioLowerVolume" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "volume"
-          "decrease"
-        ];
-      };
-      "XF86AudioMute" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "volume"
-          "muteOutput"
-        ];
-      };
-      "XF86AudioMicMute" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "volume"
-          "muteInput"
-        ];
-      };
+        "XF86AudioRaiseVolume" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "volume"
+            "increase"
+          ];
+        };
+        "XF86AudioLowerVolume" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "volume"
+            "decrease"
+          ];
+        };
+        "XF86AudioMute" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "volume"
+            "muteOutput"
+          ];
+        };
+        "XF86AudioMicMute" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "volume"
+            "muteInput"
+          ];
+        };
 
-      "XF86MonBrightnessUp" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "brightness"
-          "increase"
-        ];
+        "XF86MonBrightnessUp" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "brightness"
+            "increase"
+          ];
+        };
+        "XF86MonBrightnessDown" = {
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "brightness"
+            "decrease"
+          ];
+        };
       };
-      "XF86MonBrightnessDown" = {
-        action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "brightness"
-          "decrease"
-        ];
-      };
-    };
   };
 }

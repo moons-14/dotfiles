@@ -11,17 +11,5 @@
   },
 
   "minimumReleaseAge": "7 days",
-  "minimumReleaseAgeBehaviour": "timestamp-required",
-
-  "packageRules": [
-    {
-      "description": "Update llm-agents separately after 2 days",
-      "matchManagers": ["nix"],
-      "matchDepNames": ["llm-agents"],
-      "minimumReleaseAge": "2 days",
-      "groupName": "llm-agents",
-      "groupSlug": "llm-agents",
-      "addLabels": ["nix", "llm-agents"]
-    }
-  ]
+  "minimumReleaseAgeBehaviour": "timestamp-required"
 }
