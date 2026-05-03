@@ -14,4 +14,13 @@ in {
     source = walls;
     recursive = true;
   };
+
+  home.file.".cache/noctalia/wallpapers.json" = {
+    text = builtins.toJSON {
+      defaultWallpaper = "~/.wallpapers/";
+      wallpapers = {
+        "DP-1" = "~/.wallpapers/";
+      };
+    };
+  };
 }

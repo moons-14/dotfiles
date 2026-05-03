@@ -19,7 +19,7 @@ in {
     };
 
     spawn-at-startup = [
-      {command = ["qs -c noctalia-shell"];}
+      {command = ["noctalia-shell"];}
     ];
 
     outputs."eDP-1".scale = 1;
