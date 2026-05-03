@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services = {
-
     blueman.enable = true; # Bluetooth Support
     tumbler.enable = true; # Image/video preview
 
@@ -46,7 +44,6 @@
 
     rpcbind.enable = true;
   };
-
 
   virtualisation.docker = {
     enable = true;

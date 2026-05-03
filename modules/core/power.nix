@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   boot.kernelParams = [
     "mem_sleep_default=deep"
   ];
@@ -9,4 +8,6 @@
     powertop.enable = true;
   };
 
+  services.power-profiles-daemon.enable = true;
 }
+
