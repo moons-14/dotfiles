@@ -1,10 +1,13 @@
-{ host, pkgs, ... }:
 {
+  host,
+  pkgs,
+  ...
+}: {
   networking = {
     hostName = "${host}";
     nameservers = [
-      "172.31.30.2"
-      "fd12:3456:789a:30::53"
+      "1.1.1.1"
+      "1.0.0.1"
     ];
 
     networkmanager = {
@@ -29,9 +32,8 @@
 
   services.resolved.enable = false;
 
-  environment.systemPackages = [ pkgs.networkmanagerapplet ];
+  environment.systemPackages = [pkgs.networkmanagerapplet];
   programs.nm-applet.enable = true;
 
-  security.pki.certificateFiles = [ ./ca/root_ca.crt ];
-
+  security.pki.certificateFiles = [./ca/root_ca.crt];
 }
