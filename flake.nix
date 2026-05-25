@@ -112,6 +112,12 @@
         profile = "cli-server";
         extraModules = [];
       };
+      ops = mkSystem {
+	host = "ops";
+	system = "x86_64-linux";
+	profile = "cli-server";
+	extraModules = [];
+      };
     };
 
     devShells = {
