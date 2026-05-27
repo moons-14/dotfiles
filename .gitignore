@@ -1,19 +1,1 @@
-/*
 
-!.gitignore
-!README.md
-!LICENSE
-
-!/flake.nix
-!/flake.lock
-
-!/hosts/
-!/modules/
-!/home-manager/
-!/shells/
-!/images/
-!/profiles/
-!/overlays/
-
-!renovate.json
-!.github/
