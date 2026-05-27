@@ -118,6 +118,12 @@
 	profile = "cli-server";
 	extraModules = [];
       };
+      nix-test = mkSystem {
+	host = "nix-test";
+	system = "x86_64-linux";
+	profile = "cli-server";
+	extraModules = [];
+      };
     };
 
     devShells = {
