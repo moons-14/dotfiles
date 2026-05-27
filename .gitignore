@@ -1,1 +1,15 @@
+/*
 
+!.gitignore
+!README.md
+!LICENSE
+!AGENTS.md
+
+!.envrc
+
+!/flake.nix
+!/flake.lock
+
+!shells/
+
+!/flake/
