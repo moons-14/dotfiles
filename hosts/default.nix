@@ -7,6 +7,8 @@
 let
   inherit (inputs.nixpkgs.lib) nixosSystem;
 
+  userName = "moons";
+
   mkSystem =
     {
       host,
@@ -19,11 +21,12 @@ let
     nixosSystem {
       inherit system;
       modules = [
+        ./${host}/hardware-configuration.nix
         ../profiles/${profile}.nix
-        ../hosts/${host}/default.nix
+        ./${host}/default.nix
       ]
       ++ extraModules;
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs userName; };
     };
 in
 {

@@ -14,5 +14,7 @@
 !hosts/
 !overlays/
 !profiles/
+!modules/
+!applications/
 
 !/flake/
