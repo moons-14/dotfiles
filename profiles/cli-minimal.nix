@@ -1,9 +1,7 @@
 { userName, ... }:
 {
   imports = [
-    ../modules/nix/boot
-    ../modules/nix/caches.nix
-    ../modules/nix/gc.nix
+    ./base.nix
   ];
   home-manager.users.${userName}.imports = [ ];
 }

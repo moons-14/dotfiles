@@ -15,5 +15,6 @@
 !overlays/
 !profiles/
 !modules/
+!docs/
 
 !/flake/
