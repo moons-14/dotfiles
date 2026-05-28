@@ -11,17 +11,16 @@ let
     {
       host,
       system,
+      profile ? null,
       extraModules ? [ ],
-      ...
     }:
     assert lib.assertMsg (lib.elem system config.systems)
       "mkSystem: system '${system}' not in valid systems: ${lib.generators.toPretty { } config.systems}";
     nixosSystem {
       inherit system;
       modules = [
-        {
-          networking.hostName = lib.mkDefault host;
-        }
+        ../profiles/${profile}.nix
+        ../hosts/${host}/default.nix
       ]
       ++ extraModules;
       specialArgs = { inherit inputs; };
@@ -32,7 +31,7 @@ in
     nix-example = mkSystem {
       host = "nix-example";
       system = "x86_64-linux";
-      profile = "laptop";
+      profile = "base";
       extraModules = [ ];
     };
   };

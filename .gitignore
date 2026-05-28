@@ -13,5 +13,6 @@
 !shells/
 !hosts/
 !overlays/
+!profiles/
 
 !/flake/
