@@ -4,9 +4,11 @@
     enable = true;
     type = "fcitx5";
     fcitx5 = {
+      waylandFrontend = true;
       addons = with pkgs; [
-        fcitx5-mozc
+        fcitx5-mozc-ut
         fcitx5-gtk
+        kdePackages.fcitx5-qt
         qt6Packages.fcitx5-configtool
       ];
       settings.inputMethod = {
@@ -15,7 +17,7 @@
         };
         "Groups/0" = {
           Name = "Default";
-          "Default Layout" = "keyboard-jp";
+          "Default Layout" = "jp";
           DefaultIM = "mozc";
         };
         "Groups/0/Items/0" = {
