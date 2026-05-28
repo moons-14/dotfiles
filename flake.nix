@@ -95,9 +95,11 @@
       systems = import systems;
 
       imports = [
+        ./overlays
+        ./hosts
+        ./shells
         ./flake/formatter.nix
         ./flake/git-hooks.nix
-        ./shells
       ];
     };
 }

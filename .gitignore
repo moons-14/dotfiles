@@ -11,5 +11,7 @@
 !/flake.lock
 
 !shells/
+!hosts/
+!overlays/
 
 !/flake/
