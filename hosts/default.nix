@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   config,
   lib,
   ...
@@ -8,6 +9,13 @@ let
   inherit (inputs.nixpkgs.lib) nixosSystem;
 
   userName = "moons";
+
+  unstable = import inputs.nixpkgs-unstable {
+    inherit (pkgs) system;
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   mkSystem =
     {
@@ -21,11 +29,14 @@ let
     nixosSystem {
       inherit system;
       modules = [
+        {
+          nixpkgs.config.allowUnfree = true;
+        }
         ../profiles/${profile}.nix
         ./${host}/default.nix
       ]
       ++ extraModules;
-      specialArgs = { inherit inputs userName; };
+      specialArgs = { inherit inputs userName unstable; };
     };
 in
 {
