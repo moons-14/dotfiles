@@ -21,7 +21,6 @@ let
     nixosSystem {
       inherit system;
       modules = [
-        ./${host}/hardware-configuration.nix
         ../profiles/${profile}.nix
         ./${host}/default.nix
       ]
