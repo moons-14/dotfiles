@@ -1,4 +1,5 @@
 {
+  pkgs,
   inputs,
   lib,
   config,
@@ -27,5 +28,9 @@ in
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
+
+    environment.systemPackages = with pkgs; [
+      sbctl # A tool to manage UEFI Secure Boot keys and signatures
+    ];
   };
 }

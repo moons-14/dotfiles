@@ -12,12 +12,13 @@
     ./gnupg.nix
     ./greetd.nix
     ./gtk
-    ./java.nix
+    ./java
     ./kde.nix
     ./nautilus.nix
     ./niri
     ./noctalia
     ./openssh.nix
+    ./slack.nix
     ./ssh
     ./swayidle.nix
     ./tailscale.nix
