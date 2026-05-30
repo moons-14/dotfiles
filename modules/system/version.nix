@@ -7,12 +7,12 @@
   options.my.stateVersions = {
     nixos = lib.mkOption {
       type = lib.types.str;
-      default = "25.11";
+      default = "26.05";
     };
 
     homeManager = lib.mkOption {
       type = lib.types.str;
-      default = "25.11";
+      default = "26.05";
     };
   };
 

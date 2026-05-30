@@ -4,6 +4,10 @@
   ...
 }:
 {
+  imports = [
+    ./wifi.nix
+  ];
+
   networking = {
     hostName = host;
 

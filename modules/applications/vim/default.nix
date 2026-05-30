@@ -8,8 +8,8 @@ let
 in
 {
   imports = [
-    ./system.nix
     ./home
+    ./system.nix
   ];
 
   options.my.applications.vim = {

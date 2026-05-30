@@ -1,23 +1,23 @@
 { ... }:
 {
   imports = [
-    ./snacks.nix
-    ./treesitter.nix
-    ./blink-cmp.nix
-    ./gitsigns.nix
-    ./comment.nix
     ./autopairs.nix
-    ./lsp-signature.nix
-    ./copilot.nix
-    ./trouble.nix
+    ./blink-cmp.nix
+    ./comment.nix
     ./conform.nix
-    ./surround.nix
-    ./git.nix
-    ./git-conflict.nix
-    ./glance.nix
+    ./copilot.nix
     ./flash.nix
-    ./todo-comments.nix
+    ./git-conflict.nix
+    ./git.nix
+    ./gitsigns.nix
+    ./glance.nix
+    ./lsp-signature.nix
+    ./snacks.nix
     ./spectre.nix
+    ./surround.nix
+    ./todo-comments.nix
+    ./treesitter.nix
+    ./trouble.nix
     ./wakatime.nix
   ];
 }

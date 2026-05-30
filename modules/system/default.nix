@@ -1,14 +1,15 @@
 {
   imports = [
+    ./audio.nix
     ./boot
-    ./nix.nix
     ./camera.nix
     ./fingerprint.nix
     ./fonts.nix
     ./gc.nix
-    ./locale.nix
     ./hardware
+    ./locale.nix
     ./network
+    ./nix.nix
     ./power.nix
     ./secure-boot.nix
     ./user

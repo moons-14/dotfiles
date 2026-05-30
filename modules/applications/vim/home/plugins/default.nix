@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./ui
     ./editor
+    ./ui
   ];
 }

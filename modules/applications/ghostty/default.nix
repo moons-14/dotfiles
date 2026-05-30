@@ -8,8 +8,8 @@ let
 in
 {
   imports = [
-    ./system.nix
     ./home.nix
+    ./system.nix
   ];
 
   options.my.applications.ghostty = {
