@@ -1,15 +1,15 @@
 {
   pkgs,
-  userName,
+  username,
   ...
 }:
 {
   imports = [
     ./gui.nix
-    ../modules/nix/bluetooth.nix
-    ../modules/nix/fingerprint.nix
-    ../modules/nix/network/wifi.nix
-    ../modules/nix/power.nix
+    ../modules/system/hardware/bluetooth.nix
+    ../modules/system/fingerprint.nix
+    ../modules/system/network/wifi.nix
+    ../modules/system/power.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -17,5 +17,5 @@
     sbctl # Secure Boot Key Management Tool
   ];
 
-  home-manager.users.${userName}.imports = [ ];
+  home-manager.users.${username}.imports = [ ];
 }

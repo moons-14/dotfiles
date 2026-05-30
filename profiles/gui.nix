@@ -1,23 +1,26 @@
 {
   pkgs,
-  userName,
+  username,
   ...
 }:
 {
   imports = [
     ./cli-minimal.nix
-    ../modules/nix/hardware/gui.nix
-    ../modules/nix/camera.nix
-    ../modules/nix/fonts.nix
-    ../modules/nix/greetd.nix
-    ../modules/nix/i18n.nix
-    ../modules/nix/kde.nix
-    ../modules/nix/noctalia.nix
+    ../modules/system/hardware/gui.nix
+    ../modules/system/camera.nix
+    ../modules/system/fonts.nix
+    ../modules/applications/greetd.nix
+    ../modules/applications/fcitx5.nix
+    ../modules/applications/kde.nix
   ];
 
-  programs = {
+  my.applications = {
     niri.enable = true;
-    xwayland.enable = true;
+    noctalia.enable = true;
+    wayland.enable = true;
+  };
+
+  programs = {
     dconf.enable = true;
     seahorse.enable = true;
   };
@@ -34,5 +37,5 @@
     wf-recorder # A Screen Recorder For Wayland
   ];
 
-  home-manager.users.${userName}.imports = [ ];
+  home-manager.users.${username}.imports = [ ];
 }

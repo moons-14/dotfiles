@@ -1,0 +1,32 @@
+{
+  imports = [
+    ./btop
+    ./chrome.nix
+    ./claude
+    ./direnv.nix
+    ./discord.nix
+    ./docker.nix
+    ./fcitx5
+    ./ghostty
+    ./git
+    ./gnupg.nix
+    ./greetd.nix
+    ./gtk
+    ./java.nix
+    ./kde.nix
+    ./nautilus.nix
+    ./niri
+    ./noctalia
+    ./openssh.nix
+    ./ssh
+    ./swayidle.nix
+    ./tailscale.nix
+    ./vicinae.nix
+    ./vim
+    ./vscode
+    ./wayland.nix
+    ./zellij
+    ./zoom.nix
+    ./zsh
+  ];
+}

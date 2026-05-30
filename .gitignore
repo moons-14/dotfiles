@@ -16,5 +16,6 @@
 !profiles/
 !modules/
 !docs/
+!images/
 
 !/flake/

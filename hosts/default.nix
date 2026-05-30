@@ -8,7 +8,7 @@
 let
   inherit (inputs.nixpkgs.lib) nixosSystem;
 
-  userName = "moons";
+  username = "moons";
 
   unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs) system;
@@ -36,7 +36,7 @@ let
         ./${host}/default.nix
       ]
       ++ extraModules;
-      specialArgs = { inherit inputs userName unstable; };
+      specialArgs = { inherit inputs username unstable; };
     };
 in
 {

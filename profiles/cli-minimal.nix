@@ -1,6 +1,6 @@
 {
   pkgs,
-  userName,
+  username,
   ...
 }:
 {
@@ -31,5 +31,5 @@
     unstable.opencode # Coding AI Assistant
   ];
 
-  home-manager.users.${userName}.imports = [ ];
+  home-manager.users.${username}.imports = [ ];
 }

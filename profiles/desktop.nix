@@ -1,7 +1,7 @@
-{ userName, ... }:
+{ username, ... }:
 {
   imports = [
     ./gui.nix
   ];
-  home-manager.users.${userName}.imports = [ ];
+  home-manager.users.${username}.imports = [ ];
 }

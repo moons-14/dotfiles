@@ -1,16 +1,15 @@
 {
   pkgs,
-  userName,
+  username,
   ...
 }:
 {
   imports = [
-    ../modules/nix/boot
-    ../modules/nix/caches.nix
-    ../modules/nix/gc.nix
-    ../modules/nix/hardware
-    ../modules/nix/user.nix
-    ../modules/nix/network
+    ../modules/system/boot
+    ../modules/system/caches.nix
+    ../modules/system/gc.nix
+    ../modules/system/hardware
+    ../modules/system/network
   ];
 
   programs = {
@@ -32,6 +31,6 @@
     unstable.msedit # Microsoft Editor
   ];
 
-  home-manager.users.${userName}.imports = [
+  home-manager.users.${username}.imports = [
   ];
 }
