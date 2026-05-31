@@ -1,4 +1,8 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.my.features.dev.agent;
 in
@@ -10,7 +14,7 @@ in
   config = lib.mkIf cfg.enable {
     my.applications = {
       claude.enable = true;
-      codex.enable = true;
+      # codex.enable = true;
       opencode.enable = true;
     };
   };
