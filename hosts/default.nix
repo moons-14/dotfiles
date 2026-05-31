@@ -21,7 +21,7 @@ let
     {
       host,
       system,
-      profile ? null,
+      profiles ? [ ],
       extraModules ? [ ],
     }:
     assert lib.assertMsg (lib.elem system config.systems)
@@ -32,9 +32,9 @@ let
         {
           nixpkgs.config.allowUnfree = true;
         }
-        ../profiles/${profile}.nix
         ./${host}/default.nix
       ]
+      ++ map (p: ../profiles/${p}.nix) profiles
       ++ extraModules;
       specialArgs = { inherit inputs username unstable; };
     };
@@ -44,8 +44,11 @@ in
     nix-example = mkSystem {
       host = "nix-example";
       system = "x86_64-linux";
-      profile = "base";
-      extraModules = [ ];
+      profiles = [
+        "interfaces/cli-interactive"
+        "platforms/vm"
+        "workloads/dev"
+      ];
     };
   };
 }
