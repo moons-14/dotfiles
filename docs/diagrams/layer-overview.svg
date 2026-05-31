@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="852" viewBox="0 0 1350 852" role="img" aria-labelledby="title desc">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.16"/></filter></defs>
+<title>レイヤー全体像</title><desc>Dependency graph rendered from Mermaid source.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="675.0" y="28" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#0f172a">レイヤー全体像</text>
+<path d="M675.0,138.0 C675.0,166.0 675.0,166.0 675.0,186.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,248.0 C675.0,276.0 845.0,276.0 845.0,296.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,248.0 C675.0,276.0 505.0,276.0 505.0,296.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,248.0 C675.0,276.0 1185.0,276.0 1185.0,296.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,248.0 C675.0,276.0 165.0,276.0 165.0,296.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M845.0,358.0 C845.0,441.0 335.0,441.0 335.0,516.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M845.0,358.0 C845.0,386.0 675.0,386.0 675.0,406.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M845.0,358.0 C845.0,441.0 675.0,441.0 675.0,516.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M845.0,358.0 C845.0,386.0 335.0,386.0 335.0,406.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M845.0,358.0 C845.0,386.0 1015.0,386.0 1015.0,406.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1015.0,468.0 C1015.0,606.0 675.0,606.0 675.0,736.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1185.0,358.0 C1185.0,386.0 675.0,386.0 675.0,406.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,468.0 C675.0,496.0 335.0,496.0 335.0,516.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,468.0 C675.0,496.0 675.0,496.0 675.0,516.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M675.0,468.0 C675.0,496.0 1015.0,496.0 1015.0,516.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M335.0,578.0 C335.0,606.0 845.0,606.0 845.0,626.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M335.0,578.0 C335.0,606.0 505.0,606.0 505.0,626.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M505.0,688.0 C505.0,716.0 675.0,716.0 675.0,736.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="550.0" y="84.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="675.0" y="116.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">flake.nix</text>
+<rect x="550.0" y="194.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="675.0" y="218.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">hosts/default.nix</text>
+<text x="675.0" y="234.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">mkSystem</text>
+<rect x="720.0" y="304.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="328.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/default.nix</text>
+<text x="845.0" y="344.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">全モジュールを常時 import</text>
+<rect x="380.0" y="304.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="328.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">hosts/&lt;host&gt;/default.nix</text>
+<text x="505.0" y="344.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">ホスト固有設定</text>
+<rect x="1060.0" y="304.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="328.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profiles/&lt;category&gt;/&lt;name&gt;.nix</text>
+<text x="1185.0" y="344.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">features を有効化</text>
+<rect x="40.0" y="304.0" width="250" height="54" rx="10" fill="#ffffff" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="328.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">extraModules</text>
+<text x="165.0" y="344.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">任意追加モジュール</text>
+<rect x="210.0" y="524.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="335.0" y="548.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/applications/default.nix</text>
+<text x="335.0" y="564.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">my.applications.*</text>
+<rect x="550.0" y="414.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="675.0" y="438.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/features/default.nix</text>
+<text x="675.0" y="454.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">my.features.*</text>
+<rect x="550.0" y="524.0" width="250" height="54" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="675.0" y="548.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/system/default.nix</text>
+<text x="675.0" y="564.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">my.system.*</text>
+<rect x="210.0" y="414.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="335.0" y="446.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/drivers/default.nix</text>
+<rect x="890.0" y="414.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1015.0" y="446.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/integrations/default.nix</text>
+<rect x="550.0" y="744.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="675.0" y="768.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">modules/integrations/home-manager.nix</text>
+<text x="675.0" y="784.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">home-manager shared base</text>
+<rect x="890.0" y="524.0" width="250" height="68" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1015.0" y="547.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">直接設定</text>
+<text x="1015.0" y="563.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">environment.systemPackages</text>
+<text x="1015.0" y="579.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">/ home.activation など</text>
+<rect x="720.0" y="634.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="658.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application system.nix</text>
+<text x="845.0" y="674.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">NixOS 設定</text>
+<rect x="380.0" y="634.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="658.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application home.nix</text>
+<text x="505.0" y="674.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">Home Manager 設定</text>
+</svg>

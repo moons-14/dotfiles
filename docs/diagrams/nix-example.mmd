@@ -1,0 +1,53 @@
+graph LR
+  hostNixExample["host:nix-example"] --> hostHardware["hosts/nix-example/default.nix\nhardware-configuration.nix"]
+  hostNixExample --> pCliInteractive["profile:interfaces/cli-interactive"]
+  hostNixExample --> pVm["profile:platforms/vm"]
+  hostNixExample --> pDev["profile:workloads/dev"]
+  hostNixExample --> pRemote["profile:workloads/remote"]
+
+  pCliInteractive --> pCliMinimal["profile:interfaces/cli-minimal"]
+  pCliMinimal --> fCliBase["feature:cli.base"]
+  pCliMinimal --> fCliShell["feature:cli.shell"]
+  pCliMinimal --> fSshDefaultKey["feature:identity.sshDefaultKey"]
+  pCliInteractive --> fCliInteractive["feature:cli.interactive"]
+
+  pVm --> fBootUefi["feature:boot.uefi"]
+  pVm --> fNfsClient["feature:storage.nfsClient"]
+
+  pDev --> fDevAgent["feature:dev.agent"]
+  pDev --> fDevNix["feature:dev.nix"]
+  pDev --> fDevPython["feature:dev.python"]
+  pDev --> fDevBun["feature:dev.bun"]
+  pDev --> fDevJava["feature:dev.java"]
+  pDev --> fGuiEditor["feature:gui.editor"]
+  pDev --> fContainer["feature:services.container"]
+
+  pRemote --> cliSshServer["cli.base.sshServer = true"]
+  cliSshServer -. "cli.base が有効な場合" .-> appOpenSsh["application:openssh"]
+
+  fCliBase --> appBtop["application:btop"]
+  fCliBase --> appGit["application:git"]
+  fCliBase --> appSsh["application:ssh"]
+  fCliBase --> appDirenv["application:direnv"]
+  fCliBase --> appGnupg["application:gnupg"]
+  fCliBase --> appOpenSsh
+  fCliBase --> pkgCliBase["packages: htop, curl, wget, unzip, unrar"]
+
+  fCliShell --> appZsh["application:zsh"]
+  fCliInteractive --> appVim["application:vim"]
+  fCliInteractive --> appZellij["application:zellij"]
+  fCliInteractive --> pkgTio["package:tio"]
+  fSshDefaultKey --> hmSshKey["home.activation:generateSshKey"]
+
+  fBootUefi --> sysBootUefi["system:boot.uefi"]
+  fNfsClient --> sysBootNfs["system:boot.nfs"]
+
+  fDevAgent --> appClaude["application:claude"]
+  fDevAgent --> appCodex["application:codex"]
+  fDevAgent --> appOpenCode["application:opencode"]
+  fDevNix --> pkgNil["package:nil"]
+  fDevPython --> pkgPython["packages:python312, uv"]
+  fDevBun --> pkgBun["package:bun"]
+  fDevJava --> appJava["application:java"]
+  fGuiEditor --> appVscode["application:vscode"]
+  fContainer --> appDocker["application:docker"]

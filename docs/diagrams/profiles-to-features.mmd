@@ -1,0 +1,43 @@
+graph LR
+  p_cli_minimal["interfaces/cli-minimal"] --> f_cli_base["cli.base"]
+  p_cli_minimal --> f_cli_shell["cli.shell"]
+  p_cli_minimal --> f_identity_sshDefaultKey["identity.sshDefaultKey"]
+
+  p_cli_interactive["interfaces/cli-interactive"] --> p_cli_minimal
+  p_cli_interactive --> f_cli_interactive["cli.interactive"]
+
+  p_gui["interfaces/gui"] --> p_cli_interactive
+  p_gui --> f_gui_desktop["gui.desktop"]
+  p_gui --> f_gui_terminal["gui.terminal"]
+  p_gui --> f_gui_audio["gui.audio"]
+  p_gui --> f_gui_jpInput["gui.jpInput"]
+  p_gui --> f_gui_graphic["gui.graphic"]
+  p_gui --> f_gui_capture["gui.capture"]
+  p_gui --> f_gui_fileManager["gui.fileManager"]
+  p_gui --> f_services_kde["services.kde"]
+
+  p_desktop["platforms/desktop"] --> f_boot_uefi["boot.uefi"]
+  p_laptop["platforms/laptop"] --> f_boot_power["boot.power"]
+  p_laptop --> f_connect_wifi["connect.wifi"]
+  p_laptop --> f_connect_bluetooth["connect.bluetooth"]
+  p_laptop --> f_gui_camera["gui.camera"]
+  p_laptop --> f_identity_fingerprint["identity.fingerprint"]
+  p_laptop --> f_network_tailscale["network.tailscale"]
+  p_thinkpad["platforms/thinkpad"] --> p_laptop
+  p_thinkpad --> f_boot_secureBoot["boot.secureBoot"]
+  p_vm["platforms/vm"] --> f_boot_uefi
+  p_vm --> f_storage_nfsClient["storage.nfsClient"]
+
+  p_dev["workloads/dev"] --> f_dev_agent["dev.agent"]
+  p_dev --> f_dev_nix["dev.nix"]
+  p_dev --> f_dev_python["dev.python"]
+  p_dev --> f_dev_bun["dev.bun"]
+  p_dev --> f_dev_java["dev.java"]
+  p_dev --> f_gui_editor["gui.editor"]
+  p_dev --> f_services_container["services.container"]
+  p_personal["workloads/personal"] --> f_application_browser["application.browser"]
+  p_personal --> f_application_communication["application.communication"]
+  p_remote["workloads/remote"] --> opt_cli_sshServer["cli.base.sshServer"]
+  p_srv["workloads/srv"] --> opt_cli_sshServer
+  p_srv --> f_network_tailscale
+  p_srv --> f_services_container

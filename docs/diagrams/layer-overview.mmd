@@ -1,0 +1,24 @@
+graph TD
+  flake["flake.nix"] --> hostsDefault["hosts/default.nix\nmkSystem"]
+
+  hostsDefault --> modulesRoot["modules/default.nix\n全モジュールを常時 import"]
+  hostsDefault --> hostModule["hosts/<host>/default.nix\nホスト固有設定"]
+  hostsDefault --> profileList["profiles/<category>/<name>.nix\nfeatures を有効化"]
+  hostsDefault --> extraModules["extraModules\n任意追加モジュール"]
+
+  modulesRoot --> applicationsRoot["modules/applications/default.nix\nmy.applications.*"]
+  modulesRoot --> featuresRoot["modules/features/default.nix\nmy.features.*"]
+  modulesRoot --> systemRoot["modules/system/default.nix\nmy.system.*"]
+  modulesRoot --> driversRoot["modules/drivers/default.nix"]
+  modulesRoot --> integrationsRoot["modules/integrations/default.nix"]
+
+  integrationsRoot --> homeManager["modules/integrations/home-manager.nix\nhome-manager shared base"]
+
+  profileList --> featuresRoot
+  featuresRoot --> applicationsRoot
+  featuresRoot --> systemRoot
+  featuresRoot --> directConfig["直接設定\nenvironment.systemPackages / home.activation など"]
+
+  applicationsRoot --> appSystem["application system.nix\nNixOS 設定"]
+  applicationsRoot --> appHome["application home.nix\nHome Manager 設定"]
+  appHome --> homeManager

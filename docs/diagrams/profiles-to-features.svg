@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="1894" viewBox="0 0 1350 1894" role="img" aria-labelledby="title desc">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.16"/></filter></defs>
+<title>Profile から feature への依存関係</title><desc>Dependency graph rendered from Mermaid source.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="675.0" y="28" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#0f172a">Profile から feature への依存関係</text>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,891.0 1052.0,891.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,969.0 1052.0,969.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,1047.0 1052.0,1047.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1515.0 C675.0,1515.0 675.0,1164.0 712.0,1164.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1515.0 C675.0,1515.0 675.0,774.0 712.0,774.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1515.0 372.0,1515.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1047.0 372.0,1047.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1437.0 372.0,1437.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,891.0 372.0,891.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1359.0 372.0,1359.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1281.0 372.0,1281.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,969.0 372.0,969.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1203.0 372.0,1203.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,696.0 C335.0,696.0 335.0,1749.0 372.0,1749.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,774.0 C335.0,774.0 335.0,345.0 372.0,345.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,696.0 712.0,696.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,930.0 712.0,930.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,852.0 712.0,852.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,1008.0 712.0,1008.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,1086.0 712.0,1086.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,1593.0 C675.0,1593.0 675.0,1242.0 712.0,1242.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,852.0 C335.0,852.0 335.0,1593.0 372.0,1593.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,852.0 C335.0,852.0 335.0,267.0 372.0,267.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,930.0 C335.0,930.0 335.0,345.0 372.0,345.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,930.0 C335.0,930.0 335.0,1827.0 372.0,1827.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,501.0 372.0,501.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,735.0 372.0,735.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,813.0 372.0,813.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,579.0 372.0,579.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,657.0 372.0,657.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,1125.0 372.0,1125.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1008.0 C335.0,1008.0 335.0,1671.0 372.0,1671.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1086.0 C335.0,1086.0 335.0,111.0 372.0,111.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1086.0 C335.0,1086.0 335.0,189.0 372.0,189.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1164.0 C335.0,1164.0 335.0,423.0 372.0,423.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1242.0 C335.0,1242.0 335.0,423.0 372.0,423.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1242.0 C505.0,1242.0 505.0,1242.0 712.0,1242.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,1242.0 C335.0,1242.0 335.0,1671.0 372.0,1671.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="720.0" y="1137.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1169.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">interfaces/cli-minimal</text>
+<rect x="1060.0" y="864.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="896.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">cli.base</text>
+<rect x="1060.0" y="942.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="974.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">cli.shell</text>
+<rect x="1060.0" y="1020.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1052.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">identity.sshDefaultKey</text>
+<rect x="380.0" y="1488.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1520.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">interfaces/cli-interactive</text>
+<rect x="720.0" y="747.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="779.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">cli.interactive</text>
+<rect x="40.0" y="669.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="701.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">interfaces/gui</text>
+<rect x="380.0" y="1020.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1052.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.desktop</text>
+<rect x="380.0" y="1410.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1442.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.terminal</text>
+<rect x="380.0" y="864.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="896.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.audio</text>
+<rect x="380.0" y="1332.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1364.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.jpInput</text>
+<rect x="380.0" y="1254.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1286.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.graphic</text>
+<rect x="380.0" y="942.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="974.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.capture</text>
+<rect x="380.0" y="1176.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1208.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.fileManager</text>
+<rect x="380.0" y="1722.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1754.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">services.kde</text>
+<rect x="40.0" y="747.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="779.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">platforms/desktop</text>
+<rect x="380.0" y="318.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="350.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">boot.uefi</text>
+<rect x="380.0" y="1566.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1598.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">platforms/laptop</text>
+<rect x="720.0" y="669.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="701.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">boot.power</text>
+<rect x="720.0" y="903.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="935.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">connect.wifi</text>
+<rect x="720.0" y="825.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="857.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">connect.bluetooth</text>
+<rect x="720.0" y="981.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1013.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.camera</text>
+<rect x="720.0" y="1059.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1091.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">identity.fingerprint</text>
+<rect x="720.0" y="1215.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1247.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">network.tailscale</text>
+<rect x="40.0" y="825.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="857.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">platforms/thinkpad</text>
+<rect x="380.0" y="240.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="272.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">boot.secureBoot</text>
+<rect x="40.0" y="903.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="935.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">platforms/vm</text>
+<rect x="380.0" y="1800.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1832.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">storage.nfsClient</text>
+<rect x="40.0" y="981.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="1013.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">workloads/dev</text>
+<rect x="380.0" y="474.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="506.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">dev.agent</text>
+<rect x="380.0" y="708.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="740.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">dev.nix</text>
+<rect x="380.0" y="786.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="818.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">dev.python</text>
+<rect x="380.0" y="552.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="584.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">dev.bun</text>
+<rect x="380.0" y="630.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="662.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">dev.java</text>
+<rect x="380.0" y="1098.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1130.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">gui.editor</text>
+<rect x="380.0" y="1644.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="1676.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">services.container</text>
+<rect x="40.0" y="1059.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="1091.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">workloads/personal</text>
+<rect x="380.0" y="84.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="116.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application.browser</text>
+<rect x="380.0" y="162.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="194.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application.communication</text>
+<rect x="40.0" y="1137.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="1169.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">workloads/remote</text>
+<rect x="380.0" y="396.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="428.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">cli.base.sshServer</text>
+<rect x="40.0" y="1215.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="1247.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">workloads/srv</text>
+</svg>

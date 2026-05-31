@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1690" height="1426" viewBox="0 0 1690 1426" role="img" aria-labelledby="title desc">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.16"/></filter></defs>
+<title>nix-example の有効化グラフ</title><desc>Dependency graph rendered from Mermaid source.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="845.0" y="28" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#0f172a">nix-example の有効化グラフ</text>
+<path d="M290.0,735.0 C335.0,735.0 335.0,579.0 372.0,579.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,735.0 C335.0,735.0 335.0,657.0 372.0,657.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,735.0 C335.0,735.0 335.0,735.0 372.0,735.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,735.0 C335.0,735.0 335.0,813.0 372.0,813.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M290.0,735.0 C335.0,735.0 335.0,891.0 372.0,891.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,657.0 C675.0,657.0 675.0,1164.0 712.0,1164.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,735.0 1052.0,735.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,813.0 1052.0,813.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1164.0 C1015.0,1164.0 1015.0,891.0 1052.0,891.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,657.0 C675.0,657.0 675.0,462.0 712.0,462.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,735.0 C675.0,735.0 675.0,384.0 712.0,384.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,735.0 C675.0,735.0 675.0,1086.0 712.0,1086.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,540.0 712.0,540.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,774.0 712.0,774.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,852.0 712.0,852.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,618.0 712.0,618.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,696.0 712.0,696.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,930.0 712.0,930.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,813.0 C675.0,813.0 675.0,1008.0 712.0,1008.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M630.0,891.0 C675.0,891.0 675.0,306.0 712.0,306.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,423.0 1392.0,423.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,579.0 1392.0,579.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,813.0 1392.0,813.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,501.0 1392.0,501.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,657.0 1392.0,657.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,735.0 1392.0,735.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,735.0 C1355.0,735.0 1355.0,1047.0 1392.0,1047.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,813.0 C1355.0,813.0 1355.0,891.0 1392.0,891.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,462.0 C1015.0,462.0 1015.0,501.0 1052.0,501.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,462.0 C1015.0,462.0 1015.0,657.0 1052.0,657.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,462.0 C1015.0,462.0 1015.0,1125.0 1052.0,1125.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M1310.0,891.0 C1355.0,891.0 1355.0,969.0 1392.0,969.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,384.0 C1015.0,384.0 1015.0,1359.0 1052.0,1359.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1086.0 C1015.0,1086.0 1015.0,1281.0 1052.0,1281.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,540.0 C1015.0,540.0 1015.0,111.0 1052.0,111.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,540.0 C1015.0,540.0 1015.0,189.0 1052.0,189.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,540.0 C1015.0,540.0 1015.0,423.0 1052.0,423.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,774.0 C1015.0,774.0 1015.0,1047.0 1052.0,1047.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,852.0 C1015.0,852.0 1015.0,1203.0 1052.0,1203.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,618.0 C1015.0,618.0 1015.0,969.0 1052.0,969.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,696.0 C1015.0,696.0 1015.0,345.0 1052.0,345.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,930.0 C1015.0,930.0 1015.0,579.0 1052.0,579.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M970.0,1008.0 C1015.0,1008.0 1015.0,267.0 1052.0,267.0" fill="none" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40.0" y="708.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="165.0" y="740.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">host:nix-example</text>
+<rect x="380.0" y="552.0" width="250" height="54" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="576.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">hosts/nix-example/default.nix</text>
+<text x="505.0" y="592.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">hardware-configuration.nix</text>
+<rect x="380.0" y="630.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="662.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profile:interfaces/cli-interactive</text>
+<rect x="380.0" y="708.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="740.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profile:platforms/vm</text>
+<rect x="380.0" y="786.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="818.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profile:workloads/dev</text>
+<rect x="380.0" y="864.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="505.0" y="896.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profile:workloads/remote</text>
+<rect x="720.0" y="1137.0" width="250" height="54" rx="10" fill="#e0f2fe" stroke="#075985" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1169.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">profile:interfaces/cli-minimal</text>
+<rect x="1060.0" y="708.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="740.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:cli.base</text>
+<rect x="1060.0" y="786.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="818.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:cli.shell</text>
+<rect x="1060.0" y="864.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="896.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:identity.sshDefaultKey</text>
+<rect x="720.0" y="435.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="467.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:cli.interactive</text>
+<rect x="720.0" y="357.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="389.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:boot.uefi</text>
+<rect x="720.0" y="1059.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1091.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:storage.nfsClient</text>
+<rect x="720.0" y="513.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="545.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:dev.agent</text>
+<rect x="720.0" y="747.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="779.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:dev.nix</text>
+<rect x="720.0" y="825.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="857.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:dev.python</text>
+<rect x="720.0" y="591.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="623.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:dev.bun</text>
+<rect x="720.0" y="669.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="701.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:dev.java</text>
+<rect x="720.0" y="903.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="935.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:gui.editor</text>
+<rect x="720.0" y="981.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="1013.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">feature:services.container</text>
+<rect x="720.0" y="279.0" width="250" height="54" rx="10" fill="#dcfce7" stroke="#166534" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="845.0" y="311.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">cli.base.sshServer = true</text>
+<rect x="1400.0" y="708.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="740.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:openssh</text>
+<rect x="1400.0" y="396.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="428.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:btop</text>
+<rect x="1400.0" y="552.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="584.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:git</text>
+<rect x="1400.0" y="786.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="818.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:ssh</text>
+<rect x="1400.0" y="474.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="506.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:direnv</text>
+<rect x="1400.0" y="630.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="662.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:gnupg</text>
+<rect x="1400.0" y="1020.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="1044.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">packages: htop, curl, wget</text>
+<text x="1525.0" y="1060.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="400" fill="#0f172a">, unzip, unrar</text>
+<rect x="1400.0" y="864.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="896.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:zsh</text>
+<rect x="1060.0" y="474.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="506.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:vim</text>
+<rect x="1060.0" y="630.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="662.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:zellij</text>
+<rect x="1060.0" y="1098.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1130.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">package:tio</text>
+<rect x="1400.0" y="942.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1525.0" y="974.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">home.activation:generateSshKey</text>
+<rect x="1060.0" y="1332.0" width="250" height="54" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1364.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">system:boot.uefi</text>
+<rect x="1060.0" y="1254.0" width="250" height="54" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1286.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">system:boot.nfs</text>
+<rect x="1060.0" y="84.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="116.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:claude</text>
+<rect x="1060.0" y="162.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="194.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:codex</text>
+<rect x="1060.0" y="396.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="428.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:opencode</text>
+<rect x="1060.0" y="1020.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1052.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">package:nil</text>
+<rect x="1060.0" y="1176.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="1208.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">packages:python312, uv</text>
+<rect x="1060.0" y="942.0" width="250" height="54" rx="10" fill="#fee2e2" stroke="#991b1b" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="974.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">package:bun</text>
+<rect x="1060.0" y="318.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="350.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:java</text>
+<rect x="1060.0" y="552.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="584.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:vscode</text>
+<rect x="1060.0" y="240.0" width="250" height="54" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="1.4" filter="url(#shadow)"/>
+<text x="1185.0" y="272.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#0f172a">application:docker</text>
+</svg>
