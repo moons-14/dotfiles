@@ -44,7 +44,7 @@ let
             name = "hadolint";
             publisher = "exiasr";
             version = "1.1.2";
-            hash = "sha256-6GO1f8SP4CE8yYl87/tm60FdGHqHsJA4c2B6ukVdpgM=";
+            hash = "sha256-6GO1f8SP4CE8yYl87/tm60FdGHqHsJA4c2B6UKVdpgM=";
           }
           {
             name = "chatgpt";

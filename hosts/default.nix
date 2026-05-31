@@ -32,11 +32,19 @@ let
         {
           nixpkgs.config.allowUnfree = true;
         }
+        ../modules
         ./${host}/default.nix
       ]
       ++ map (p: ../profiles/${p}.nix) profiles
       ++ extraModules;
-      specialArgs = { inherit inputs username unstable; };
+      specialArgs = {
+        inherit
+          inputs
+          username
+          unstable
+          host
+          ;
+      };
     };
 in
 {

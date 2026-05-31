@@ -14,8 +14,6 @@ in
 
   options.my.applications.gtk = {
     enable = lib.mkEnableOption "GTK theme configuration";
-    system.enable = lib.mkEnableOption "GTK system configuration";
-    homeManager.enable = lib.mkEnableOption "GTK home-manager configuration";
   };
 
   config = lib.mkIf cfg.enable {

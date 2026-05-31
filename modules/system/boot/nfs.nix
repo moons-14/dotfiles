@@ -13,7 +13,7 @@ in
 
   config = lib.mkIf cfg.enable {
     boot.supportedFilesystems = [ "nfs" ];
-    fuse.userAllowOther = true;
+    programs.fuse.userAllowOther = true;
     services.rpcbind.enable = true;
   };
 }

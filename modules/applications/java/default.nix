@@ -14,8 +14,6 @@ in
 
   options.my.applications.java = {
     enable = lib.mkEnableOption "Java runtime";
-    system.enable = lib.mkEnableOption "Java system configuration";
-    homeManager.enable = lib.mkEnableOption "Java home-manager configuration";
   };
 
   config = lib.mkIf cfg.enable {

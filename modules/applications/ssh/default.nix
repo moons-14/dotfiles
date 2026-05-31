@@ -14,8 +14,6 @@ in
 
   options.my.applications.ssh = {
     enable = lib.mkEnableOption "OpenSSH client";
-    system.enable = lib.mkEnableOption "SSH system configuration";
-    homeManager.enable = lib.mkEnableOption "SSH home-manager configuration";
 
     defaultIdentityFile = lib.mkOption {
       type = lib.types.str;

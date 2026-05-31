@@ -30,6 +30,11 @@ in
           viAlias = true;
           withNodeJs = true;
 
+          nixpkgs = {
+            source = pkgs.path;
+            config.allowUnfree = true;
+          };
+
           extraPackages = with pkgs; [
             git
             ripgrep

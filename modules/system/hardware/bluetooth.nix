@@ -12,15 +12,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    hardware = {
-      bluetooth.enable = true;
-      bluetooth.powerOnBoot = true;
+    hardware.bluetooth = {
+      enable = true;
+      powerOnBoot = true;
     };
 
-    services = {
-      bluetooth.enable = true;
-      bluetooth.startWhenNeeded = true;
-      blueman.enable = true;
-    };
+    services.blueman.enable = true;
   };
 }

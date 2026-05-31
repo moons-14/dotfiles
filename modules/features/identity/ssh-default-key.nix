@@ -13,19 +13,22 @@ in
   };
 
   config.home-manager.sharedModules = [
-    {
-      config = lib.mkIf cfg.enable {
-        home.activation.generateSshKey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          key="$HOME/.ssh/id_ed25519"
-          if [ ! -f "$key" ]; then
-            umask 077
-            mkdir -p "$HOME/.ssh"
-            ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -N "" -f "$key" \
-              -C "moons@$(${pkgs.hostname}/bin/hostname || echo host)"
-            echo "Generated SSH key at $key"
-          fi
-        '';
-      };
-    }
+    (
+      { lib, ... }:
+      {
+        config = lib.mkIf cfg.enable {
+          home.activation.generateSshKey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            key="$HOME/.ssh/id_ed25519"
+            if [ ! -f "$key" ]; then
+              umask 077
+              mkdir -p "$HOME/.ssh"
+              ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -N "" -f "$key" \
+                -C "moons@$(${pkgs.hostname}/bin/hostname || echo host)"
+              echo "Generated SSH key at $key"
+            fi
+          '';
+        };
+      }
+    )
   ];
 }

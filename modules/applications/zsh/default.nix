@@ -14,8 +14,6 @@ in
 
   options.my.applications.zsh = {
     enable = lib.mkEnableOption "Zsh shell";
-    system.enable = lib.mkEnableOption "Zsh system configuration";
-    homeManager.enable = lib.mkEnableOption "Zsh home-manager configuration";
   };
 
   config = lib.mkIf cfg.enable {
