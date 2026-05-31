@@ -3,6 +3,7 @@
     ./btop
     ./chrome.nix
     ./claude
+    ./codex.nix
     ./direnv.nix
     ./discord.nix
     ./docker.nix
@@ -17,6 +18,7 @@
     ./nautilus.nix
     ./niri
     ./noctalia
+    ./opencode.nix
     ./openssh.nix
     ./slack.nix
     ./ssh

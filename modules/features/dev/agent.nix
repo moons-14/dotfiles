@@ -4,10 +4,14 @@ let
 in
 {
   options.my.features.dev.agent = {
-    enable = lib.mkEnableOption "AI coding agents (Claude Code)";
+    enable = lib.mkEnableOption "AI coding agents (Claude Code, Codex, OpenCode)";
   };
 
   config = lib.mkIf cfg.enable {
-    my.applications.claude.enable = true;
+    my.applications = {
+      claude.enable = true;
+      codex.enable = true;
+      opencode.enable = true;
+    };
   };
 }
