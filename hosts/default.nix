@@ -56,6 +56,7 @@ in
         "interfaces/cli-interactive"
         "platforms/vm"
         "workloads/dev"
+        "workloads/remote"
       ];
     };
   };
