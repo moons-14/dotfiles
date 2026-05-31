@@ -24,10 +24,10 @@ in
           enable = true;
           enableDefaultConfig = false;
 
-          matchBlocks = cfg.matchBlocks // {
+          settings = cfg.matchBlocks // {
             "*" = {
-              identityFile = cfg.defaultIdentityFile;
-              extraOptions.AddKeysToAgent = cfg.addKeysToAgent;
+              IdentityFile = cfg.defaultIdentityFile;
+              AddKeysToAgent = cfg.addKeysToAgent;
             };
           };
         };

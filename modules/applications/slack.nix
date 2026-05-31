@@ -13,8 +13,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.config.allowUnfreePredicate = pkg: lib.getName pkg == "slack";
-
     home-manager.sharedModules = [
       {
         home.packages = with pkgs; [

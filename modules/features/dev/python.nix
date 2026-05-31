@@ -13,6 +13,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    documentation.doc.enable = false;
+
     environment.systemPackages = with pkgs; [
       python312 # Python 3.12
       uv # Universal Virtual Environment Manager For Python

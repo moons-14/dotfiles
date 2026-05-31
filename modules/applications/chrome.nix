@@ -13,8 +13,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.config.allowUnfree = true;
-
     home-manager.sharedModules = [
       {
         home.packages = with pkgs; [
