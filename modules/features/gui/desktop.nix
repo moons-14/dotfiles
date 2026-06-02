@@ -21,5 +21,8 @@ in
       swayidle.enable = true;
       vicinae.enable = true;
     };
+    my.system = {
+      fonts.enable = true;
+    };
   };
 }

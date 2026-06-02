@@ -14,7 +14,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      unstable.ghostty # A fast and minimal terminal emulator for Wayland
+      ghostty # A fast and minimal terminal emulator for Wayland
     ];
   };
 }

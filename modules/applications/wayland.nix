@@ -28,10 +28,6 @@ in
           "wlr"
           "gtk"
         ];
-        niri.default = [
-          "wlr"
-          "gtk"
-        ];
       };
     };
 
