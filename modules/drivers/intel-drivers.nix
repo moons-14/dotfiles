@@ -16,7 +16,7 @@ in
     hardware.graphics = {
       extraPackages = with pkgs; [
         intel-media-driver # Intel Media Driver for VA-API
-        vaapiIntel # VA-API Intel driver
+        intel-vaapi-driver # VA-API Intel driver
         vaapiVdpau # VA-API to VDPAU adapter
         libvdpau-va-gl # VDPAU driver with OpenGL/VAAPI backend
       ];
