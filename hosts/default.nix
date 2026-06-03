@@ -67,7 +67,7 @@ in
         "platforms/thinkpad"
         "workloads/dev"
         "workloads/personal"
-        "workloads/secure-boot"
+        "workloads/secure-storage"
       ];
     };
   };
