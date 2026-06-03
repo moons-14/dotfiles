@@ -53,11 +53,10 @@ in
       host = "nix-example";
       system = "x86_64-linux";
       profiles = [
-        "interfaces/gui"
+        "interfaces/cli-interactive"
         "platforms/vm"
         "workloads/dev"
         "workloads/remote"
-        "workloads/personal"
       ];
     };
   };
