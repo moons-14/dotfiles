@@ -59,5 +59,16 @@ in
         "workloads/remote"
       ];
     };
+    x1g13 = mkSystem {
+      host = "x1g13";
+      system = "x86_64-linux";
+      profiles = [
+        "interfaces/gui"
+        "platforms/thinkpad"
+        "workloads/dev"
+        "workloads/personal"
+        "workloads/secure-boot"
+      ];
+    };
   };
 }

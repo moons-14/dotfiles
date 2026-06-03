@@ -3,5 +3,5 @@
     ./laptop.nix
   ];
 
-  my.features.boot.secureBoot.enable = true;
+  my.drivers.intel.enable = true;
 }
