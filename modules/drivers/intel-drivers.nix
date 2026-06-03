@@ -17,7 +17,7 @@ in
       extraPackages = with pkgs; [
         intel-media-driver # Intel Media Driver for VA-API
         intel-vaapi-driver # VA-API Intel driver
-        vaapiVdpau # VA-API to VDPAU adapter
+        libva-vdpau-driver # VA-API to VDPAU adapter
         libvdpau-va-gl # VDPAU driver with OpenGL/VAAPI backend
       ];
     };
