@@ -1,4 +1,6 @@
 {
-  my.features.boot.secureBoot.enable = true;
-  my.features.boot.storageCrypto.enable = true;
+  my.features = {
+    boot.secureBoot.enable = true;
+    boot.storageCrypto.enable = true;
+  };
 }

@@ -1,9 +1,10 @@
+{ lib, ... }:
 {
   imports = [
     ./moons.nix
   ];
 
-  users.mutableUsers = true;
+  users.mutableUsers = lib.mkDefault true;
 
   nix.settings.allowed-users = [ "moons" ];
   nix.settings.trusted-users = [

@@ -9,6 +9,7 @@
 
 !/flake.nix
 !/flake.lock
+!/.sops.yaml
 
 !shells/
 !hosts/
@@ -17,5 +18,6 @@
 !modules/
 !docs/
 !images/
+!secrets/
 
 !/flake/

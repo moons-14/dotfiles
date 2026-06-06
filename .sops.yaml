@@ -1,0 +1,10 @@
+# Replace the sample age recipient with each host's real public key before encrypting secrets.
+# Generate or install the host key with docs/installer/iso.md and inspect the public key with:
+#   age-keygen -y /var/lib/sops-nix/key.txt
+keys:
+  - &replace_with_host_age_key age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+creation_rules:
+  - path_regex: secrets/.*\.ya?ml$
+    key_groups:
+      - age:
+          - *replace_with_host_age_key

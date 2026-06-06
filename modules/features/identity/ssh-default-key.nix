@@ -9,7 +9,7 @@ let
 in
 {
   options.my.features.identity.sshDefaultKey = {
-    enable = lib.mkEnableOption "Generate default SSH key (ed25519)";
+    enable = lib.mkEnableOption "Generate default SSH client key (ed25519)";
   };
 
   config.home-manager.sharedModules = [
@@ -17,16 +17,23 @@ in
       { lib, ... }:
       {
         config = lib.mkIf cfg.enable {
-          home.activation.generateSshKey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            key="$HOME/.ssh/id_ed25519"
-            if [ ! -f "$key" ]; then
-              umask 077
-              mkdir -p "$HOME/.ssh"
-              ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -N "" -f "$key" \
-                -C "moons@$(${pkgs.hostname}/bin/hostname || echo host)"
-              echo "Generated SSH key at $key"
-            fi
-          '';
+          systemd.user.services.generate-default-ssh-key = {
+            Unit = {
+              Description = "Generate the default SSH client key";
+              ConditionPathExists = "!%h/.ssh/id_ed25519";
+            };
+
+            Service = {
+              Type = "oneshot";
+              ExecStartPre = [
+                "${pkgs.coreutils}/bin/mkdir -p %h/.ssh"
+                "${pkgs.coreutils}/bin/chmod 700 %h/.ssh"
+              ];
+              ExecStart = ''${pkgs.openssh}/bin/ssh-keygen -t ed25519 -N "" -f %h/.ssh/id_ed25519 -C "%u@%H"'';
+            };
+
+            Install.WantedBy = [ "default.target" ];
+          };
         };
       }
     )

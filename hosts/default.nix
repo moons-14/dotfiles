@@ -17,6 +17,26 @@ let
     };
   };
 
+  mkNixos =
+    {
+      host,
+      system,
+      modules ? [ ],
+    }:
+    assert lib.assertMsg (lib.elem system config.systems)
+      "mkNixos: system '${system}' not in valid systems: ${lib.generators.toPretty { } config.systems}";
+    nixosSystem {
+      inherit system modules;
+      specialArgs = {
+        inherit
+          inputs
+          username
+          unstable
+          host
+          ;
+      };
+    };
+
   mkSystem =
     {
       host,
@@ -24,10 +44,8 @@ let
       profiles ? [ ],
       extraModules ? [ ],
     }:
-    assert lib.assertMsg (lib.elem system config.systems)
-      "mkSystem: system '${system}' not in valid systems: ${lib.generators.toPretty { } config.systems}";
-    nixosSystem {
-      inherit system;
+    mkNixos {
+      inherit host system;
       modules = [
         {
           nixpkgs.config.allowUnfree = true;
@@ -37,14 +55,25 @@ let
       ]
       ++ map (p: ../profiles/${p}.nix) profiles
       ++ extraModules;
-      specialArgs = {
-        inherit
-          inputs
-          username
-          unstable
-          host
-          ;
-      };
+    };
+
+  mkInstallerIso =
+    {
+      system,
+      extraModules ? [ ],
+    }:
+    mkNixos {
+      host = "installer-iso";
+      inherit system;
+      modules = [
+        {
+          nixpkgs.config.allowUnfree = true;
+        }
+        "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+        ../modules
+        ./installer-iso/default.nix
+      ]
+      ++ extraModules;
     };
 in
 {
@@ -59,6 +88,10 @@ in
         "workloads/remote"
       ];
     };
+    installer-iso = mkInstallerIso {
+      system = "x86_64-linux";
+    };
+
     x1g13 = mkSystem {
       host = "x1g13";
       system = "x86_64-linux";

@@ -8,6 +8,7 @@
     ./gui
     ./identity
     ./network
+    ./security
     ./services
     ./storage
   ];

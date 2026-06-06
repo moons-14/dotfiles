@@ -12,6 +12,7 @@
     ./nix.nix
     ./power.nix
     ./secure-boot.nix
+    ./secrets
     ./user
     ./version.nix
   ];
