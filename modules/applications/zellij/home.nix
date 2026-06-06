@@ -41,7 +41,6 @@ in
                 bind "Alt J" { Resize "Increase Down"; }
                 bind "Alt K" { Resize "Increase Up"; }
                 bind "Alt L" { Resize "Increase Right"; }
-                // Do not bind Ctrl+C here: it must pass through to pane processes as SIGINT.
                 bind "Alt c" "Ctrl Shift c" { Copy; }
               }
               normal {
