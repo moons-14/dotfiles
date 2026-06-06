@@ -62,6 +62,9 @@ in
     x1g13 = mkSystem {
       host = "x1g13";
       system = "x86_64-linux";
+      extraModules = [
+        inputs.disko.nixosModules.disko
+      ];
       profiles = [
         "interfaces/gui"
         "platforms/thinkpad"
