@@ -8,7 +8,7 @@
     ./gui
     ./identity
     ./network
-    ./security
+    ./sops
     ./services
     ./storage
   ];

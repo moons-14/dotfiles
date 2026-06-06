@@ -4,10 +4,10 @@
   ...
 }:
 let
-  cfg = config.my.features.security.sops;
+  cfg = config.my.features.sops;
 in
 {
-  options.my.features.security.sops = {
+  options.my.features.sops = {
     defaultSopsFile = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;

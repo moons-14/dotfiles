@@ -35,7 +35,7 @@ sudo age-keygen -y /mnt/var/lib/sops-nix/key.txt
 `moons` ユーザーの hashed password を SOPS から使う場合は、対象ホストや profile で次のように設定します。
 
 ```nix
-my.features.security.sops = {
+my.features.sops = {
   defaultSopsFile = ../../secrets/users/moons.yaml;
   userPassword.enable = true;
 };
