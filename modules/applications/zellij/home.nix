@@ -21,6 +21,7 @@ in
 
           settings = {
             pane_frames = true;
+            copy_clipboard = "system";
             copy_on_select = false;
             default_mode = "locked";
             default_shell = "/run/current-system/sw/bin/zsh";
@@ -40,7 +41,8 @@ in
                 bind "Alt J" { Resize "Increase Down"; }
                 bind "Alt K" { Resize "Increase Up"; }
                 bind "Alt L" { Resize "Increase Right"; }
-                bind "Alt c" { Copy; }
+                // Do not bind Ctrl+C here: it must pass through to pane processes as SIGINT.
+                bind "Alt c" "Ctrl Shift c" { Copy; }
               }
               normal {
                 bind "Alt h" "Alt Left"  { MoveFocusOrTab "Left"; }
@@ -49,6 +51,7 @@ in
                 bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
                 bind "Alt n"             { NewPane; }
                 bind "Alt t"             { NewTab; }
+                bind "Ctrl Shift c"      { Copy; }
                 bind "Alt H" { Resize "Increase Left"; }
                 bind "Alt J" { Resize "Increase Down"; }
                 bind "Alt K" { Resize "Increase Up"; }
