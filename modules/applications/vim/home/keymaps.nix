@@ -29,6 +29,29 @@ let
       inherit desc;
     };
   };
+
+  mkSmartWindowNav = key: direction: zellijDirection: desc: {
+    mode = "n";
+    inherit key;
+    action.__raw = ''
+      function()
+        local current_win = vim.api.nvim_get_current_win()
+        vim.cmd.wincmd("${direction}")
+
+        local at_edge = vim.api.nvim_get_current_win() == current_win
+        local in_zellij = vim.env.ZELLIJ ~= nil
+        local has_zellij_cli = vim.fn.executable("zellij") == 1
+
+        if at_edge and in_zellij and has_zellij_cli then
+          vim.system({ "zellij", "action", "move-focus-or-tab", "${zellijDirection}" })
+        end
+      end
+    '';
+    options = {
+      silent = true;
+      inherit desc;
+    };
+  };
 in
 {
   programs.nixvim = {
@@ -98,14 +121,14 @@ in
       (mk "[l" "<cmd>lprev<CR>" "前のLocation Listへ")
 
       # Window navigation
-      (mk "<C-h>" "<C-w>h" "左のウィンドウへ")
-      (mk "<C-j>" "<C-w>j" "下のウィンドウへ")
-      (mk "<C-k>" "<C-w>k" "上のウィンドウへ")
-      (mk "<C-l>" "<C-w>l" "右のウィンドウへ")
-      (mk "<C-Left>" "<C-w>h" "左のウィンドウへ")
-      (mk "<C-Down>" "<C-w>j" "下のウィンドウへ")
-      (mk "<C-Up>" "<C-w>k" "上のウィンドウへ")
-      (mk "<C-Right>" "<C-w>l" "右のウィンドウへ")
+      (mkSmartWindowNav "<C-h>" "h" "left" "左のウィンドウへ（端ならZellijペイン/タブへ）")
+      (mkSmartWindowNav "<C-j>" "j" "down" "下のウィンドウへ（端ならZellijペインへ）")
+      (mkSmartWindowNav "<C-k>" "k" "up" "上のウィンドウへ（端ならZellijペインへ）")
+      (mkSmartWindowNav "<C-l>" "l" "right" "右のウィンドウへ（端ならZellijペイン/タブへ）")
+      (mkSmartWindowNav "<C-Left>" "h" "left" "左のウィンドウへ（端ならZellijペイン/タブへ）")
+      (mkSmartWindowNav "<C-Down>" "j" "down" "下のウィンドウへ（端ならZellijペインへ）")
+      (mkSmartWindowNav "<C-Up>" "k" "up" "上のウィンドウへ（端ならZellijペインへ）")
+      (mkSmartWindowNav "<C-Right>" "l" "right" "右のウィンドウへ（端ならZellijペイン/タブへ）")
 
       # Alternate file / previous file
       (mk "<leader><leader>" "<C-^>" "直前のファイルへ戻る")
