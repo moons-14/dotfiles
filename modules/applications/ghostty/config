@@ -9,7 +9,7 @@ window-decoration = true
 # keybind
 
 # Copy/Paste
-keybind = ctrl+shift+c=copy_to_clipboard
+keybind = performable:ctrl+shift+c=copy_to_clipboard
 keybind = ctrl+shift+v=paste_from_clipboard
 
 # create new tab
