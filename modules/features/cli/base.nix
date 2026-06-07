@@ -20,6 +20,7 @@ in
       ssh.enable = true;
       direnv.enable = true;
       gnupg.enable = true;
+      nh.enable = true;
       openssh.enable = cfg.sshServer;
     };
 

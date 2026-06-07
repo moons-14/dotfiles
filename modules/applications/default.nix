@@ -16,6 +16,7 @@
     ./java
     ./kde.nix
     ./nautilus.nix
+    ./nh.nix
     ./niri
     ./noctalia
     ./opencode.nix
