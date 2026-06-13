@@ -3,6 +3,7 @@
     ./audio.nix
     ./boot
     ./camera.nix
+    ./disko.nix
     ./fingerprint.nix
     ./fonts.nix
     ./gc.nix
