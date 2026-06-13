@@ -12,6 +12,8 @@ let
   ];
 in
 {
+  disko.enableConfig = true;
+
   disko.devices.disk = {
     esp = {
       type = "disk";
