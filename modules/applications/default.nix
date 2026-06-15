@@ -1,5 +1,6 @@
 {
   imports = [
+    ./arduino.nix
     ./btop
     ./chrome.nix
     ./claude
