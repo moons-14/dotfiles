@@ -7,6 +7,8 @@
 
 !.envrc
 
+!.sops.yaml
+
 !/flake.nix
 !/flake.lock
 
@@ -17,5 +19,6 @@
 !modules/
 !docs/
 !images/
+!secrets/
 
 !/flake/

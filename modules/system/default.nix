@@ -13,7 +13,9 @@
     ./nix.nix
     ./power.nix
     ./secure-boot.nix
+    ./sops.nix
     ./user
     ./version.nix
+    ./secret.nix
   ];
 }
