@@ -20,6 +20,20 @@ in
           pkgs.openssh
         ];
 
+        systemd.user.services.ssh-agent = {
+          Unit.Description = "OpenSSH authentication agent";
+          Service = {
+            ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a %t/ssh-agent";
+          };
+          Install.WantedBy = [ "default.target" ];
+        };
+
+        systemd.user.sockets.gcr-ssh-agent.Install.WantedBy = lib.mkForce [ ];
+
+        home.sessionVariables = {
+          SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent";
+        };
+
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
