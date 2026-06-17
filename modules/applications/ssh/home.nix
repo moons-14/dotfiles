@@ -25,6 +25,12 @@ in
           enableDefaultConfig = false;
 
           settings = cfg.matchBlocks // {
+            "github.com" = {
+              IdentityFile = cfg.githubIdentityFiles;
+              IdentitiesOnly = true;
+              AddKeysToAgent = cfg.addKeysToAgent;
+            };
+
             "*" = {
               IdentityFile = cfg.defaultIdentityFile;
               AddKeysToAgent = cfg.addKeysToAgent;

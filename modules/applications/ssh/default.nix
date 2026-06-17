@@ -32,6 +32,15 @@ in
       default = { };
       description = "SSH match blocks";
     };
+
+    githubIdentityFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [
+        "~/.ssh/id_ed25519_sk_rk"
+        "~/.ssh/id_ed25519"
+      ];
+      description = "SSH identity files for GitHub (tried in order)";
+    };
   };
 
   config = lib.mkIf cfg.enable {
