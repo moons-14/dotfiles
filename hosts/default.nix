@@ -70,5 +70,15 @@ in
         "workloads/secure-storage"
       ];
     };
+
+    installer = nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./installer/default.nix
+      ];
+      specialArgs = {
+        inherit inputs;
+      };
+    };
   };
 }
