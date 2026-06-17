@@ -27,7 +27,6 @@ in
           settings = cfg.matchBlocks // {
             "github.com" = {
               IdentityFile = cfg.githubIdentityFiles;
-              IdentitiesOnly = true;
               AddKeysToAgent = cfg.addKeysToAgent;
             };
 
