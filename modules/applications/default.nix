@@ -1,0 +1,37 @@
+{
+  imports = [
+    ./arduino.nix
+    ./btop
+    ./chrome.nix
+    ./claude
+    ./codex.nix
+    ./direnv.nix
+    ./discord.nix
+    ./docker.nix
+    ./fcitx5
+    ./ghostty
+    ./git
+    ./gnupg.nix
+    ./greetd.nix
+    ./gtk
+    ./java
+    ./kde.nix
+    ./nautilus.nix
+    ./nh.nix
+    ./niri
+    ./noctalia
+    ./opencode.nix
+    ./openssh.nix
+    ./slack.nix
+    ./ssh
+    ./swayidle.nix
+    ./tailscale.nix
+    ./vicinae.nix
+    ./vim
+    ./vscode
+    ./wayland.nix
+    ./zellij
+    ./zoom.nix
+    ./zsh
+  ];
+}

@@ -1,20 +1,24 @@
-{ lib, pkgs, config, ... }:
-with lib; let
-  cfg = config.drivers.intel;
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  cfg = config.my.drivers.intel;
 in
 {
-  options.drivers.intel = {
-    enable = mkEnableOption "Enable Intel Graphics Drivers";
+  options.my.drivers.intel = {
+    enable = lib.mkEnableOption "Intel Graphics Drivers";
   };
 
-  config = mkIf cfg.enable {
-    # OpenGL
+  config = lib.mkIf cfg.enable {
     hardware.graphics = {
       extraPackages = with pkgs; [
-        intel-media-driver
-        vaapiIntel
-        vaapiVdpau
-        libvdpau-va-gl
+        intel-media-driver # Intel Media Driver for VA-API
+        intel-vaapi-driver # VA-API Intel driver
+        libva-vdpau-driver # VA-API to VDPAU adapter
+        libvdpau-va-gl # VDPAU driver with OpenGL/VAAPI backend
       ];
     };
   };

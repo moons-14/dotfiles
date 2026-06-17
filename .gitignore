@@ -3,17 +3,22 @@
 !.gitignore
 !README.md
 !LICENSE
+!AGENTS.md
+
+!.envrc
+
+!.sops.yaml
 
 !/flake.nix
 !/flake.lock
 
-!/hosts/
-!/modules/
-!/home-manager/
-!/shells/
-!/images/
-!/profiles/
-!/overlays/
+!shells/
+!hosts/
+!overlays/
+!profiles/
+!modules/
+!docs/
+!images/
+!secrets/
 
-!renovate.json
-!.github/
+!/flake/

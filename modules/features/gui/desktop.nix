@@ -1,0 +1,28 @@
+{
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.my.features.gui.desktop;
+in
+{
+  options.my.features.gui.desktop = {
+    enable = lib.mkEnableOption "Niri Wayland compositor environment";
+  };
+
+  config = lib.mkIf cfg.enable {
+    my.applications = {
+      gtk.enable = true;
+      niri.enable = true;
+      wayland.enable = true;
+      greetd.enable = true;
+      noctalia.enable = true;
+      swayidle.enable = true;
+      vicinae.enable = true;
+    };
+    my.system = {
+      fonts.enable = true;
+    };
+  };
+}

@@ -1,0 +1,14 @@
+keys:
+  - &admin_yubikey1 age1yubikey1qvy5y8kxqc63y7fk0tfv43u499a8z8q332ff087lythry9cc6hdxxkznc6t
+  - &host_x1g13_old age1xfc7ksg69l5kwsxxgtynsuxgpwltcf9gmqlhfl7efq0clc8lwspqnveyx3
+creation_rules:
+  - path_regex: ^secrets/common/[^/]+\.ya?ml$
+    key_groups:
+      - age:
+          - *admin_yubikey1
+          - *host_x1g13_old
+  - path_regex: ^secrets/hosts/x1g13/[^/]+\.ya?ml$
+    key_groups:
+      - age:
+          - *admin_yubikey1
+          - *host_x1g13_old

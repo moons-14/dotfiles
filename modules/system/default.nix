@@ -1,0 +1,21 @@
+{
+  imports = [
+    ./audio.nix
+    ./boot
+    ./camera.nix
+    ./disko.nix
+    ./fingerprint.nix
+    ./fonts.nix
+    ./gc.nix
+    ./hardware
+    ./locale.nix
+    ./network
+    ./nix.nix
+    ./power.nix
+    ./secure-boot.nix
+    ./sops.nix
+    ./user
+    ./version.nix
+    ./secret.nix
+  ];
+}
