@@ -33,6 +33,7 @@
     ./wayland.nix
     ./zellij
     ./zoom.nix
+    ./zoxide.nix
     ./zsh
   ];
 }

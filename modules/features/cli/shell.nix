@@ -8,6 +8,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    my.applications.zsh.enable = true;
+    my.applications = {
+      zsh.enable = true;
+      zoxide.enable = true;
+    };
   };
 }
