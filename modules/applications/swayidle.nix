@@ -8,7 +8,7 @@
 let
   cfg = config.my.applications.swayidle;
 
-  noctaliaPkg = inputs.noctalia.packages.${pkgs.system}.default;
+  noctaliaPkg = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
   noctalia = lib.getExe noctaliaPkg;
 
   bash = lib.getExe pkgs.bash;
