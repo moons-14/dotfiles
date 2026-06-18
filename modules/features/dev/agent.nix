@@ -14,8 +14,9 @@ in
   config = lib.mkIf cfg.enable {
     my.applications = {
       claude.enable = true;
-      # codex.enable = true;
+      codex.enable = true;
       opencode.enable = true;
+      grok.enable = true;
     };
   };
 }

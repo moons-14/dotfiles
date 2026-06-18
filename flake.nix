@@ -80,7 +80,10 @@
     services-flake.url = "github:juspay/services-flake";
 
     # LLM agents
-    llm-agents.url = "github:numtide/llm-agents.nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     # Systems
     systems.url = "github:nix-systems/default-linux";

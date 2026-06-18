@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   lib,
   config,
   ...
@@ -15,7 +14,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex # OpenAI Codex CLI
+      pkgs.llm-agents.codex # OpenAI Codex CLI
     ];
   };
 }

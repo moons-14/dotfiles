@@ -12,6 +12,7 @@
     ./ghostty
     ./git
     ./gnupg.nix
+    ./grok.nix
     ./greetd.nix
     ./gtk
     ./java
