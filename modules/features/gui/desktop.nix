@@ -16,7 +16,7 @@ in
       gtk.enable = true;
       niri.enable = true;
       wayland.enable = true;
-      greetd.enable = true;
+      ly.enable = true;
       noctalia.enable = true;
       swayidle.enable = true;
       vicinae.enable = true;

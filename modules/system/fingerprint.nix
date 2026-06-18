@@ -18,6 +18,7 @@ in
       login.fprintAuth = true;
       sudo.fprintAuth = true;
       greetd.fprintAuth = lib.mkForce false;
+      ly.fprintAuth = lib.mkForce false;
     };
   };
 }
