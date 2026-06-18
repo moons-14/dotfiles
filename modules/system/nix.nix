@@ -6,6 +6,7 @@ _: {
       "https://moons-dotfiles.cachix.org"
       "https://noctalia.cachix.org"
       "https://vicinae.cachix.org"
+      "https://cache.numtide.com"
     ];
 
     extra-trusted-public-keys = [
@@ -14,6 +15,7 @@ _: {
       "moons-dotfiles.cachix.org-1:WHoroKiNScG2/dpxHHL1I0qVmvuQhJbEAP+DS2j9Rr0="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
 
     experimental-features = [
