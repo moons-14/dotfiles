@@ -17,7 +17,7 @@ in
     security.pam.services = {
       login.fprintAuth = true;
       sudo.fprintAuth = true;
-      greetd.fprintAuth = true;
+      greetd.fprintAuth = lib.mkForce false;
     };
   };
 }

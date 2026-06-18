@@ -26,6 +26,7 @@ in
 
     environment.systemPackages = with pkgs; [
       htop # Interactive Process Viewer
+      fastfetch # Fast system information tool
       curl # Tool For Fetching Files With Links
       wget # Tool For Fetching Files With Links
       unzip # Tool For Handling .zip Files
