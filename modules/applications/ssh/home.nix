@@ -41,6 +41,9 @@ in
             "*" = {
               IdentityFile = cfg.defaultIdentityFile;
               AddKeysToAgent = cfg.addKeysToAgent;
+              SetEnv = {
+                TERM = "xterm";
+              };
             };
           };
         };

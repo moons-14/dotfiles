@@ -50,6 +50,7 @@ in
             # ---- from gist: aliases ----
             alias docker-compose="docker compose"
             alias clearsign='export GPG_TTY=$(tty) && openssl rand -hex 16 | gpg --clearsign'
+            alias lssh='ssh -o KexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 -o Ciphers=+aes256-cbc,aes128-cbc -o HostKeyAlgorithms=+ssh-rsa -o SetEnv=TERM=xterm'
           '';
         };
       };
