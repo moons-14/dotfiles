@@ -6,7 +6,8 @@ NixOS + Home Manager flake (v2)。flake-parts ベース。
 
 ```sh
 nix flake update          # flake の更新
-nix fmt                   # フォーマット
+nix fmt                   # フォーマット (treefmt: nixfmt, deadnix, statix, shfmt, shellcheck, prettier, yamlfmt, taplo, oxfmt)
+nix develop .#dotnix      # 開発シェル (pre-commit hooks, sops, age 入り)
 sudo nixos-rebuild build --flake .#<host>  # ビルド確認
 sudo nixos-rebuild switch --flake .#<host> # 適用
 ```
@@ -21,22 +22,34 @@ sudo nixos-rebuild switch --flake .#<host> # 適用
 - home-manager の `sharedModules` 内で `lib.hm.*` を使う場合は、そのモジュール関数の引数で `lib` を受け取る必要がある（NixOSモジュールの `lib` とは別スコープ）
 - `useGlobalPkgs = true` なので、home-manager 内で `nixpkgs.config` を設定しない（NixOSレベルで一括設定）
 - `allowUnfree` は `hosts/default.nix` でグローバルに設定済み。各モジュールで個別設定しない
+- pre-commit hooks が `git-hooks.nix` で設定済み（treefmt, gitleaks, deadnix, statix, shellcheck）。dev shell で自動有効化
+
+## Secrets
+
+- **sops-nix** + **age** + **YubiKey** で秘密管理
+- `.sops.yaml` で暗号化ルール定義、`secrets/` に暗号化済み YAML を配置
+- `modules/system/sops.nix` で sops-nix を import、`services.pcscd` (YubiKey用) を有効化
+- `modules/system/secret.nix` で `sops.secrets` を宣言
+- 平文の秘密をコミットしない（gitleaks が pre-commit で検出）
 
 ## Architecture
 
 ```
 flake.nix
-└── hosts/default.nix          # mkSystem でホスト構成を生成
-    ├── modules/               # 全モジュール（常にインポートされる）
-    │   ├── applications/      # アプリケーション設定
-    │   ├── system/            # システム設定
-    │   ├── drivers/           # ドライバ設定
-    │   ├── features/          # 機能バンドル（application/systemを束ねる）
-    │   └── integrations/      # home-manager 統合
-    └── profiles/              # ホストごとに有効化するfeaturesの組み合わせ
-        ├── interfaces/        # 操作インターフェース (CLI/GUI)
-        ├── platforms/         # ハードウェア (desktop/laptop/vm)
-        └── workloads/         # 用途 (dev/personal/srv)
+├── hosts/default.nix          # mkSystem でホスト構成を生成
+│   ├── modules/               # 全モジュール（常にインポートされる）
+│   │   ├── applications/      # アプリケーション設定
+│   │   ├── system/            # システム設定
+│   │   ├── drivers/           # ドライバ設定
+│   │   ├── features/          # 機能バンドル（application/systemを束ねる）
+│   │   └── integrations/      # home-manager 統合
+│   └── profiles/              # ホストごとに有効化するfeaturesの組み合わせ
+│       ├── interfaces/        # 操作インターフェース (CLI/GUI)
+│       ├── platforms/         # ハードウェア (desktop/laptop/thinkpad/vm)
+│       └── workloads/         # 用途 (dev/personal/srv/remote/secure-storage)
+├── overlays/                  # nixpkgs オーバーレイ
+├── shells/                    # devShells (dotnix)
+└── flake/                     # formatter.nix, git-hooks.nix
 ```
 
 ### 評価の流れ
@@ -54,7 +67,7 @@ profile (featuresの有効化)
 
 OS全体に影響する設定。`config.my.system.*` namespace。
 
-- boot, hardware, network, user, locale, fonts, power, secure-boot, gc, version
+- audio, boot, camera, disko, fingerprint, fonts, gc, hardware, locale, network, nix, power, secure-boot, sops, user, version, secret
 - 常にインポートされるが、`enable` オプションで実効性を制御
 - home-manager の設定は含めない
 
@@ -64,6 +77,10 @@ OS全体に影響する設定。`config.my.system.*` namespace。
 
 - NixOS設定のみ、または NixOS + Home Manager の両方
 - Complex Module は system.nix と home.nix に分離
+
+### `modules/drivers/` — ドライバ設定
+
+ハードウェア固有のドライバ。`config.my.drivers.*` namespace。
 
 ### `modules/features/` — 機能バンドル
 
@@ -77,17 +94,17 @@ application や system より抽象度の高い「機能」単位で、複数の
 
 **features がやらないこと:**
 
-- 個別アプリケーションの詳細設定（それは applications 層の責務）
+- 個別アプリケーションの詳細設定（これは applications 層の責務）
 
 ### `profiles/` — ホスト構成
 
 features の `enable` を指定するだけの薄い層。ロジックは書かない。
 
-| カテゴリ      | 役割                 | 例                                |
-| ------------- | -------------------- | --------------------------------- |
-| `interfaces/` | 操作インターフェース | cli-minimal, cli-interactive, gui |
-| `platforms/`  | ハードウェア固有設定 | desktop, laptop, thinkpad, vm     |
-| `workloads/`  | 用途・ワークロード   | dev, personal, srv                |
+| カテゴリ      | 役割                 | 例                                         |
+| ------------- | -------------------- | ------------------------------------------ |
+| `interfaces/` | 操作インターフェース | cli-minimal, cli-interactive, gui          |
+| `platforms/`  | ハードウェア固有設定 | desktop, laptop, thinkpad, vm              |
+| `workloads/`  | 用途・ワークロード   | dev, personal, srv, remote, secure-storage |
 
 profiles は継承可能:
 
@@ -116,6 +133,8 @@ nix-example = mkSystem {
 ```
 
 `specialArgs` で `inputs`, `username`, `unstable`, `host` が全モジュールに渡される。
+
+**注意:** `installer` ホストは `mkSystem` を使わず直接 `nixosSystem` で定義（インストーラ用）。
 
 ## Module Patterns
 
@@ -393,8 +412,10 @@ features の有効化のみを記述:
 
 - **nixpkgs channel**: `nixos-26.05` (stable) + `nixpkgs-unstable`
 - **unstable パッケージ**: `specialArgs.unstable` 経由で参照（`unstable.<pkg>`）
-- **llm-agents**: `inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.<name>` で参照
+- **llm-agents**: `inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.<name>` で参照。overlay も `hosts/default.nix` でグローバルに適用
 - **nixvim**: `nixpkgs.source = pkgs.path` と `nixpkgs.config.allowUnfree = true` を vim/home/default.nix で設定
-- **home-manager**: `useGlobalPkgs = true`, `useUserPackages = true`
+- **home-manager**: `useGlobalPkgs = true`, `useUserPackages = true`, `backupFileExtension = "backup"`
 - **hostname**: `specialArgs.host` から `modules/system/network/default.nix` で `networking.hostName` に設定
 - **stateVersion**: `config.my.stateVersions.nixos` / `config.my.stateVersions.homeManager` で管理（`modules/system/version.nix`）
+- **disko**: `modules/system/disko.nix` で disk パーティション管理。ホスト固有の `disko.nix` を import
+- **stylix**: `inputs.stylix` でテーマ管理

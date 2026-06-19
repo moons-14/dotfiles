@@ -69,13 +69,6 @@ in
               ];
               hotkey-overlay.title = "Run an Application: vicinae";
             };
-            "Mod+Space" = {
-              action.spawn = [
-                "vicinae"
-                "toggle"
-              ];
-              hotkey-overlay.title = "Run an Application: vicinae";
-            };
             "Mod+E" = {
               action.spawn = [
                 "nautilus"
