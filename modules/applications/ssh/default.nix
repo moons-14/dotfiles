@@ -23,7 +23,7 @@ in
 
     addKeysToAgent = lib.mkOption {
       type = lib.types.str;
-      default = "yes";
+      default = "no";
       description = "Add keys to SSH agent";
     };
 
