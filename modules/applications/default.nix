@@ -11,7 +11,7 @@
     ./fcitx5
     ./ghostty
     ./git
-    ./gnupg.nix
+    ./gnupg
     ./grok.nix
     ./greetd.nix
     ./ly
