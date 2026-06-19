@@ -1,5 +1,6 @@
 {
   imports = [
+    ./1password.nix
     ./arduino.nix
     ./btop
     ./chrome.nix

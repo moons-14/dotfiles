@@ -12,6 +12,7 @@
       graphic.enable = true;
       capture.enable = true;
       fileManager.enable = true;
+      password.enable = true;
     };
     services.kde.enable = true;
   };
