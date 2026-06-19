@@ -24,7 +24,7 @@ in
           ];
 
           signing = {
-            key = "~/.ssh/id_ed25519_sk_rk.pub";
+            key = "~/.ssh/id_ed25519_sk_rk";
             signByDefault = true;
           };
 

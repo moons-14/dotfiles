@@ -14,7 +14,7 @@
     ./gnupg.nix
     ./grok.nix
     ./greetd.nix
-    ./ly.nix
+    ./ly
     ./gtk
     ./java
     ./kde.nix

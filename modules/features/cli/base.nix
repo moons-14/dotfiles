@@ -31,6 +31,7 @@ in
       wget # Tool For Fetching Files With Links
       unzip # Tool For Handling .zip Files
       unrar # Tool For Handling .rar Files
+      ripgrep # Fast Search Tool
     ];
   };
 }
