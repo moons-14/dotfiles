@@ -40,12 +40,46 @@ in
             accel-speed = -0.1;
           };
 
+          input.warp-mouse-to-focus.enable = true;
+          input.focus-follows-mouse = {
+            enable = true;
+            max-scroll-amount = "0%";
+          };
+
           spawn-at-startup = [
             { command = [ "noctalia-shell" ]; }
           ];
 
-          outputs."eDP-1".scale = 1;
           cursor.size = 16;
+
+          outputs = {
+            # x1g13 monitor
+            "eDP-1" = {
+              scale = 1.0;
+              position = {
+                x = 2240;
+                y = 1440;
+              };
+            };
+
+            # LG WQHD monitor
+            "HDMI-A-1" = {
+              scale = 1.0;
+              position = {
+                x = 2560;
+                y = 0;
+              };
+            };
+
+            # DELL monitor
+            "DP-3" = {
+              scale = 1.5;
+              position = {
+                x = 0;
+                y = 0;
+              };
+            };
+          };
 
           layout = {
             focus-ring = {
