@@ -24,7 +24,6 @@ in
           ];
 
           signing = {
-            key = "~/.ssh/id_ed25519_sk_rk";
             signByDefault = true;
           };
 
@@ -38,8 +37,15 @@ in
             log.date = "iso";
             merge.conflictStyle = "diff3";
 
-            gpg.format = "ssh";
             tag.gpgSign = true;
+
+            gpg = {
+              format = "ssh";
+
+              ssh = {
+                defaultKeyCommand = "ssh-add -L";
+              };
+            };
 
             alias = {
               br = "branch --sort=-committerdate";
