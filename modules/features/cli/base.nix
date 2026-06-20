@@ -33,6 +33,12 @@ in
       unzip # Tool For Handling .zip Files
       unrar # Tool For Handling .rar Files
       ripgrep # Fast Search Tool
+      nurl # CLI tool for generating Nix fetcher calls from URLs
+      eza # ls alternative
+      bat # cat alternative
+      fd # find alternative
+      dust # du alternative
+      duf # df alternative
     ];
   };
 }
