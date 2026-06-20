@@ -11,8 +11,21 @@ _: {
         yaml.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
         markdown.__raw = ''{ "prettierd", "prettier", stop_after_first = true }'';
         lua = [ "stylua" ];
-        nix = [ "alejandra" ];
+        nix.__raw = ''{ "nix_fmt", "alejandra", stop_after_first = true }'';
         sh = [ "shfmt" ];
+      };
+      formatters.nix_fmt = {
+        command = "nix";
+        args = [
+          "fmt"
+          "$FILENAME"
+        ];
+        stdin = false;
+        condition.__raw = ''
+          function()
+            return vim.fn.executable("nix") == 1 and vim.fn.filereadable(vim.fn.findfile("flake.nix", ".;")) == 1
+          end
+        '';
       };
       format_on_save.__raw = ''
         function(_)
