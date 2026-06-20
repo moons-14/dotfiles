@@ -33,6 +33,7 @@
     ./vim
     ./vscode
     ./wayland.nix
+    ./yazi.nix
     ./zellij
     ./zoom.nix
     ./zoxide.nix

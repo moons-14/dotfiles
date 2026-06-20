@@ -15,6 +15,7 @@ in
   config = lib.mkIf cfg.enable {
     my.applications = {
       vim.enable = true;
+      yazi.enable = true;
       zellij.enable = true;
     };
 
