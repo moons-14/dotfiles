@@ -79,6 +79,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Index / Search
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Systems
     systems.url = "github:nix-systems/default-linux";
   };

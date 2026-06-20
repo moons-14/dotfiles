@@ -21,6 +21,7 @@ in
       direnv.enable = true;
       gnupg.enable = true;
       nh.enable = true;
+      nix-index.enable = true;
       openssh.enable = cfg.sshServer;
     };
 

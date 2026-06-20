@@ -22,6 +22,7 @@
     ./nautilus.nix
     ./nh.nix
     ./niri
+    ./nix-index
     ./noctalia
     ./opencode.nix
     ./openssh.nix
