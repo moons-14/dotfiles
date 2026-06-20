@@ -39,6 +39,7 @@ in
       fd # find alternative
       dust # du alternative
       duf # df alternative
+      fzf # Command-line fuzzy finder
     ];
   };
 }
