@@ -15,9 +15,12 @@ in
   config = lib.mkIf cfg.enable {
     boot.kernelModules = [ "uvcvideo" ];
 
+    hardware.ipu6.enable = true;
+
     environment.systemPackages = with pkgs; [
-      v4l-utils
-      ffmpeg-full
+      v4l-utils # Video4Linux control and diagnostics tools
+      ffmpeg-full # Multimedia tools for validating camera capture pipelines
+      libcamera # Camera stack and diagnostic tools for MIPI/IPU cameras
     ];
 
     services.pipewire = {
