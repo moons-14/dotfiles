@@ -35,6 +35,11 @@ in
             options = "ctrl:nocaps";
           };
 
+          input.mouse = {
+            accel-profile = "flat";
+            accel-speed = -0.1;
+          };
+
           spawn-at-startup = [
             { command = [ "noctalia-shell" ]; }
           ];
@@ -92,6 +97,42 @@ in
                 "vicinae://extensions/vicinae/clipboard/history"
               ];
               hotkey-overlay.title = "Clipboard History";
+            };
+
+            # Focus monitor
+            "Mod+Shift+Left" = {
+              action.focus-monitor-left = [ ];
+              hotkey-overlay.title = "Focus Monitor Left";
+            };
+            "Mod+Shift+Right" = {
+              action.focus-monitor-right = [ ];
+              hotkey-overlay.title = "Focus Monitor Right";
+            };
+            "Mod+Shift+Up" = {
+              action.focus-monitor-up = [ ];
+              hotkey-overlay.title = "Focus Monitor Up";
+            };
+            "Mod+Shift+Down" = {
+              action.focus-monitor-down = [ ];
+              hotkey-overlay.title = "Focus Monitor Down";
+            };
+
+            # Move focused window to monitor
+            "Mod+Shift+Ctrl+Left" = {
+              action.move-window-to-monitor-left = [ ];
+              hotkey-overlay.title = "Move Window to Monitor Left";
+            };
+            "Mod+Shift+Ctrl+Right" = {
+              action.move-window-to-monitor-right = [ ];
+              hotkey-overlay.title = "Move Window to Monitor Right";
+            };
+            "Mod+Shift+Ctrl+Up" = {
+              action.move-window-to-monitor-up = [ ];
+              hotkey-overlay.title = "Move Window to Monitor Up";
+            };
+            "Mod+Shift+Ctrl+Down" = {
+              action.move-window-to-monitor-down = [ ];
+              hotkey-overlay.title = "Move Window to Monitor Down";
             };
 
             "XF86AudioRaiseVolume" = {
