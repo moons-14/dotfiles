@@ -15,7 +15,10 @@ in
   config = lib.mkIf cfg.enable {
     boot.kernelModules = [ "uvcvideo" ];
 
-    hardware.ipu6.enable = true;
+    hardware.ipu6 = {
+      enable = true;
+      platform = "ipu6epmtl";
+    };
 
     environment.systemPackages = with pkgs; [
       v4l-utils # Video4Linux control and diagnostics tools
