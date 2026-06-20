@@ -16,6 +16,12 @@ in
     programs.nh = {
       enable = true;
       flake = "/home/${username}/dotfiles";
+
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep-since 14d --keep 10";
+      };
     };
   };
 }
