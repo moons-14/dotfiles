@@ -31,7 +31,7 @@ let
       modules = [
         {
           nixpkgs.config.allowUnfree = true;
-          nixpkgs.overlays = [ inputs.llm-agents.overlays.default ];
+          nixpkgs.overlays = builtins.attrValues inputs.self.overlays;
         }
         ../modules
         ./${host}/default.nix
