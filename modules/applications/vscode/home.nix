@@ -70,6 +70,16 @@ let
         };
         "git.autofetch" = true;
         "workbench.editor.enablePreview" = false;
+
+        "files.exclude" = {
+          "**/.direnv" = true;
+          "**/.direnv/**" = true;
+        };
+
+        "search.exclude" = {
+          "**/.direnv" = true;
+          "**/.direnv/**" = true;
+        };
       };
     };
 
