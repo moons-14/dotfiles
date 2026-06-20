@@ -5,6 +5,8 @@
 !LICENSE
 !AGENTS.md
 
+!.github/
+
 !.envrc
 
 !.sops.yaml
