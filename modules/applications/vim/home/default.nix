@@ -52,6 +52,7 @@ in
             stylua
             shfmt
             alejandra
+            nixfmt-rfc-style
             lua-language-server
             nixd
           ];
