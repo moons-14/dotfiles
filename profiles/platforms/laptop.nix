@@ -7,6 +7,5 @@
     };
     gui.camera.enable = true;
     identity.fingerprint.enable = true;
-    network.tailscale.enable = true;
   };
 }

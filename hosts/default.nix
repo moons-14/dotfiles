@@ -69,6 +69,7 @@ in
         "workloads/dev"
         "workloads/personal"
         "workloads/secure-storage"
+        "workloads/tailscale/client"
       ];
     };
 

@@ -1,5 +1,4 @@
 name: NixOS build
-
 on:
   pull_request:
     branches:
@@ -17,14 +16,11 @@ on:
       - ".sops.yaml"
       - "secrets/**"
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   discover-hosts:
     name: Discover NixOS hosts
@@ -34,7 +30,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
@@ -42,7 +37,6 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
             access-tokens = github.com=${{ github.token }}
-
       - name: Evaluate NixOS hosts
         id: hosts
         run: |
@@ -50,7 +44,6 @@ jobs:
           hosts_json=$(nix eval --json '.#nixosConfigurations' --apply 'configs: builtins.attrNames configs')
           echo "hosts=${hosts_json}" >> "$GITHUB_OUTPUT"
           echo "Discovered hosts: ${hosts_json}"
-
   build-host:
     name: Build ${{ matrix.host }}
     needs: discover-hosts
@@ -63,7 +56,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
@@ -71,7 +63,6 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
             access-tokens = github.com=${{ github.token }}
-
       - name: Build NixOS system
         run: |
           set -euo pipefail
