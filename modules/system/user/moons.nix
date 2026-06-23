@@ -1,15 +1,13 @@
 {
   pkgs,
-  config,
   ...
 }:
 {
-  users.mutableUsers = false;
+  users.mutableUsers = true;
 
   users.users.moons = {
     isNormalUser = true;
     description = "moons-14";
-    hashedPasswordFile = config.sops.secrets."users/moons/hashedPassword".path;
     extraGroups = [
       "adbusers"
       "docker"
