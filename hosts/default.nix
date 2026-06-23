@@ -60,6 +60,15 @@ in
         "workloads/remote"
       ];
     };
+    internal-app-01 = mkSystem {
+      host = "internal-app-01";
+      system = "x86_64-linux";
+      profiles = [
+        "interfaces/cli-interactive"
+        "platforms/vm"
+        "workloads/srv"
+      ];
+    };
     x1g13 = mkSystem {
       host = "x1g13";
       system = "x86_64-linux";
