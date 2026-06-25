@@ -15,6 +15,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       ghostty # A fast and minimal terminal emulator for Wayland
+      ghostty.terminfo # Terminfo database for ghostty
     ];
   };
 }
