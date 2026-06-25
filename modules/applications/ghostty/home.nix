@@ -69,7 +69,7 @@ in
 
               quit-after-last-window-closed = false;
 
-              shell-integration-features = "ssh-terminfo,ssh-env";
+              shell-integration-features = "no-ssh-env,no-ssh-terminfo";
             };
           };
 
