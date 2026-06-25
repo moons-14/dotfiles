@@ -14,6 +14,7 @@
     ./git
     ./gnupg
     ./grok.nix
+    ./gnome.nix
     ./greetd.nix
     ./ly
     ./gtk

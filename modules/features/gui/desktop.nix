@@ -8,11 +8,12 @@ let
 in
 {
   options.my.features.gui.desktop = {
-    enable = lib.mkEnableOption "Niri Wayland compositor environment";
+    enable = lib.mkEnableOption "Graphical desktop sessions";
   };
 
   config = lib.mkIf cfg.enable {
     my.applications = {
+      gnome.enable = true;
       gtk.enable = true;
       niri.enable = true;
       wayland.enable = true;
