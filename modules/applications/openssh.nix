@@ -16,6 +16,7 @@ in
         PermitRootLogin = "no";
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
+        AllowAgentForwarding = true;
         PubkeyAuthentication = "yes";
       };
     };

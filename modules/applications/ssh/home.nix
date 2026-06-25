@@ -4,9 +4,40 @@
   config,
   ...
 }:
+
 let
   cfg = config.my.applications.ssh;
   hmCfg = config.my.applications.ssh.homeManager;
+
+  hasFidoDevice = pkgs.writeShellScript "ssh-has-fido-device" ''
+    ${pkgs.libfido2}/bin/fido2-token -L 2>/dev/null \
+      | ${pkgs.gnugrep}/bin/grep -q .
+  '';
+
+  userMatchBlockNames = lib.attrNames (cfg.matchBlocks or { });
+
+  userMatchBlocks = lib.mapAttrs (
+    _name: value: lib.hm.dag.entryBefore [ "my-github" "my-default" ] value
+  ) (cfg.matchBlocks or { });
+
+  githubBlock = {
+    header = "Host github.com";
+
+    HostName = "github.com";
+    User = "git";
+
+    IdentityAgent = "SSH_AUTH_SOCK";
+
+    IdentitiesOnly = false;
+
+    ForwardAgent = false;
+
+    AddKeysToAgent = cfg.addKeysToAgent;
+  }
+  // lib.optionalAttrs (cfg.githubIdentityFiles != [ ]) {
+    IdentityFile = cfg.githubIdentityFiles;
+  };
+
 in
 {
   options.my.applications.ssh.homeManager = {
@@ -14,40 +45,61 @@ in
   };
 
   config.home-manager.sharedModules = [
-    {
-      config = lib.mkIf hmCfg.enable {
-        home.packages = [
-          pkgs.openssh
-        ];
+    (
+      { lib, ... }:
+      {
+        config = lib.mkIf hmCfg.enable {
 
-        systemd.user.sockets.gcr-ssh-agent.Install.WantedBy = lib.mkForce [ ];
+          programs.ssh = {
+            enable = true;
+            enableDefaultConfig = false;
 
-        services.ssh-agent.enable = true;
+            settings = userMatchBlocks // {
+              "my-local-fido-sk-rk" =
+                lib.hm.dag.entryBefore
+                  (
+                    [
+                      "my-github"
+                      "my-default"
+                    ]
+                    ++ userMatchBlockNames
+                  )
+                  {
+                    header = ''Match exec "${hasFidoDevice}"'';
+                    IdentityFile = cfg.fidoIdentityFile;
+                  };
 
-        home.sessionVariables = {
-          SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent";
-        };
+              "my-github" = lib.hm.dag.entryBefore [ "my-default" ] githubBlock;
 
-        programs.ssh = {
-          enable = true;
-          enableDefaultConfig = false;
+              "my-default" =
+                lib.hm.dag.entryAfter
+                  (
+                    [
+                      "my-local-fido-sk-rk"
+                      "my-github"
+                    ]
+                    ++ userMatchBlockNames
+                  )
+                  {
+                    header = "Host *";
 
-          settings = cfg.matchBlocks // {
-            "github.com" = {
-              IdentityFile = cfg.githubIdentityFiles;
-              AddKeysToAgent = cfg.addKeysToAgent;
-            };
+                    IdentityAgent = "SSH_AUTH_SOCK";
+                    IdentitiesOnly = false;
 
-            "*" = {
-              IdentityFile = cfg.defaultIdentityFile;
-              AddKeysToAgent = cfg.addKeysToAgent;
-              SetEnv = {
-                TERM = "xterm";
-              };
+                    ForwardAgent = false;
+
+                    IdentityFile = cfg.defaultIdentityFiles;
+
+                    AddKeysToAgent = cfg.addKeysToAgent;
+
+                    SetEnv = {
+                      TERM = "xterm";
+                    };
+                  };
             };
           };
         };
-      };
-    }
+      }
+    )
   ];
 }

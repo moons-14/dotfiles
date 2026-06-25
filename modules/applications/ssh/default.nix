@@ -3,6 +3,7 @@
   config,
   ...
 }:
+
 let
   cfg = config.my.applications.ssh;
 in
@@ -13,33 +14,71 @@ in
   ];
 
   options.my.applications.ssh = {
-    enable = lib.mkEnableOption "OpenSSH client";
+    enable = lib.mkEnableOption "OpenSSH client and agent configuration";
 
-    defaultIdentityFile = lib.mkOption {
+    defaultIdentityFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [
+        "~/.ssh/id_ed25519"
+      ];
+      description = ''
+        Default local SSH identity files.
+
+        These are used as the normal fallback identities when no agent key
+        is accepted, or when no forwarded agent is available.
+      '';
+    };
+
+    fidoIdentityFile = lib.mkOption {
       type = lib.types.str;
-      default = "~/.ssh/id_ed25519";
-      description = "Default SSH identity file";
+      default = "~/.ssh/id_ed25519_sk_rk";
+      description = ''
+        Local FIDO2 resident-key SSH identity handle.
+
+        This file is only added to SSH identity candidates when a FIDO2
+        device is actually visible. Do not use file existence to decide
+        whether this key is usable.
+      '';
+    };
+
+    githubIdentityFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = ''
+        Extra GitHub-specific SSH identity files.
+
+        Leave this empty if GitHub should use the normal agent, FIDO key,
+        and default identity fallback order.
+      '';
     };
 
     addKeysToAgent = lib.mkOption {
       type = lib.types.str;
       default = "no";
-      description = "Add keys to SSH agent";
+      example = "1h";
+      description = ''
+        Value for OpenSSH AddKeysToAgent.
+
+        Recommended default is "no" for this setup, because FIDO resident-key
+        handle files should not be added to the agent accidentally.
+      '';
     };
 
     matchBlocks = lib.mkOption {
-      type = lib.types.attrs;
+      type = lib.types.attrsOf lib.types.anything;
       default = { };
-      description = "SSH match blocks";
-    };
+      description = ''
+        Additional Home Manager OpenSSH settings blocks.
 
-    githubIdentityFiles = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [
-        "~/.ssh/id_ed25519_sk_rk"
-        "~/.ssh/id_ed25519"
-      ];
-      description = "SSH identity files for GitHub (tried in order)";
+        Use this for host-specific options such as ForwardAgent = true.
+      '';
+      example = lib.literalExpression ''
+        {
+          "proxmox-* *.home.arpa *.internal" = {
+            ForwardAgent = true;
+          };
+        }
+      '';
     };
   };
 

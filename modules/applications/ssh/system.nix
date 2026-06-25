@@ -15,9 +15,14 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       openssh # OpenSSH client and server
+      libfido2 # FIDO2 support for SSH
     ];
 
-    programs.ssh.startAgent = false;
-    services.gnome.gcr-ssh-agent.enable = false;
+    programs.ssh = {
+      startAgent = true;
+      agentTimeout = "24h";
+    };
+    programs.gnupg.agent.enableSSHSupport = lib.mkForce false;
+    services.gnome.gcr-ssh-agent.enable = lib.mkForce false;
   };
 }
