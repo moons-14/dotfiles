@@ -99,6 +99,8 @@ application や system より抽象度の高い「機能」単位で、複数の
 ### `profiles/` — ホスト構成
 
 features の `enable` を指定するだけの薄い層。ロジックは書かない。
+`profiles/` から `my.system.*.enable` / `my.applications.*.enable` を直接指定しない。
+必要な場合は必ず `modules/features/` に feature 層を作り、profile では `my.features.*.enable` のみ指定する。
 
 | カテゴリ      | 役割                 | 例                                         |
 | ------------- | -------------------- | ------------------------------------------ |
