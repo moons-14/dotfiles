@@ -28,7 +28,7 @@ in
       xdgOpenUsePortal = true;
       config = {
         common.default = [ "gtk" ];
-        niri.default = [
+        niri.default = lib.mkForce [
           "wlr"
           "gtk"
         ];
