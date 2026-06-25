@@ -6,6 +6,14 @@
 }:
 let
   cfg = config.my.applications.zoom;
+  zoomX11 = pkgs.zoom-us.overrideAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+
+    postFixup = (old.postFixup or "") + ''
+      wrapProgram $out/bin/zoom \
+        --set QT_QPA_PLATFORM xcb
+    '';
+  });
 in
 {
   options.my.applications.zoom = {
@@ -16,7 +24,7 @@ in
     home-manager.sharedModules = [
       {
         home.packages = with pkgs; [
-          zoom-us # Video conferencing application
+          zoomX11 # Video conferencing application with XWayland startup for GNOME stability
         ];
       }
     ];
