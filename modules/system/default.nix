@@ -12,6 +12,7 @@
     ./network
     ./nix.nix
     ./power.nix
+    ./quem.nix
     ./secure-boot.nix
     ./sops.nix
     ./user
