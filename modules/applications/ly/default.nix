@@ -17,6 +17,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    services.displayManager.defaultSession = lib.mkDefault "niri";
+
     services.displayManager.ly = {
       enable = true;
       settings = {

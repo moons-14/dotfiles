@@ -15,17 +15,25 @@ in
   config = lib.mkIf cfg.enable {
     programs.xwayland.enable = true;
 
+    # Keep global Wayland portal settings in this module so hardware/application
+    # modules do not each append their own portal backends.
     xdg.portal = {
       enable = true;
       wlr.enable = true;
       extraPortals = [
-        pkgs.xdg-desktop-portal-wlr
+        pkgs.xdg-desktop-portal-gnome
         pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-wlr
       ];
       xdgOpenUsePortal = true;
       config = {
-        common.default = [
+        common.default = [ "gtk" ];
+        niri.default = [
           "wlr"
+          "gtk"
+        ];
+        gnome.default = [
+          "gnome"
           "gtk"
         ];
       };

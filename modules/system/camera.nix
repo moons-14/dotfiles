@@ -32,10 +32,5 @@ in
       pulse.enable = true;
     };
     security.rtkit.enable = true;
-
-    xdg.portal = {
-      enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    };
   };
 }
