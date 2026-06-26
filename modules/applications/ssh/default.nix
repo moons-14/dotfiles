@@ -14,33 +14,6 @@ in
 
   options.my.applications.ssh = {
     enable = lib.mkEnableOption "OpenSSH client";
-
-    defaultIdentityFile = lib.mkOption {
-      type = lib.types.str;
-      default = "~/.ssh/id_ed25519";
-      description = "Default SSH identity file";
-    };
-
-    addKeysToAgent = lib.mkOption {
-      type = lib.types.str;
-      default = "no";
-      description = "Add keys to SSH agent";
-    };
-
-    matchBlocks = lib.mkOption {
-      type = lib.types.attrs;
-      default = { };
-      description = "SSH match blocks";
-    };
-
-    githubIdentityFiles = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [
-        "~/.ssh/id_ed25519_sk_rk"
-        "~/.ssh/id_ed25519"
-      ];
-      description = "SSH identity files for GitHub (tried in order)";
-    };
   };
 
   config = lib.mkIf cfg.enable {

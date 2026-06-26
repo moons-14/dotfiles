@@ -5,12 +5,17 @@
   ...
 }:
 let
-  cfg = config.my.applications.ssh;
   hmCfg = config.my.applications.ssh.homeManager;
 in
 {
   options.my.applications.ssh.homeManager = {
     enable = lib.mkEnableOption "SSH home-manager configuration";
+
+    matchBlocks = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = "SSH match blocks";
+    };
   };
 
   config.home-manager.sharedModules = [
@@ -22,30 +27,31 @@ in
 
         systemd.user.sockets.gcr-ssh-agent.Install.WantedBy = lib.mkForce [ ];
 
-        services.ssh-agent.enable = true;
-
-        home.sessionVariables = {
-          SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent";
-        };
+        services.ssh-agent.enable = lib.mkForce false;
 
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
 
-          settings = cfg.matchBlocks // {
+          settings = hmCfg.matchBlocks // {
             "github.com" = {
-              IdentityFile = cfg.githubIdentityFiles;
-              AddKeysToAgent = cfg.addKeysToAgent;
+              HostName = "github.com";
+              User = "git";
+              AddKeysToAgent = "no";
             };
 
             "*" = {
-              IdentityFile = cfg.defaultIdentityFile;
-              AddKeysToAgent = cfg.addKeysToAgent;
+              AddKeysToAgent = "no";
               SetEnv = {
                 TERM = "xterm-256color";
               };
             };
           };
+
+          extraConfig = ''
+            Match exec "test -S %d/.1password/agent.sock"
+              IdentityAgent %d/.1password/agent.sock
+          '';
         };
       };
     }

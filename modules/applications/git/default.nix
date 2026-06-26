@@ -14,15 +14,17 @@ in
 
   options.my.applications.git = {
     enable = lib.mkEnableOption "git version control";
+
     userName = lib.mkOption {
-      type = lib.types.str;
-      default = "moons-14";
-      description = "Git user name";
+      type = lib.types.singleLineStr;
+      default = "moons";
+      description = "Default Git user.name.";
     };
+
     userEmail = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.singleLineStr;
       default = "moons@moons14.com";
-      description = "Git user email";
+      description = "Default Git user.email.";
     };
   };
 

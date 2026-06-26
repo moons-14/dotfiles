@@ -18,6 +18,7 @@ in
     environment.systemPackages = with pkgs; [
       wdisplays # Wayland display configuration GUI
       wlr-randr # Wayland output management CLI
+      polkit_gnome # Polkit authentication agent for GNOME
     ];
   };
 }

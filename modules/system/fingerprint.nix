@@ -14,6 +14,10 @@ in
   config = lib.mkIf cfg.enable {
     services.fprintd.enable = true;
 
+    security.polkit.enable = true;
+
+    security.pam.services.polkit-1.fprintAuth = true;
+
     security.pam.services = {
       login.fprintAuth = true;
       sudo.fprintAuth = true;
