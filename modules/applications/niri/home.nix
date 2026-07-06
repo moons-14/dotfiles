@@ -47,7 +47,7 @@ in
           };
 
           spawn-at-startup = [
-            { command = [ "noctalia-shell" ]; }
+            { command = [ "noctalia" ]; }
             {
               command = [
                 "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
@@ -122,7 +122,7 @@ in
             };
             "Mod+L" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "sessionMenu"
@@ -176,7 +176,7 @@ in
 
             "XF86AudioRaiseVolume" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "volume"
@@ -185,7 +185,7 @@ in
             };
             "XF86AudioLowerVolume" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "volume"
@@ -194,7 +194,7 @@ in
             };
             "XF86AudioMute" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "volume"
@@ -203,7 +203,7 @@ in
             };
             "XF86AudioMicMute" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "volume"
@@ -213,7 +213,7 @@ in
 
             "XF86MonBrightnessUp" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "brightness"
@@ -222,7 +222,7 @@ in
             };
             "XF86MonBrightnessDown" = {
               action.spawn = [
-                "noctalia-shell"
+                "noctalia"
                 "ipc"
                 "call"
                 "brightness"

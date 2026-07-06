@@ -13,7 +13,7 @@ in
   ];
 
   options.my.applications.noctalia = {
-    enable = lib.mkEnableOption "noctalia-shell";
+    enable = lib.mkEnableOption "noctalia";
   };
 
   config = lib.mkIf cfg.enable {

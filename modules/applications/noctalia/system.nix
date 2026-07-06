@@ -10,7 +10,7 @@ let
 in
 {
   options.my.applications.noctalia.system = {
-    enable = lib.mkEnableOption "noctalia-shell system package";
+    enable = lib.mkEnableOption "noctalia system package";
   };
 
   config = lib.mkIf cfg.enable {

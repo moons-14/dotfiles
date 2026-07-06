@@ -16,7 +16,7 @@ let
 in
 {
   options.my.applications.noctalia.homeManager = {
-    enable = lib.mkEnableOption "noctalia-shell home-manager configuration";
+    enable = lib.mkEnableOption "noctalia home-manager configuration";
   };
 
   config.home-manager.sharedModules = [
@@ -42,7 +42,7 @@ in
           };
         };
 
-        programs.noctalia-shell = {
+        programs.noctalia = {
           enable = true;
           settings = {
             bar = {
