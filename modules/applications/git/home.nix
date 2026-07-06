@@ -80,7 +80,7 @@ in
             signByDefault = true;
           };
 
-          extraConfig = {
+          settings = {
             user.name = cfg.userName;
             user.email = cfg.userEmail;
 
