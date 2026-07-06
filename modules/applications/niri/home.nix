@@ -99,6 +99,7 @@ in
             shadow = {
               color = "#0007";
             };
+            background-color = "transparent";
           };
 
           binds = defaultKeyBind // {
@@ -123,10 +124,9 @@ in
             "Mod+L" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "sessionMenu"
-                "lockAndSuspend"
+                "msg"
+                "session"
+                "lock"
               ];
               hotkey-overlay.title = "Lock the Screen: noctalia";
             };
@@ -177,57 +177,88 @@ in
             "XF86AudioRaiseVolume" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "volume"
-                "increase"
+                "msg"
+                "volume-up"
               ];
             };
             "XF86AudioLowerVolume" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "volume"
-                "decrease"
+                "msg"
+                "volume-down"
               ];
             };
             "XF86AudioMute" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "volume"
-                "muteOutput"
+                "msg"
+                "volume-mute"
               ];
             };
             "XF86AudioMicMute" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "volume"
-                "muteInput"
+                "msg"
+                "mic-mute"
               ];
             };
 
             "XF86MonBrightnessUp" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "brightness"
-                "increase"
+                "msg"
+                "brightness-up"
               ];
             };
             "XF86MonBrightnessDown" = {
               action.spawn = [
                 "noctalia"
-                "ipc"
-                "call"
-                "brightness"
-                "decrease"
+                "msg"
+                "brightness-down"
               ];
+            };
+
+            "XF86Favorites" = {
+              action.spawn = [
+                "noctalia"
+                "msg"
+                "caffeine-toggle"
+              ];
+            };
+          };
+
+          window-rules = [
+            {
+              geometry-corner-radius = {
+                top-left = 20.0;
+                top-right = 20.0;
+                bottom-left = 20.0;
+                bottom-right = 20.0;
+              };
+              clip-to-geometry = true;
+            }
+            {
+              matches = [ { app-id = "^dev\\.noctalia\\.Noctalia$"; } ];
+              open-floating = true;
+              default-column-width = {
+                fixed = 1080;
+              };
+              default-window-height = {
+                fixed = 920;
+              };
+            }
+          ];
+
+          layer-rules = [
+            {
+              matches = [ { namespace = "^noctalia-wallpaper"; } ];
+              place-within-backdrop = true;
+            }
+          ];
+
+          overview = {
+            workspace-shadow = {
+              enable = false;
             };
           };
         };

@@ -45,6 +45,7 @@ in
         programs.noctalia = {
           enable = true;
           settings = {
+            theme.mode = "auto";
             bar = {
               density = "default";
               position = "top";
