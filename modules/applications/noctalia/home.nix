@@ -45,10 +45,18 @@ in
         programs.noctalia = {
           enable = true;
           settings = {
-            theme.mode = "auto";
+            theme = {
+              mode = "auto";
+              source = "wallpaper";
+              templates = {
+                enable_builtin_templates = false;
+                enable_community_templates = false;
+              };
+            };
+            desktop_widgets.enabled = false;
             bar = {
+              margin_ends = 15;
               density = "default";
-              position = "top";
               showCapsule = true;
               backgroundOpacity = 0.8;
               floating = true;
@@ -124,19 +132,23 @@ in
             };
             dock = {
               enabled = true;
-              displayMode = "auto_hide";
-              backgroundOpacity = 0.8;
-              floatingRatio = 1;
+              position = "left";
+              auto_hide = true;
+              show_dots = true;
+              background_opacity = 0.8;
               size = 1;
               onlySameOutput = true;
+              reserve_space = false;
               monitors = [ "eDP-1" ];
-              pinnedApps = [
+              pinned = [
                 "com.mitchellh.ghostty"
-                "org.gnome.Nautilus"
                 "google-chrome"
                 "code"
               ];
               colorizeIcons = false;
+            };
+            shell = {
+              clipboard_enabled = false;
             };
             controlCenter = {
               position = "close_to_bar_button";

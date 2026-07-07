@@ -40,6 +40,10 @@ in
               AddKeysToAgent = "no";
             };
 
+            "*.sfc.wide.ad.jp" = {
+              identityFile = "~/.ssh/id_ed25519_sk_rk";
+              identitiesOnly = true;
+            };
             "*" = {
               AddKeysToAgent = "no";
               SetEnv = {

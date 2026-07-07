@@ -9,20 +9,20 @@ let
   cfg = config.my.applications.swayidle;
 
   noctaliaPkg = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  noctalia = lib.getExe noctaliaPkg;
 
-  bash = lib.getExe pkgs.bash;
+  noctalia = lib.getExe noctaliaPkg;
   brightnessctl = lib.getExe pkgs.brightnessctl;
   niri = lib.getExe pkgs.niri;
   rm = "${pkgs.coreutils}/bin/rm";
 
   brightnessState = "$XDG_RUNTIME_DIR/swayidle-brightness";
 
-  noctaliaCall = target: action: "${bash} -lc '${noctalia} ipc call ${target} ${action}'";
+  noctaliaMsg = command: "${noctalia} msg ${command}";
 
-  lockCmd = noctaliaCall "lockScreen" "lock";
+  lockCmd = noctaliaMsg "session lock";
 
-  # AC 接続中は何もしない。つまり battery-only の処理にする。
+  # AC 接続中は何もしない。
+  # つまり、以下のアイドル処理をバッテリー駆動時のみにする。
   skipIfOnAC = ''
     for supply in /sys/class/power_supply/*; do
       if [ -f "$supply/type" ] \
@@ -51,7 +51,8 @@ let
 
   lockAndSuspend = pkgs.writeShellScript "swayidle-lock-and-suspend" ''
     ${skipIfOnAC}
-    ${noctaliaCall "sessionMenu" "lockAndSuspend"}
+
+    ${noctaliaMsg "session lock-and-suspend"}
   '';
 
   afterResume = pkgs.writeShellScript "swayidle-after-resume" ''
@@ -69,7 +70,10 @@ in
       {
         services.swayidle = {
           enable = true;
-          systemdTargets = [ "graphical-session.target" ];
+
+          systemdTargets = [
+            "graphical-session.target"
+          ];
 
           timeouts = [
             {
