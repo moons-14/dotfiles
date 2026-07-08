@@ -55,59 +55,82 @@ in
             };
             desktop_widgets.enabled = false;
             bar = {
-              margin_ends = 15;
-              density = "default";
-              showCapsule = true;
-              backgroundOpacity = 0.8;
-              floating = true;
-              widgets = {
-                left = [
-                  { id = "WiFi"; }
-                  {
-                    id = "CustomButton";
-                    icon = "access-point";
-                    leftClickExec = "nm-connection-editor";
-                  }
-                  { id = "Bluetooth"; }
-                  { id = "SystemMonitor"; }
-                  { id = "Taskbar"; }
-                  { id = "ActiveWindow"; }
+              order = [ "main" ];
+              main = {
+                margin_ends = 15;
+                position = "top";
+                start = [
+                  "network"
+                  "bluetooth"
+                  "network-connection"
+                  "spacer"
+                  "cpu"
+                  "cpu-graph"
+                  "ram"
                 ];
-                center = [
-                  {
-                    hideUnoccupied = false;
-                    id = "Workspace";
-                    labelMode = "none";
-                  }
+                center = [ "workspaces" ];
+                end = [
+                  "media"
+                  "spacer"
+                  "notifications"
+                  "spacer"
+                  "battery"
+                  "input-volume"
+                  "output-volume"
+                  "privacy"
+                  "brightness"
+                  "clock"
+                  "control-center"
                 ];
-                right = [
-                  { id = "MediaMini"; }
-                  { id = "NotificationHistory"; }
-                  {
-                    displayMode = "alwaysShow";
-                    id = "Battery";
-                    warningThreshold = 30;
-                  }
-                  {
-                    displayMode = "alwaysShow";
-                    id = "Volume";
-                  }
-                  {
-                    displayMode = "alwaysShow";
-                    id = "Brightness";
-                  }
-                  {
-                    formatHorizontal = "HH:mm";
-                    formatVertical = "HH mm";
-                    id = "Clock";
-                    useMonospacedFont = true;
-                    usePrimaryColor = true;
-                  }
-                  {
-                    id = "ControlCenter";
-                    useDistroLogo = true;
-                  }
-                ];
+              };
+              widget = {
+                cpu = {
+                  type = "sysmon";
+                  stat = "cpu_usage";
+                };
+                cpu-graph = {
+                  type = "sysmon";
+                  stat = "cpu_usage";
+                  display = "graph";
+                  show_label = false;
+                };
+                ram = {
+                  type = "sysmon";
+                  stat = "ram_used";
+                };
+                media = {
+                  type = "media";
+                  hide_when_no_media = true;
+                  title_scroll = "always";
+                };
+                battery = {
+                  type = "battery";
+                  display_mode = "graphic";
+                  warning_threshold = 30;
+                };
+                brightness = {
+                  type = "brightness";
+                  show_label = false;
+                };
+                input-volume = {
+                  type = "volume";
+                  device = "input";
+                };
+                output-volume = {
+                  type = "volume";
+                  device = "output";
+                };
+                clock = {
+                  type = "clock";
+                  format = "{:%Y/%m/%d %H:%M}";
+                  vertical_format = "{:%Y/%m/%d\n%H:%M}";
+                  tooltip_format = "{:%Y/%m/%d %H:%M (%a)}";
+                };
+                network-connection = {
+                  type = "custom_button";
+                  glyph = "access-point";
+                  command = "nm-connection-editor";
+                };
               };
             };
             colorSchemes.predefinedScheme = "dracula";
