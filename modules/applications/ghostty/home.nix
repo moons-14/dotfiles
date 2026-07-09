@@ -63,11 +63,11 @@ in
 
               # Quick terminal
               quick-terminal-position = "top";
-              quick-terminal-size = "100%";
+              quick-terminal-size = "98%,100%";
 
-              gtk-quick-terminal-layer = "overlay";
-              quick-terminal-keyboard-interactivity = "exclusive";
               quick-terminal-autohide = false;
+              quick-terminal-keyboard-interactivity = "on-demand";
+              gtk-quick-terminal-layer = "top";
 
               quit-after-last-window-closed = false;
 

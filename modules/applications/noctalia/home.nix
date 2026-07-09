@@ -152,12 +152,13 @@ in
             wallpaper = {
               enabled = true;
               directory = "~/.wallpapers/";
-              setWallpaperOnAllMonitors = true;
-              linkLightAndDarkWallpapers = true;
               fillMode = "crop";
-              randomEnabled = true;
-              randomIntervalSec = 60;
-              transitionDuration = 1500;
+              automation = {
+                enabled = true;
+                order = "random";
+                interval_seconds = 60;
+              };
+              default.path = "~/.wallpapers/1.jpg";
             };
             dock = {
               enabled = true;
