@@ -24,7 +24,9 @@
     };
 
     # Terminal
-    ghostty.url = "github:ghostty-org/ghostty";
+    ghostty = {
+      url = "github:moons-14/ghostty";
+    };
 
     # Shell / Launcher
     vicinae.url = "github:vicinaehq/vicinae";

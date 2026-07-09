@@ -137,6 +137,13 @@ in
               ];
               hotkey-overlay.title = "Clipboard History";
             };
+            "Mod+Space" = {
+              action.spawn = [
+                "ghostty"
+                "+toggle-quick-terminal"
+              ];
+              hotkey-overlay.title = "Toggle Quick Terminal: ghostty";
+            };
 
             # Focus monitor
             "Mod+Shift+Left" = {

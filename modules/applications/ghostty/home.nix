@@ -1,10 +1,16 @@
 {
+  pkgs,
   lib,
   config,
+  inputs,
   ...
 }:
 let
   cfg = config.my.applications.ghostty.homeManager;
+
+  system = pkgs.stdenv.hostPlatform.system;
+
+  ghosttyPkg = inputs.ghostty.packages.${system}.ghostty-releasefast;
 in
 {
   options.my.applications.ghostty.homeManager = {
@@ -18,6 +24,8 @@ in
         config = lib.mkIf cfg.enable {
           programs.ghostty = {
             enable = true;
+
+            package = ghosttyPkg;
 
             systemd.enable = true;
 
@@ -51,20 +59,14 @@ in
                 # Font size
                 "ctrl+shift+semicolon=increase_font_size:1"
                 "ctrl+shift+minus=decrease_font_size:1"
-
-                # Quick terminal
-                "global:super+space=toggle_quick_terminal"
               ];
 
               # Quick terminal
               quick-terminal-position = "top";
-
               quick-terminal-size = "100%";
 
               gtk-quick-terminal-layer = "overlay";
-
               quick-terminal-keyboard-interactivity = "exclusive";
-
               quick-terminal-autohide = false;
 
               quit-after-last-window-closed = false;
