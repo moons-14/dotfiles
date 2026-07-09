@@ -54,6 +54,59 @@ in
               };
             };
             desktop_widgets.enabled = false;
+            widget = {
+              cpu = {
+                type = "sysmon";
+                stat = "cpu_usage";
+              };
+              cpu-graph = {
+                type = "sysmon";
+                stat = "cpu_usage";
+                display = "graph";
+                show_label = false;
+              };
+              ram = {
+                type = "sysmon";
+                stat = "ram_used";
+              };
+              media = {
+                type = "media";
+                hide_when_no_media = true;
+                title_scroll = "always";
+              };
+              battery = {
+                type = "battery";
+                display_mode = "graphic";
+                warning_threshold = 30;
+              };
+              brightness = {
+                type = "brightness";
+                show_label = false;
+              };
+              input-volume = {
+                type = "volume";
+                device = "input";
+              };
+              output-volume = {
+                type = "volume";
+                device = "output";
+              };
+              clock = {
+                type = "clock";
+                format = "{:%Y/%m/%d %H:%M}";
+                vertical_format = "{:%Y/%m/%d\n%H:%M}";
+                tooltip_format = "{:%Y/%m/%d %H:%M (%a)}";
+              };
+              network-connection = {
+                type = "custom_button";
+                glyph = "access-point";
+                command = "nm-connection-editor";
+              };
+              tray = {
+                type = "tray";
+              };
+            };
+
             bar = {
               order = [ "main" ];
               main = {
@@ -73,6 +126,7 @@ in
                   "media"
                   "spacer"
                   "notifications"
+                  "tray"
                   "spacer"
                   "battery"
                   "input-volume"
@@ -82,55 +136,6 @@ in
                   "clock"
                   "control-center"
                 ];
-              };
-              widget = {
-                cpu = {
-                  type = "sysmon";
-                  stat = "cpu_usage";
-                };
-                cpu-graph = {
-                  type = "sysmon";
-                  stat = "cpu_usage";
-                  display = "graph";
-                  show_label = false;
-                };
-                ram = {
-                  type = "sysmon";
-                  stat = "ram_used";
-                };
-                media = {
-                  type = "media";
-                  hide_when_no_media = true;
-                  title_scroll = "always";
-                };
-                battery = {
-                  type = "battery";
-                  display_mode = "graphic";
-                  warning_threshold = 30;
-                };
-                brightness = {
-                  type = "brightness";
-                  show_label = false;
-                };
-                input-volume = {
-                  type = "volume";
-                  device = "input";
-                };
-                output-volume = {
-                  type = "volume";
-                  device = "output";
-                };
-                clock = {
-                  type = "clock";
-                  format = "{:%Y/%m/%d %H:%M}";
-                  vertical_format = "{:%Y/%m/%d\n%H:%M}";
-                  tooltip_format = "{:%Y/%m/%d %H:%M (%a)}";
-                };
-                network-connection = {
-                  type = "custom_button";
-                  glyph = "access-point";
-                  command = "nm-connection-editor";
-                };
               };
             };
             colorSchemes.predefinedScheme = "dracula";

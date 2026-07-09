@@ -60,7 +60,7 @@ in
           outputs = {
             # x1g13 monitor
             "eDP-1" = {
-              scale = 1.0;
+              scale = 1.2;
               position = {
                 x = 2240;
                 y = 1440;
