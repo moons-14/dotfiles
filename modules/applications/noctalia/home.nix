@@ -104,6 +104,7 @@ in
               };
               tray = {
                 type = "tray";
+                pinned = [ "org.fcitx.Fcitx5" ];
               };
             };
 
