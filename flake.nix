@@ -89,6 +89,12 @@
 
     # Systems
     systems.url = "github:nix-systems/default-linux";
+
+    # Japanese Input Method
+    nix-hazkey = {
+      url = "github:aster-void/nix-hazkey";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

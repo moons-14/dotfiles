@@ -2,9 +2,12 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
+
   cfg = config.my.applications.fcitx5.system;
 in
 {
@@ -12,13 +15,30 @@ in
     enable = lib.mkEnableOption "fcitx5 system configuration";
   };
 
+  imports = [
+    inputs.nix-hazkey.nixosModules.hazkey
+  ];
+
   config = lib.mkIf cfg.enable {
+
+    services.hazkey = {
+      enable = true;
+      server.package = inputs.nix-hazkey.packages.${system}.hazkey-server.override {
+        enableVulkan = true;
+      };
+      installHazkeySettings = false;
+      installFcitx5Addon = false;
+    };
+
+    environment.systemPackages = [ inputs.nix-hazkey.packages.${system}.hazkey-settings ];
+
     i18n.inputMethod = {
       enable = true;
       type = "fcitx5";
       fcitx5 = {
         waylandFrontend = true;
         addons = with pkgs; [
+          inputs.nix-hazkey.packages.${system}.fcitx5-hazkey
           fcitx5-mozc-ut
           fcitx5-gtk
           kdePackages.fcitx5-qt
