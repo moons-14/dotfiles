@@ -17,6 +17,7 @@ in
       codex.enable = true;
       opencode.enable = true;
       grok.enable = true;
+      codexDesktop.enable = true;
     };
   };
 }

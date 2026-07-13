@@ -81,6 +81,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    codex-desktop-linux = {
+      url = "github:ilysenko/codex-desktop-linux";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     # Index / Search
     nix-index-database = {
       url = "github:nix-community/nix-index-database";

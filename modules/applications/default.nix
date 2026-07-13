@@ -5,6 +5,7 @@
     ./btop
     ./chrome.nix
     ./claude
+    ./codex-desktop.nix
     ./codex.nix
     ./direnv.nix
     ./discord.nix
