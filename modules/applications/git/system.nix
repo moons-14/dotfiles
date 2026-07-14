@@ -15,6 +15,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       git # Distributed version control system
+      gh # GitHub CLI
     ];
   };
 }
