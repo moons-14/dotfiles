@@ -8,6 +8,9 @@ The workflows in `.gitea/workflows/` publish the closures of every
 - `nix-cache-update.yml` runs on every branch push. It creates one immutable
   generation release per commit and uploads only NAR content hashes that have
   not appeared in an older generation.
+- Hosts are built independently. If one host fails, successful host closures
+  and store paths completed during the failed build are published before the
+  job reports the build failure.
 - The `cache-latest` release is the stable cache index. It contains
   `nix-cache-info`, `cache-public-key`, `cache-manifest.json`, and every
   `<store-hash>.narinfo` file.
@@ -44,6 +47,9 @@ The repository and its Release assets must be publicly readable for ordinary
 Nix clients to use this as an unauthenticated substituter. The runner needs
 enough disk for the Nix store plus one compressed copy of all host closures.
 It also needs `bash`, `curl`, `jq`, and standard GNU userland tools.
+
+The workflows remove `/homeless-shelter` before building. Nix requires that
+dummy home path not to exist when the runner performs builds without a sandbox.
 
 ## NixOS client configuration
 

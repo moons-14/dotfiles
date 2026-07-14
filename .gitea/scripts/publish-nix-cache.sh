@@ -15,7 +15,7 @@ generation_prefix=${CACHE_GENERATION_PREFIX:-nix-cache-generation-}
 upload_jobs=${CACHE_UPLOAD_JOBS:-4}
 key_file=${NIX_CACHE_KEY_FILE:-}
 
-for command in curl jq nix awk sed find sort; do
+for command in curl jq nix awk comm sed find sort; do
   if ! command -v "$command" >/dev/null 2>&1; then
     echo "Required command is unavailable: $command" >&2
     exit 1
@@ -339,6 +339,12 @@ if [[ -z $index_release_id || $index_release_id == null ]]; then
   exit 1
 fi
 
+store_paths_before_file="${work_dir}/store-paths-before"
+store_paths_after_file="${work_dir}/store-paths-after"
+new_store_paths_file="${work_dir}/new-store-paths"
+echo "Recording the Nix store state before evaluation and builds..."
+nix path-info --all | sort -u >"$store_paths_before_file"
+
 echo "Evaluating NixOS hosts..."
 hosts_file="${work_dir}/hosts"
 nix eval --json '.#nixosConfigurations' \
@@ -350,25 +356,41 @@ if ((${#hosts[@]} == 0)); then
   exit 1
 fi
 
-targets=()
-for host in "${hosts[@]}"; do
-  targets+=(".#nixosConfigurations.${host}.config.system.build.toplevel")
-done
-
 echo "Building hosts: ${hosts[*]}"
 roots_file="${work_dir}/roots"
-nix build --no-link --print-out-paths --print-build-logs "${targets[@]}" | sort -u >"$roots_file"
-mapfile -t roots <"$roots_file"
+: >"$roots_file"
+failed_hosts=()
+for host in "${hosts[@]}"; do
+  host_roots_file="${work_dir}/roots-${host}"
+  echo "Building host: ${host}"
+  if nix build --no-link --print-out-paths --print-build-logs \
+    ".#nixosConfigurations.${host}.config.system.build.toplevel" |
+    sort -u >"$host_roots_file"; then
+    cat "$host_roots_file" >>"$roots_file"
+  else
+    echo "Host build failed; completed store paths will still be published: ${host}" >&2
+    failed_hosts+=("$host")
+  fi
+done
+sort -u -o "$roots_file" "$roots_file"
 
-if ((${#roots[@]} == 0)); then
-  echo "The Nix build returned no store paths." >&2
+echo "Recording store paths completed during this job..."
+nix path-info --all | sort -u >"$store_paths_after_file"
+comm -13 "$store_paths_before_file" "$store_paths_after_file" >"$new_store_paths_file"
+
+export_paths_file="${work_dir}/export-paths"
+cat "$roots_file" "$new_store_paths_file" | sort -u >"$export_paths_file"
+if [[ ! -s $export_paths_file ]]; then
+  echo "No successfully completed store paths are available to publish." >&2
   exit 1
 fi
 
-echo "Exporting the complete host closures to a signed local binary cache..."
+successful_root_count=$(wc -l <"$roots_file")
+new_store_path_count=$(wc -l <"$new_store_paths_file")
+echo "Exporting ${successful_root_count} successful host roots and ${new_store_path_count} newly completed store paths..."
 nix copy \
   --to "file://${cache_dir}?compression=zstd&compression-level=6&secret-key=${key_file}" \
-  "${roots[@]}"
+  --stdin <"$export_paths_file"
 
 first_narinfo=$(find "$cache_dir" -maxdepth 1 -type f -name '*.narinfo' -print -quit)
 if [[ -z $first_narinfo ]] || ! grep -Fq "Sig: ${key_name}:" "$first_narinfo"; then
@@ -415,7 +437,7 @@ else
   create_release \
     "$generation_tag" \
     "Nix cache ${commit:0:12}" \
-    "Branch: ${ref_name}\nCommit: ${commit}\nMode: ${mode}" \
+    "Branch: ${ref_name}\nCommit: ${commit}\nMode: ${mode}\nFailed hosts: ${failed_hosts[*]:-none}" \
     true >"$generation_release_file"
 fi
 generation_release_id=$(jq -r '.id' "$generation_release_file")
@@ -610,3 +632,9 @@ rename_asset "$index_release_id" "$temporary_manifest_asset_id" "$manifest_asset
 echo "Published Nix cache generation: ${generation_tag}"
 echo "Cache URI: ${cache_uri}"
 echo "Public key: ${public_key}"
+
+if ((${#failed_hosts[@]} > 0)); then
+  echo "Cache publication succeeded, but the following host builds failed:" >&2
+  printf '  - %s\n' "${failed_hosts[@]}" >&2
+  exit 1
+fi
