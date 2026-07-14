@@ -47,9 +47,8 @@ let
           ;
       };
     };
-in
-{
-  flake.nixosConfigurations = {
+
+  nixosConfigurations = {
     nix-example = mkSystem {
       host = "nix-example";
       system = "x86_64-linux";
@@ -101,5 +100,14 @@ in
         inherit inputs;
       };
     };
+  };
+in
+{
+  flake = {
+    inherit nixosConfigurations;
+
+    checks.x86_64-linux = lib.mapAttrs' (
+      name: nixos: lib.nameValuePair "nixos-${name}" nixos.config.system.build.toplevel
+    ) nixosConfigurations;
   };
 }
