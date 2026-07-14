@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["nix"],
+  "nix": {
+    "enabled": true
+  },
+  "prCreation": "immediate",
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "packageRules": [
+    {
+      "description": "Group Nix flake input updates",
+      "matchManagers": ["nix"],
+      "groupName": "Nix flake inputs",
+      "groupSlug": "nix-flake-inputs"
+    }
+  ]
+}
