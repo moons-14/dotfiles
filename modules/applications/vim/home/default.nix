@@ -1,5 +1,6 @@
 {
   pkgs,
+  unstable,
   inputs,
   lib,
   config,
@@ -47,7 +48,7 @@ in
             vscode-langservers-extracted
             tailwindcss-language-server
             prettierd
-            prettier
+            unstable.prettier
             biome
             stylua
             shfmt

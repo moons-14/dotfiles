@@ -1,6 +1,5 @@
 {
   inputs,
-  pkgs,
   config,
   lib,
   ...
@@ -10,13 +9,6 @@ let
 
   username = "moons";
 
-  unstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs) system;
-    config = {
-      allowUnfree = true;
-    };
-  };
-
   mkSystem =
     {
       host,
@@ -24,6 +16,14 @@ let
       profiles ? [ ],
       extraModules ? [ ],
     }:
+    let
+      unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
+    in
     assert lib.assertMsg (lib.elem system config.systems)
       "mkSystem: system '${system}' not in valid systems: ${lib.generators.toPretty { } config.systems}";
     nixosSystem {

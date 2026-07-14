@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
   flake.overlays = {
-    default = inputs.llm-agents.overlays.default;
+    default = inputs.llm-agents.overlays.shared-nixpkgs;
   };
 }
