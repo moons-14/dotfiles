@@ -19,7 +19,7 @@ in
     security.pam.services.polkit-1.fprintAuth = true;
 
     security.pam.services = {
-      login.fprintAuth = true;
+      login.fprintAuth = false;
       sudo.fprintAuth = true;
       greetd.fprintAuth = lib.mkForce false;
       ly.fprintAuth = lib.mkForce false;

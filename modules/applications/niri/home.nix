@@ -123,12 +123,10 @@ in
             };
             "Mod+L" = {
               action.spawn = [
-                "noctalia"
-                "msg"
-                "session"
-                "lock"
+                (lib.getExe' pkgs.systemd "loginctl")
+                "lock-session"
               ];
-              hotkey-overlay.title = "Lock the Screen: noctalia";
+              hotkey-overlay.title = "Lock the Screen";
             };
             "Mod+V" = {
               action.spawn = [

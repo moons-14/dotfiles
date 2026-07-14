@@ -31,6 +31,7 @@
     ./slack.nix
     ./ssh
     ./swayidle.nix
+    ./swaylock
     ./tailscale.nix
     ./vicinae.nix
     ./vim

@@ -54,6 +54,10 @@ in
               };
             };
             desktop_widgets.enabled = false;
+            lockscreen = {
+              enabled = false;
+              fingerprint = false;
+            };
             widget = {
               cpu = {
                 type = "sysmon";

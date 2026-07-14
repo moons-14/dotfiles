@@ -2,24 +2,17 @@
   pkgs,
   lib,
   config,
-  inputs,
   ...
 }:
 let
   cfg = config.my.applications.swayidle;
 
-  noctaliaPkg = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-  noctalia = lib.getExe noctaliaPkg;
   brightnessctl = lib.getExe pkgs.brightnessctl;
   niri = lib.getExe pkgs.niri;
   rm = "${pkgs.coreutils}/bin/rm";
+  systemctl = lib.getExe' pkgs.systemd "systemctl";
 
   brightnessState = "$XDG_RUNTIME_DIR/swayidle-brightness";
-
-  noctaliaMsg = command: "${noctalia} msg ${command}";
-
-  lockCmd = noctaliaMsg "session lock";
 
   # AC 接続中は何もしない。
   # つまり、以下のアイドル処理をバッテリー駆動時のみにする。
@@ -49,10 +42,10 @@ let
     fi
   '';
 
-  lockAndSuspend = pkgs.writeShellScript "swayidle-lock-and-suspend" ''
+  suspendOnBattery = pkgs.writeShellScript "swayidle-suspend-on-battery" ''
     ${skipIfOnAC}
 
-    ${noctaliaMsg "session lock-and-suspend"}
+    exec ${systemctl} suspend
   '';
 
   afterResume = pkgs.writeShellScript "swayidle-after-resume" ''
@@ -83,13 +76,11 @@ in
             }
             {
               timeout = 360;
-              command = "${lockAndSuspend}";
+              command = "${suspendOnBattery}";
             }
           ];
 
           events = {
-            lock = lockCmd;
-            before-sleep = lockCmd;
             after-resume = "${afterResume}";
           };
         };

@@ -20,6 +20,7 @@ in
       ly.enable = true;
       noctalia.enable = true;
       swayidle.enable = true;
+      swaylock.enable = true;
       vicinae.enable = true;
     };
     my.system = {
