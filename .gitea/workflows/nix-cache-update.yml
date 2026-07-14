@@ -39,6 +39,8 @@ jobs:
           CACHE_MODE: update
           CACHE_REPOSITORY: moons-14/dotfiles
           CACHE_SERVER_URL: https://git.yutakobayashi.com
+          CACHE_API_SERVER_URL: ${{ vars.NIX_CACHE_API_SERVER_URL }}
+          CACHE_MAX_UPLOAD_BYTES: "90000000"
           CACHE_COMMIT: ${{ github.sha }}
           CACHE_REF_NAME: ${{ github.ref_name }}
         run: |

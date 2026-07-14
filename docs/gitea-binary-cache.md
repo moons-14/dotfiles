@@ -51,6 +51,36 @@ It also needs `bash`, `curl`, `jq`, and standard GNU userland tools.
 The workflows remove `/homeless-shelter` before building. Nix requires that
 dummy home path not to exist when the runner performs builds without a sandbox.
 
+## Large release assets and Cloudflare
+
+`git.yutakobayashi.com` is proxied by Cloudflare. Large NAR uploads can receive
+`413 Request Entity Too Large` before they reach Gitea. NAR files cannot be
+split because the Nix binary-cache protocol downloads each NAR as one object.
+
+Create an HTTPS origin hostname that is DNS-only in Cloudflare, or use a
+private Gitea URL reachable from the runner. Set that URL as the repository
+Actions variable `NIX_CACHE_API_SERVER_URL`, for example:
+
+```text
+https://git-origin.yutakobayashi.com
+```
+
+Only Gitea API calls and uploads use this variable. `CACHE_SERVER_URL` remains
+the public URL, so the URLs written to narinfo and the client substituter stay
+under `https://git.yutakobayashi.com`.
+
+The origin reverse proxy request-body limit and Gitea's
+`[repository.release] FILE_MAX_SIZE` must also be larger than the largest NAR.
+Protect an origin hostname with a firewall or another access control that still
+allows the Actions runner to reach it.
+
+When server-side limits cannot be changed, the workflows enforce
+`CACHE_MAX_UPLOAD_BYTES=90000000`. NARs larger than that limit and their
+narinfo files are not uploaded. They are recorded under `skipped` in
+`cache-manifest.json`. Nix clients can still substitute every smaller store
+path and obtain a skipped path from another substituter or build it locally.
+Set the value to `0` only when the upload path has no smaller request limit.
+
 ## NixOS client configuration
 
 After bootstrap, copy the exact value from `cache-public-key` into

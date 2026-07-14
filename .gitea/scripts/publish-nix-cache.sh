@@ -7,12 +7,14 @@ set -euo pipefail
 
 mode=${CACHE_MODE:-}
 server_url=${CACHE_SERVER_URL:-}
+api_server_url=${CACHE_API_SERVER_URL:-}
 repository=${CACHE_REPOSITORY:-}
 commit=${CACHE_COMMIT:-}
 ref_name=${CACHE_REF_NAME:-unknown}
 index_tag=${CACHE_INDEX_TAG:-cache-latest}
 generation_prefix=${CACHE_GENERATION_PREFIX:-nix-cache-generation-}
 upload_jobs=${CACHE_UPLOAD_JOBS:-4}
+max_upload_bytes=${CACHE_MAX_UPLOAD_BYTES:-90000000}
 key_file=${NIX_CACHE_KEY_FILE:-}
 
 for command in curl jq nix awk comm sed find sort; do
@@ -47,8 +49,15 @@ if [[ ! $upload_jobs =~ ^[1-9][0-9]*$ ]]; then
   exit 1
 fi
 
+if [[ ! $max_upload_bytes =~ ^[0-9]+$ ]]; then
+  echo "CACHE_MAX_UPLOAD_BYTES must be zero or a positive integer." >&2
+  exit 1
+fi
+
 server_url=${server_url%/}
-api_base="${server_url}/api/v1/repos/${repository}"
+api_server_url=${api_server_url:-$server_url}
+api_server_url=${api_server_url%/}
+api_base="${api_server_url}/api/v1/repos/${repository}"
 download_base="${server_url}/${repository}/releases/download"
 cache_uri="${download_base}/${index_tag}"
 manifest_url="${cache_uri}/cache-manifest.json"
@@ -64,11 +73,13 @@ all_releases_file="${work_dir}/all-releases.json"
 generation_release_file="${work_dir}/generation-release.json"
 object_updates_file="${work_dir}/object-updates.jsonl"
 narinfo_updates_file="${work_dir}/narinfo-updates.jsonl"
+skipped_updates_file="${work_dir}/skipped-updates.jsonl"
 nar_upload_queue="${work_dir}/nar-upload-queue"
 narinfo_upload_queue="${work_dir}/narinfo-upload-queue"
 mkdir -p "$cache_dir" "$rewritten_dir"
 : >"$object_updates_file"
 : >"$narinfo_updates_file"
+: >"$skipped_updates_file"
 : >"$nar_upload_queue"
 : >"$narinfo_upload_queue"
 trap 'rm -rf "$work_dir"' EXIT
@@ -149,14 +160,40 @@ upload_asset() {
   local release_id=$1
   local file=$2
   local name=$3
+  local response_file
+  local status
+  local curl_status
+  local size
+  local size_mib
 
-  curl --fail-with-body --silent --show-error \
+  response_file=$(mktemp "${work_dir}/upload-response.XXXXXX")
+  size=$(stat -c '%s' "$file")
+  size_mib=$(((size + 1048575) / 1048576))
+
+  if status=$(curl --silent --show-error \
     --retry 5 --retry-delay 2 --retry-all-errors \
     --request POST \
     --header "Authorization: token ${GITEA_TOKEN}" \
     --form "attachment=@${file};type=application/octet-stream" \
-    --output /dev/null \
-    "${api_base}/releases/${release_id}/assets?name=${name}"
+    --output "$response_file" --write-out '%{http_code}' \
+    "${api_base}/releases/${release_id}/assets?name=${name}"); then
+    curl_status=0
+  else
+    curl_status=$?
+  fi
+
+  if [[ $status == 200 || $status == 201 ]]; then
+    rm -f "$response_file"
+    return 0
+  fi
+
+  echo "Asset upload failed: name=${name} size=${size}B (${size_mib}MiB) HTTP=${status:-000} curl=${curl_status}" >&2
+  if [[ $status == 413 ]]; then
+    echo "The upload endpoint rejected this NAR as too large. Set the Gitea Actions variable NIX_CACHE_API_SERVER_URL to an origin URL that bypasses Cloudflare, and verify the origin proxy and Gitea release size limits." >&2
+  fi
+  sed -n '1,20p' "$response_file" >&2
+  rm -f "$response_file"
+  return 1
 }
 
 upload_asset_response() {
@@ -207,9 +244,6 @@ upload_queue() {
         fi
       done
       pids=()
-      if ((failed)); then
-        return 1
-      fi
     fi
   done <"$queue_file"
 
@@ -261,7 +295,8 @@ initialize_manifest() {
       generatedAt: null,
       generations: [],
       objects: {},
-      narinfos: {}
+      narinfos: {},
+      skipped: {}
     }' >"$manifest_file"
 }
 
@@ -465,6 +500,7 @@ done < <(jq -r '.assets[]? | [.name, (.id | tostring)] | @tsv' "$index_release_f
 
 new_nar_count=0
 new_narinfo_count=0
+skipped_path_count=0
 while IFS= read -r -d '' narinfo_file; do
   narinfo_name=$(basename "$narinfo_file")
   store_hash=${narinfo_name%.narinfo}
@@ -488,8 +524,33 @@ while IFS= read -r -d '' narinfo_file; do
   fi
 
   if [[ -z ${object_urls[$nar_name]:-} ]]; then
-    object_urls["$nar_name"]="${download_base}/${generation_tag}/${nar_name}"
     object_sizes["$nar_name"]=$(stat -c '%s' "$nar_file")
+    nar_size=${object_sizes[$nar_name]}
+
+    if ((max_upload_bytes > 0 && nar_size > max_upload_bytes)); then
+      echo "Skipping oversized NAR: storePath=${store_path} name=${nar_name} size=${nar_size}B limit=${max_upload_bytes}B" >&2
+      jq -cn \
+        --arg key "$store_hash" \
+        --arg store_path "$store_path" \
+        --arg nar "$nar_name" \
+        --arg reason "upload-size-limit" \
+        --argjson size "$nar_size" \
+        --argjson limit "$max_upload_bytes" \
+        '{
+          key: $key,
+          value: {
+            storePath: $store_path,
+            nar: $nar,
+            size: $size,
+            limit: $limit,
+            reason: $reason
+          }
+        }' >>"$skipped_updates_file"
+      ((skipped_path_count += 1))
+      continue
+    fi
+
+    object_urls["$nar_name"]="${download_base}/${generation_tag}/${nar_name}"
 
     if [[ -z ${queued_objects[$nar_name]:-} ]]; then
       printf '%s\t%s\n' "$nar_file" "$nar_name" >>"$nar_upload_queue"
@@ -556,14 +617,20 @@ jq --arg prefix "$generation_prefix" '
 jq -s \
   --slurpfile object_updates "$object_updates_file" \
   --slurpfile narinfo_updates "$narinfo_updates_file" \
+  --slurpfile skipped_updates "$skipped_updates_file" \
   --slurpfile generations "$generations_file" \
   --arg generation_tag "$generation_tag" \
   --arg commit "$commit" \
   --arg now "$now" \
   '
     .[0]
+    | .skipped = (.skipped // {})
     | reduce $object_updates[] as $update (.; .objects[$update.key] = $update.value)
-    | reduce $narinfo_updates[] as $update (.; .narinfos[$update.key] = $update.value)
+    | reduce $skipped_updates[] as $update (.; .skipped[$update.key] = $update.value)
+    | reduce $narinfo_updates[] as $update (.;
+        .narinfos[$update.key] = $update.value
+        | del(.skipped[$update.key])
+      )
     | .generatedAt = $now
     | .objects as $objects
     | .generations = (
@@ -632,6 +699,9 @@ rename_asset "$index_release_id" "$temporary_manifest_asset_id" "$manifest_asset
 echo "Published Nix cache generation: ${generation_tag}"
 echo "Cache URI: ${cache_uri}"
 echo "Public key: ${public_key}"
+if ((skipped_path_count > 0)); then
+  echo "Skipped ${skipped_path_count} store paths whose compressed NAR exceeded ${max_upload_bytes} bytes. They are listed in cache-manifest.json and will fall back to another substituter or a local build." >&2
+fi
 
 if ((${#failed_hosts[@]} > 0)); then
   echo "Cache publication succeeded, but the following host builds failed:" >&2
