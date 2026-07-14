@@ -14,8 +14,10 @@ ref_name=${CACHE_REF_NAME:-unknown}
 index_tag=${CACHE_INDEX_TAG:-cache-latest}
 generation_prefix=${CACHE_GENERATION_PREFIX:-nix-cache-generation-}
 upload_jobs=${CACHE_UPLOAD_JOBS:-4}
-max_upload_bytes=${CACHE_MAX_UPLOAD_BYTES:-90000000}
+max_upload_bytes=${CACHE_MAX_UPLOAD_BYTES:-}
 key_file=${NIX_CACHE_KEY_FILE:-}
+api_is_internal=0
+api_curl_options=()
 
 for command in curl jq nix awk comm sed find sort; do
   if ! command -v "$command" >/dev/null 2>&1; then
@@ -49,7 +51,7 @@ if [[ ! $upload_jobs =~ ^[1-9][0-9]*$ ]]; then
   exit 1
 fi
 
-if [[ ! $max_upload_bytes =~ ^[0-9]+$ ]]; then
+if [[ -n $max_upload_bytes && ! $max_upload_bytes =~ ^[0-9]+$ ]]; then
   echo "CACHE_MAX_UPLOAD_BYTES must be zero or a positive integer." >&2
   exit 1
 fi
@@ -89,7 +91,7 @@ api_request() {
   local path=$2
   shift 2
 
-  curl --fail-with-body --silent --show-error \
+  curl "${api_curl_options[@]}" --fail-with-body --silent --show-error \
     --retry 5 --retry-delay 2 --retry-all-errors \
     --request "$method" \
     --header "Authorization: token ${GITEA_TOKEN}" \
@@ -103,7 +105,7 @@ api_get_optional() {
   local output=$2
   local status
 
-  status=$(curl --silent --show-error \
+  status=$(curl "${api_curl_options[@]}" --silent --show-error \
     --retry 5 --retry-delay 2 --retry-all-errors \
     --output "$output" --write-out '%{http_code}' \
     --header "Authorization: token ${GITEA_TOKEN}" \
@@ -170,7 +172,7 @@ upload_asset() {
   size=$(stat -c '%s' "$file")
   size_mib=$(((size + 1048575) / 1048576))
 
-  if status=$(curl --silent --show-error \
+  if status=$(curl "${api_curl_options[@]}" --silent --show-error \
     --retry 5 --retry-delay 2 --retry-all-errors \
     --request POST \
     --header "Authorization: token ${GITEA_TOKEN}" \
@@ -201,7 +203,7 @@ upload_asset_response() {
   local file=$2
   local name=$3
 
-  curl --fail-with-body --silent --show-error \
+  curl "${api_curl_options[@]}" --fail-with-body --silent --show-error \
     --retry 5 --retry-delay 2 --retry-all-errors \
     --request POST \
     --header "Authorization: token ${GITEA_TOKEN}" \
@@ -277,6 +279,64 @@ list_all_releases() {
   jq -s '.' "$releases_jsonl" >"$all_releases_file"
 }
 
+configure_api_transport() {
+  local candidate
+  local candidate_url
+  local public_authority
+  local version_json
+
+  if [[ -n ${CACHE_API_SERVER_URL:-} ]]; then
+    api_is_internal=1
+    echo "Using configured Gitea origin API: ${api_server_url}"
+  elif [[ $server_url == https://* ]]; then
+    public_authority=${server_url#https://}
+    public_authority=${public_authority%%/*}
+
+    for candidate in host.containers.internal host.docker.internal; do
+      if version_json=$(curl --silent --show-error \
+        --noproxy '*' --connect-timeout 3 --max-time 5 \
+        --connect-to "${public_authority}:443:${candidate}:443" \
+        "${server_url}/api/v1/version" 2>/dev/null) &&
+        jq -e '.version | type == "string"' <<<"$version_json" >/dev/null; then
+        api_curl_options=(
+          --noproxy '*'
+          --connect-to "${public_authority}:443:${candidate}:443"
+        )
+        api_is_internal=1
+        echo "Using direct Gitea HTTPS transport through ${candidate}:443; Cloudflare is bypassed."
+        break
+      fi
+    done
+
+    if ((api_is_internal == 0)); then
+      for candidate in host.containers.internal host.docker.internal; do
+        candidate_url="http://${candidate}:3000"
+        if version_json=$(curl --silent --show-error \
+          --noproxy '*' --connect-timeout 3 --max-time 5 \
+          "${candidate_url}/api/v1/version" 2>/dev/null) &&
+          jq -e '.version | type == "string"' <<<"$version_json" >/dev/null; then
+          api_server_url=$candidate_url
+          api_base="${api_server_url}/api/v1/repos/${repository}"
+          api_curl_options=(--noproxy '*')
+          api_is_internal=1
+          echo "Using direct Gitea API through ${candidate}:3000; Cloudflare is bypassed."
+          break
+        fi
+      done
+    fi
+  fi
+
+  if [[ -z $max_upload_bytes ]]; then
+    if ((api_is_internal)); then
+      max_upload_bytes=0
+      echo "No workflow-side NAR size limit is applied on the internal API transport."
+    else
+      max_upload_bytes=90000000
+      echo "No internal Gitea API was reachable; using the public endpoint and limiting NAR uploads to ${max_upload_bytes} bytes."
+    fi
+  fi
+}
+
 initialize_manifest() {
   jq -n \
     --arg uri "$cache_uri" \
@@ -299,6 +359,8 @@ initialize_manifest() {
       skipped: {}
     }' >"$manifest_file"
 }
+
+configure_api_transport
 
 index_release_file="${work_dir}/index-release.json"
 if api_get_optional "/releases/tags/${index_tag}" "$index_release_file"; then

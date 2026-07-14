@@ -74,12 +74,18 @@ The origin reverse proxy request-body limit and Gitea's
 Protect an origin hostname with a firewall or another access control that still
 allows the Actions runner to reach it.
 
-When server-side limits cannot be changed, the workflows enforce
-`CACHE_MAX_UPLOAD_BYTES=90000000`. NARs larger than that limit and their
-narinfo files are not uploaded. They are recorded under `skipped` in
+Without an explicit origin variable, the workflow automatically probes the
+Podman/Docker host through `host.containers.internal` and
+`host.docker.internal`. It first connects directly to host port 443 while
+preserving the public hostname and TLS SNI, then tries Gitea's conventional
+HTTP port 3000. A successful probe bypasses Cloudflare and disables the
+workflow-side NAR size limit.
+
+If no internal route is reachable, the workflow uses the public endpoint and
+enforces `CACHE_MAX_UPLOAD_BYTES=90000000`. NARs larger than that limit and
+their narinfo files are not uploaded. They are recorded under `skipped` in
 `cache-manifest.json`. Nix clients can still substitute every smaller store
 path and obtain a skipped path from another substituter or build it locally.
-Set the value to `0` only when the upload path has no smaller request limit.
 
 ## NixOS client configuration
 
