@@ -34,7 +34,7 @@ in
 
             Service = {
               Type = "forking";
-              ExecStart = "${lib.getExe pkgs.swaylock} -f";
+              ExecStart = "${lib.getExe pkgs.swaylock} -f -i %h/.wallpapers/28.jpg";
               Restart = "on-failure";
               RestartSec = 0;
             };

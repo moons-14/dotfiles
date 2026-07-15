@@ -12,6 +12,24 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home-manager.sharedModules = [
+      {
+        xdg.userDirs = {
+          enable = true;
+          createDirectories = true;
+          desktop = "$HOME/Desktop";
+          documents = "$HOME/Documents";
+          download = "$HOME/Downloads";
+          music = "$HOME/Music";
+          pictures = "$HOME/Pictures";
+          projects = "$HOME/Projects";
+          publicShare = "$HOME/Public";
+          templates = "$HOME/Templates";
+          videos = "$HOME/Videos";
+        };
+      }
+    ];
+
     my.applications = {
       gnome.enable = true;
       gtk.enable = true;

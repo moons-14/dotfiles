@@ -14,8 +14,6 @@ in
   config = lib.mkIf cfg.enable {
     services.systemd-lock-handler.enable = true;
 
-    # Screen unlocking deliberately uses passwords only. Fingerprints remain
-    # available to explicitly enabled PAM services such as sudo and polkit.
-    security.pam.services.swaylock.fprintAuth = false;
+    security.pam.services.swaylock.fprintAuth = true;
   };
 }

@@ -53,6 +53,11 @@ in
           extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
             nix
             power-profile
+            niri
+            zoxide-recent-directories
+            ssh
+            port-killer
+            noctalia-shell-wallpaper-selector
           ];
         };
       }
