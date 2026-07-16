@@ -5,6 +5,10 @@
   "nix": {
     "enabled": true
   },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["at any time"]
+  },
   "prCreation": "immediate",
   "semanticCommits": "enabled",
   "semanticCommitType": "chore",
