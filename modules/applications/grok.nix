@@ -6,6 +6,10 @@
 }:
 let
   cfg = config.my.applications.grok;
+
+  grok = pkgs.llm-agents.grok.overrideAttrs (_old: {
+    versionCheckProgram = "${placeholder "out"}/libexec/grok/grok-launcher";
+  });
 in
 {
   options.my.applications.grok = {
@@ -14,7 +18,7 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      pkgs.llm-agents.grok # Grok AI CLI
+      grok
     ];
   };
 }
