@@ -179,6 +179,27 @@ sudo nixos-rebuild switch --flake .#<host> # Apply config
 sudo nixos-rebuild build --flake .#<host>  # Build without applying
 ```
 
+## Nix Binary Cache
+
+All normal hosts run `nixcache-oci` as a local proxy for
+`ghcr.io/moons-14/dotfiles/nix-cache`. The `Publish Nix cache` workflow builds
+the flake on pushes to `main` and uploads only store paths that were built by
+the runner rather than substituted from an existing cache. Nix still uses the
+official cache and configured Cachix caches for all other paths.
+
+The cache must remain public and signed:
+
+1. Generate a signing key outside this repository and save its contents as the
+   `NIX_SIGNING_KEY` GitHub Actions secret.
+2. Run the `Publish Nix cache` workflow. It commits `nixcache-public-key.txt`,
+   which clients trust on their next configuration rebuild.
+3. In GitHub Packages, make the `nix-cache` container package public.
+
+```sh
+nix key generate-secret > /tmp/nixcache-signing-key
+# Copy the contents into the NIX_SIGNING_KEY GitHub Actions secret, then delete the local file.
+```
+
 ## Inspired
 
 - [Zaney/zaneyos](https://gitlab.com/Zaney/zaneyos)

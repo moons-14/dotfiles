@@ -92,6 +92,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Binary cache
+    nixcache-oci = {
+      url = "github:cmspam/nixcache-oci";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Systems
     systems.url = "github:nix-systems/default-linux";
 

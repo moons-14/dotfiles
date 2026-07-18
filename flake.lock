@@ -634,6 +634,26 @@
         "type": "github"
       }
     },
+    "nixcache-oci": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784221638,
+        "narHash": "sha256-dBzaw2Itm5Rg7YTvlI+LU6d2yTZXlpbVLARO2RmTvHw=",
+        "owner": "cmspam",
+        "repo": "nixcache-oci",
+        "rev": "fb6006b5575da494dbbfc582e841d976ec06be6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cmspam",
+        "repo": "nixcache-oci",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -976,6 +996,7 @@
         "niri-flake": "niri-flake",
         "nix-hazkey": "nix-hazkey",
         "nix-index-database": "nix-index-database",
+        "nixcache-oci": "nixcache-oci",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_6",
