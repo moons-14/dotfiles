@@ -38,6 +38,7 @@
     ./vscode
     ./wayland.nix
     ./yazi.nix
+    ./zed
     ./zellij
     ./zoom.nix
     ./zoxide.nix
