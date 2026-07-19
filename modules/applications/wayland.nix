@@ -19,19 +19,13 @@ in
     # modules do not each append their own portal backends.
     xdg.portal = {
       enable = true;
-      wlr.enable = true;
       extraPortals = [
         pkgs.xdg-desktop-portal-gnome
         pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal-wlr
       ];
       xdgOpenUsePortal = true;
       config = {
         common.default = [ "gtk" ];
-        niri.default = lib.mkForce [
-          "wlr"
-          "gtk"
-        ];
         gnome.default = [
           "gnome"
           "gtk"
