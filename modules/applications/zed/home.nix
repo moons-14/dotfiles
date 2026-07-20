@@ -16,6 +16,10 @@ in
       config = lib.mkIf cfg.enable {
         programs.zed-editor = {
           enable = true;
+          extensions = [
+            "catppuccin"
+            "nix"
+          ];
           mutableUserSettings = false;
 
           userSettings = {
@@ -46,13 +50,13 @@ in
               dark = "Zed (Default)";
             };
 
-            ui_font_size = 18;
-            buffer_font_size = 20;
+            ui_font_size = 17;
+            buffer_font_size = 16;
 
             theme = {
               mode = "dark";
-              light = "Dracula";
-              dark = "Dracula";
+              light = "Catppuccin Latte";
+              dark = "Catppuccin Mocha";
             };
           };
         };
