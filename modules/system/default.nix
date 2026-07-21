@@ -1,4 +1,3 @@
-{ inputs, ... }:
 {
   imports = [
     ./audio.nix
@@ -12,7 +11,6 @@
     ./locale.nix
     ./network
     ./nix.nix
-    ./nixcache-oci.nix
     ./power.nix
     ./quem.nix
     ./secure-boot.nix
@@ -20,6 +18,5 @@
     ./user
     ./version.nix
     ./secret.nix
-    inputs.nixcache-oci.nixosModules.default
   ];
 }
