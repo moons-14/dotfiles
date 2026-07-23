@@ -50,7 +50,7 @@ in
               dark = "Zed (Default)";
             };
 
-            ui_font_size = 17;
+            ui_font_size = 16;
             buffer_font_size = 16;
 
             theme = {
