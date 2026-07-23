@@ -78,12 +78,10 @@
     # LLM agents
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     codex-desktop-linux = {
       url = "github:ilysenko/codex-desktop-linux";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Index / Search

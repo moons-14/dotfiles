@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.overlays = {
-    default = inputs.llm-agents.overlays.shared-nixpkgs;
+  flake.overlays.default = final: {
+    llm-agents = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system};
   };
 }
