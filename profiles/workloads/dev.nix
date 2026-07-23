@@ -6,6 +6,7 @@
       nix.enable = true;
       python.enable = true;
       bun.enable = true;
+      dns.enable = true;
       drawio.enable = true;
       java.enable = true;
     };
