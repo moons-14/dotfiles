@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   renovate:
-    name: Update Nix flake inputs
+    name: Update GitHub Actions dependencies
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:

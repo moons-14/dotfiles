@@ -1,31 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
-  "enabledManagers": ["github-actions", "nix"],
+  "enabledManagers": ["github-actions"],
 
   "prHourlyLimit": 0,
-
-  "nix": {
-    "enabled": true
-  },
-
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["at any time"]
-  },
 
   "prCreation": "immediate",
 
   "semanticCommits": "enabled",
   "semanticCommitType": "chore",
-  "semanticCommitScope": "deps",
-
-  "packageRules": [
-    {
-      "description": "Group Nix flake input updates",
-      "matchManagers": ["nix"],
-      "groupName": "Nix flake inputs",
-      "groupSlug": "nix-flake-inputs"
-    }
-  ]
+  "semanticCommitScope": "deps"
 }

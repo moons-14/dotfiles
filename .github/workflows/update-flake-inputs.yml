@@ -1,0 +1,106 @@
+name: Update Flake Inputs
+on:
+  schedule:
+    # Every day at 03:30 JST (18:30 UTC on the previous day).
+    - cron: "30 18 * * *"
+  workflow_dispatch:
+    inputs:
+      input:
+        description: Update only this flake input (empty updates all inputs)
+        required: false
+        type: string
+      skip-delay:
+        description: Update to the latest revision without the three-day delay
+        required: false
+        default: false
+        type: boolean
+      auto-merge:
+        description: Enable auto-merge after required checks pass
+        required: false
+        default: true
+        type: boolean
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: update-flake-inputs
+  cancel-in-progress: false
+jobs:
+  discover:
+    name: Discover flake inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.inputs.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build update matrix
+        id: inputs
+        env:
+          REQUESTED_INPUT: ${{ inputs.input }}
+        run: |
+          set -euo pipefail
+
+          github_inputs="$(
+            jq -c '
+              . as $lock
+              | [
+                  $lock.nodes.root.inputs
+                  | to_entries[]
+                  | .key as $name
+                  | (
+                      .value
+                      | if type == "array" then .[0] else . end
+                    ) as $node
+                  | select($lock.nodes[$node].locked.type == "github")
+                  | $name
+                ]
+              | sort
+            ' flake.lock
+          )"
+
+          if [ -n "$REQUESTED_INPUT" ]; then
+            if ! jq -e --arg input "$REQUESTED_INPUT" 'index($input) != null' <<< "$github_inputs" >/dev/null; then
+              echo "::error::Unknown or unsupported flake input: $REQUESTED_INPUT"
+              exit 1
+            fi
+            matrix="$(jq -cn --arg input "$REQUESTED_INPUT" '{input: [$input]}')"
+          else
+            matrix="$(jq -cn --argjson inputs "$github_inputs" '{input: $inputs}')"
+          fi
+
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "Update matrix: $matrix"
+  update:
+    name: Update ${{ matrix.input }}
+    needs: discover
+    if: ${{ needs.discover.outputs.matrix != '{"input":[]}' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RENOVATE_TOKEN }}
+      - name: Install Nix
+        uses: cachix/install-nix-action@630ae543ea3a38a9a4166f03376c02c50f408342 # v31.11.0
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            access-tokens = github.com=${{ secrets.RENOVATE_TOKEN }}
+      - name: Update input
+        uses: ./.github/actions/update-flake-input
+        with:
+          input-name: ${{ matrix.input }}
+          github-token: ${{ secrets.RENOVATE_TOKEN }}
+          skip-delay: ${{ github.event_name == 'workflow_dispatch' && inputs.skip-delay }}
+          auto-merge: ${{ github.event_name != 'workflow_dispatch' || inputs.auto-merge }}
