@@ -62,24 +62,6 @@ in
             "eDP-1" = {
               scale = 1.2;
               position = {
-                x = 2240;
-                y = 1440;
-              };
-            };
-
-            # LG WQHD monitor
-            "HDMI-A-1" = {
-              scale = 1.0;
-              position = {
-                x = 2560;
-                y = 0;
-              };
-            };
-
-            # DELL monitor
-            "DP-3" = {
-              scale = 1.5;
-              position = {
                 x = 0;
                 y = 0;
               };

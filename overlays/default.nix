@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.overlays.default = final: {
-    llm-agents = inputs.llm-agents.packages.${final.stdenv.hostPlatform.system};
+  flake.overlays.default = _final: prev: {
+    llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
   };
 }
