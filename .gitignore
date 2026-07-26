@@ -14,3 +14,14 @@
 
 !/flake.nix
 !/flake.lock
+
+!/shells/
+!/flake/
+!/overlays/
+
+!/modules/applications/
+!/modules/hardwares/
+!/modules/profiles/
+!/modules/services/
+!/modules/systems/
+!/modules/users/
