@@ -1,5 +1,0 @@
-{
-  imports = [
-    ./nfs-client.nix
-  ];
-}

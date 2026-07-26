@@ -14,15 +14,3 @@
 
 !/flake.nix
 !/flake.lock
-!/renovate.json
-
-!shells/
-!hosts/
-!overlays/
-!profiles/
-!modules/
-!docs/
-!images/
-!secrets/
-
-!/flake/
