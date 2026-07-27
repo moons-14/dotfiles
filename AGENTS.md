@@ -40,8 +40,10 @@ Prefer the following placements:
 | Nix settings shared by every system host             | `modules/systems/nix/common.nix`                        |
 | NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                    |
 | Disko NixOS module and CLI                           | `modules/systems/disko/`                                |
+| macOS-wide input, document, and dialog defaults      | `modules/systems/macos-defaults/darwin.nix`             |
 | macOS Dock defaults                                  | `modules/systems/dock/darwin.nix`                       |
 | macOS trackpad defaults                              | `modules/systems/trackpad/darwin.nix`                   |
+| Finder-specific preferences                          | `modules/applications/finder/darwin.nix`                |
 | Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
 | niri-specific configuration                          | `modules/applications/niri/`                            |
 | Desktop applications shared by GNOME and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
@@ -371,7 +373,8 @@ The profile layers have these responsibilities:
 - `interface` describes how the host is operated. `interface.cli` is shared by
   NixOS and macOS and includes `tio`. `interface.gui` owns cross-platform
   graphical interface applications such as Vicinae. `interface.macos` owns the
-  macOS Dock and trackpad defaults and includes `interface.gui`.
+  macOS Finder, Dock, trackpad, and shared default preferences and includes
+  `interface.gui`.
   `interface.linux-desktop` owns the common GNOME/niri desktop selection,
   including Ghostty and Nautilus, and also includes `interface.gui`. GNOME and
   niri remain independently selectable and do not imply CLI or personal
