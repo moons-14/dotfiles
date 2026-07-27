@@ -19,9 +19,9 @@
 !/flake/
 !/overlays/
 
-!/modules/applications/
-!/modules/hardwares/
-!/modules/profiles/
-!/modules/services/
-!/modules/systems/
-!/modules/users/
+!/images/
+!/secrets/
+
+!/hosts/
+
+!/modules/
