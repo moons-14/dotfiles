@@ -504,6 +504,28 @@ A host registry may use a specification like this:
     ];
   };
 
+  x1g13 = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./x1g13;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "interface.gnome"
+      "interface.niri"
+      "networking.tailscale-client"
+      "platform.thinkpad-x1"
+      "security.fingerprint"
+      "security.secrets"
+      "security.secure-boot"
+      "security.tpm-storage"
+      "workload.development"
+      "workload.personal"
+    ];
+  };
+
   m2 = {
     system = "aarch64-darwin";
     stateVersion = "26.05";
@@ -524,9 +546,12 @@ A host registry may use a specification like this:
 
 The current role assignment is intentional: x1g9 is a full NixOS desktop with
 niri, GNOME, ly, the shared Linux desktop applications, and the personal
-workload. m2 is the daily-use macOS development and personal machine with the
-macOS interface defaults. Keep the desktop sessions independently selectable,
-and keep m2's development and personal profiles usable on Darwin.
+workload. x1g13 is the secure NixOS development and personal ThinkPad, with the
+same desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed
+disk unlock. m2 is the daily-use macOS development and personal machine with
+the macOS interface defaults. Keep the desktop sessions independently
+selectable, and keep the development and personal profiles usable across NixOS
+and Darwin.
 
 Treat entries in `profiles` and the exceptional `applications` field as IDs
 relative to their respective category roots. Add the category prefixes during
@@ -559,14 +584,20 @@ hosts/
 ├── x1g9/
 │   ├── nixos.nix
 │   └── hardware-configuration.nix
+├── x1g13/
+│   ├── nixos.nix
+│   ├── home.nix
+│   ├── disko.nix
+│   └── hardware-configuration.nix
 └── m2/
     └── darwin.nix
 ```
 
 `hosts/x1g9/nixos.nix` explicitly loads `hardware-configuration.nix` with the
-normal top-level Nix module `imports`. A future host-local `disko.nix` would be
-loaded the same way. Do not confuse these host imports with the prohibition on
-top-level `imports` in unit configuration fragments.
+normal top-level Nix module `imports`. `hosts/x1g13/nixos.nix` loads its
+generated hardware configuration and host-local `disko.nix` the same way. Do
+not confuse these host imports with the prohibition on top-level `imports` in
+unit configuration fragments.
 
 Derive the system class from the host's `system`:
 
@@ -664,8 +695,9 @@ For profile changes, additionally:
 - When adding a Darwin application fragment, verify the resulting
   `homebrew.casks` selection as well as module evaluation.
 - Preserve the intended host roles: x1g9 provides niri, GNOME, ly, and the
-  personal application set, while m2 remains the daily-use development and
-  personal machine.
+  personal application set; x1g13 additionally provides the development,
+  Tailscale client, secrets, Secure Boot, and TPM storage roles; m2 remains the
+  daily-use development and personal machine.
 
 ## Commit and Pull Request Guidelines
 
