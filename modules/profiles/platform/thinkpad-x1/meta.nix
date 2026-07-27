@@ -5,6 +5,5 @@
     "profiles.platform.laptop"
     "hardwares.intel-driver"
     "hardwares.ipu6-camera"
-    "systems.fingerprint"
   ];
 }
