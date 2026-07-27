@@ -8,6 +8,7 @@
     "applications.codex-desktop"
     "applications.docker"
     "applications.drawio"
+    "applications.ghostty"
     "applications.grok"
     "applications.java"
     "applications.opencode"

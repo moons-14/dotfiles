@@ -19,7 +19,7 @@ makes any statement here stale, update `AGENTS.md` in the same change.
 | `modules/hardwares/`    | Reusable drivers, hardware families, and VM or WSL guest configuration                                            |
 | `modules/users/`        | User identity and the user's NixOS-, nix-darwin-, and Home Manager-specific definitions                           |
 | `modules/profiles/`     | Purpose- or form-factor-oriented compositions of multiple units                                                   |
-| `hosts/`                | Machine-specific facts and the profiles or applications selected for each machine                                 |
+| `hosts/`                | Machine-specific facts and the profiles selected for each machine; direct unit selections are exceptional         |
 | `libs/`                 | Registry, unit discovery, and host construction logic                                                             |
 | `overlays/`             | Package replacements and additions                                                                                |
 | `shells/`               | Development shells                                                                                                |
@@ -468,7 +468,9 @@ host-owned data includes:
 - Kernel parameters required by one machine only.
 - `system.stateVersion`.
 - Host-specific secret references.
-- The profiles, applications, and other units enabled on that host.
+- The profiles enabled on that host and, only in exceptional cases, direct
+  application or other unit selections that cannot be expressed by a coherent
+  reusable profile.
 
 A host registry may use a specification like this:
 
@@ -515,8 +517,9 @@ workload. m2 is the daily-use macOS development and personal machine. Keep the
 desktop sessions independently selectable, and keep m2's development and
 personal profiles usable on Darwin.
 
-Treat entries in `profiles` and `applications` as IDs relative to their
-respective category roots. Add the category prefixes during host construction:
+Treat entries in `profiles` and the exceptional `applications` field as IDs
+relative to their respective category roots. Add the category prefixes during
+host construction:
 
 ```nix
 selectedUnits =
@@ -526,13 +529,16 @@ selectedUnits =
   ++ spec.units or [ ];
 ```
 
-`units` is an escape hatch for fully qualified service, system, hardware, or
-other unit IDs. Do not use it when an existing profile expresses the concern or
-when the concern is reusable enough to deserve a small profile. For example,
-select `security.fingerprint`; do not write
-`units = [ "systems.fingerprint" ];`. Prefer profiles for the main composition
-and keep `units` empty unless a genuinely exceptional low-level selection is
-required.
+`applications` and `units` are escape hatches, not normal host composition.
+Do not add either field when an existing profile expresses the concern, when an
+existing profile can coherently include the unit, or when the concern is
+reusable enough to deserve a small profile. For example, add a development tool
+to `workload.development` and select `security.fingerprint`; do not write
+`applications = [ "ghostty" ];` or `units = [ "systems.fingerprint" ];` in a
+host. A direct selection is permitted only for a genuinely exceptional,
+machine-specific unit that would make every reasonable profile misleading; add
+an adjacent comment explaining that exception. Prefer profiles for host
+composition and omit both escape-hatch fields by default.
 
 Host modules use normal Nix module semantics and are not Registry-guarded
 configuration fragments. For example:
@@ -596,8 +602,10 @@ When implementing or modifying modules:
   profile.
 - Keep `modules/profiles/README.md`, the profile directories, and host profile
   selections synchronized whenever any of them changes.
-- Prefer an existing or newly justified profile over a host-level `units` entry
-  for reusable concerns such as fingerprint authentication.
+- Do not select applications or units directly in `hosts/default.nix` unless
+  they meet the documented exceptional, machine-specific escape-hatch rule.
+  Prefer adding the unit to an existing coherent profile or creating a small,
+  justified reusable profile.
 - Do not rely on module-list ordering to override values. Use Nix module
   priorities such as `lib.mkDefault`, `lib.mkForce`, `lib.mkBefore`, or
   `lib.mkAfter` explicitly when required.
