@@ -1,0 +1,3 @@
+{
+  thisFileMustNotBeDiscovered = true;
+}

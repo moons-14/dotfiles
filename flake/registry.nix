@@ -1,0 +1,42 @@
+{
+  inputs,
+  lib,
+  ...
+}:
+let
+  dotfilesLib = import ../libs {
+    inherit inputs lib;
+    root = ../.;
+  };
+  hostSpecsPath = ../hosts/default.nix;
+  hostSpecs =
+    if builtins.pathExists hostSpecsPath then
+      let
+        value = import hostSpecsPath;
+      in
+      if builtins.isFunction value then
+        value (
+          builtins.intersectAttrs (builtins.functionArgs value) {
+            inherit inputs lib;
+          }
+        )
+      else
+        value
+    else
+      { };
+  configurations = dotfilesLib.hosts.mkConfigurations hostSpecs;
+in
+{
+  flake = {
+    inherit (configurations) darwinConfigurations nixosConfigurations;
+    lib = dotfilesLib;
+  };
+
+  perSystem =
+    { pkgs, ... }:
+    {
+      checks.registry = import ../tests/registry.nix {
+        inherit inputs lib pkgs;
+      };
+    };
+}

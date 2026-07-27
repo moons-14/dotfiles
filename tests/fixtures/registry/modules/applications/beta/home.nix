@@ -1,0 +1,3 @@
+{
+  test.homeValues = [ "beta-home" ];
+}

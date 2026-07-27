@@ -24,4 +24,8 @@
 
 !/hosts/
 
+!/libs/
+
 !/modules/
+
+!/tests/
