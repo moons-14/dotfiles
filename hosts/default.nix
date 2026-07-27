@@ -9,7 +9,6 @@
       "base"
       "interface.gui"
       "platform.thinkpad"
-      "workload.development"
       "workload.personal"
       "workload.tailscale.client"
     ];
