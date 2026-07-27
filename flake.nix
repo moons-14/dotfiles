@@ -96,7 +96,7 @@
     };
 
     # Systems
-    systems.url = "github:nix-systems/default-linux";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =

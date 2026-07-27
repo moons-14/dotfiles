@@ -145,7 +145,10 @@ let
       modules = [
         (registry.mkModule { class = "darwin"; })
         (registry.mkSelectionModule selected)
-        { networking.hostName = lib.mkDefault name; }
+        {
+          networking.hostName = lib.mkDefault name;
+          system.primaryUser = lib.mkDefault spec.user;
+        }
       ]
       ++ lib.optional (spec.homeManager or true) (mkDarwinHomeManagerModule name spec selected)
       ++ lib.optional (darwinPath != null) darwinPath;

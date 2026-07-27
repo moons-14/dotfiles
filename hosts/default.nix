@@ -14,4 +14,16 @@
       "workload.tailscale.client"
     ];
   };
+
+  m2 = {
+    system = "aarch64-darwin";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./m2;
+
+    profiles = [
+      "base"
+      "interface.cli-minimal"
+    ];
+  };
 }
