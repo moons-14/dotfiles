@@ -8,9 +8,11 @@
     profiles = [
       "base"
       "interface.cli"
+      "interface.gnome"
+      "interface.niri"
       "platform.thinkpad-x1"
       "security.fingerprint"
-      "security.secrets"
+      "workload.personal"
     ];
   };
 
@@ -24,7 +26,6 @@
       "base"
       "interface.cli"
       "security.fingerprint"
-      "security.secrets"
       "workload.development"
       "workload.personal"
     ];

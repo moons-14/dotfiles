@@ -7,6 +7,10 @@ flake. `flake.nix` defines inputs and delegates flake outputs through
 flake-parts. Keep configuration with the component that owns it, rather than in
 the root flake or an unrelated host.
 
+This file documents the current repository contract, not a hypothetical future
+layout. When a structural, ownership, profile, host-role, or validation change
+makes any statement here stale, update `AGENTS.md` in the same change.
+
 | Path                    | Responsibility                                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `modules/applications/` | One software component, including GUI applications, window managers, desktop environments, CLI tools, and editors |
@@ -31,23 +35,26 @@ Before adding configuration, decide whether it is owned by an application,
 system foundation, service, hardware family, user, profile, or individual host.
 Prefer the following placements:
 
-| Configuration                                        | Placement                                        |
-| ---------------------------------------------------- | ------------------------------------------------ |
-| Nix settings shared by every system host             | `modules/systems/nix/common.nix`                 |
-| NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`             |
-| Ghostty-specific configuration                       | `modules/applications/ghostty/`                  |
-| niri-specific configuration                          | `modules/applications/niri/`                     |
-| Applications selected for the niri environment       | `modules/profiles/interface/niri/meta.nix`       |
-| GNOME itself                                         | `modules/applications/gnome/`                    |
-| Docker daemon and Docker group membership            | `modules/services/docker/nixos.nix`              |
-| Reusable ThinkPad-family configuration               | `modules/hardwares/thinkpad/`                    |
-| The laptop unit composition                          | `modules/profiles/platform/laptop/meta.nix`      |
-| The development-environment unit composition         | `modules/profiles/workload/development/meta.nix` |
-| A user's OS- and Home Manager-specific configuration | `modules/users/<name>/`                          |
-| x1g13-specific monitor layout                        | `hosts/x1g13/home.nix`                           |
-| x1g13-specific disk UUID                             | `hosts/x1g13/nixos.nix`                          |
-| Package replacement or addition                      | `overlays/`                                      |
-| Formatter, checks, or Git hooks                      | `flake/`                                         |
+| Configuration                                        | Placement                                               |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| Nix settings shared by every system host             | `modules/systems/nix/common.nix`                        |
+| NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                    |
+| Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
+| niri-specific configuration                          | `modules/applications/niri/`                            |
+| Desktop applications shared by GNOME and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
+| Applications and services specific to niri           | `modules/profiles/interface/niri/meta.nix`              |
+| GNOME itself                                         | `modules/applications/gnome/`                           |
+| A Linux package plus its macOS Homebrew cask         | `modules/applications/<name>/home.nix` and `darwin.nix` |
+| Docker daemon and Docker group membership            | `modules/services/docker/nixos.nix`                     |
+| The laptop unit composition                          | `modules/profiles/platform/laptop/meta.nix`             |
+| The Intel ThinkPad X1 composition                    | `modules/profiles/platform/thinkpad-x1/meta.nix`        |
+| The development-environment unit composition         | `modules/profiles/workload/development/meta.nix`        |
+| Cross-platform fingerprint selection                 | `modules/profiles/security/fingerprint/meta.nix`        |
+| A user's OS- and Home Manager-specific configuration | `modules/users/<name>/`                                 |
+| Host-specific monitor layout                         | `hosts/<name>/home.nix`                                 |
+| Generated host disk UUIDs                            | `hosts/<name>/hardware-configuration.nix`               |
+| Package replacement or addition                      | `overlays/`                                             |
+| Formatter, checks, or Git hooks                      | `flake/`                                                |
 
 ## Unit Discovery and Identity
 
@@ -283,12 +290,12 @@ use fully qualified unit IDs:
 # modules/profiles/interface/niri/meta.nix
 {
   includes = [
+    "profiles.interface.linux-desktop"
     "applications.niri"
-    "applications.ghostty"
     "applications.noctalia"
-    "applications.vicinae"
-    "applications.nautilus"
-    "services.xdg-portal"
+    "services.ly"
+    "services.swayidle"
+    "services.swaylock"
   ];
 }
 ```
@@ -301,40 +308,88 @@ in `meta.includes`.
 
 Application metadata should include only dependencies technically required for
 the application to work. A profile owns the user's choice to adopt several
-otherwise independent applications together. For example, niri may include the
-Wayland foundation and xdg-desktop-portal as technical dependencies, while
-`profiles.interface.niri` selects Ghostty, Vicinae, Noctalia, and Nautilus.
-Ghostty must not depend on niri, and niri-specific keybindings remain owned by
-the niri unit.
+otherwise independent applications together. For example, the niri application
+includes the Wayland foundation as a technical dependency. The
+`profiles.interface.linux-desktop` profile selects Ghostty, Nautilus, and
+Vicinae because both GNOME and niri use them, while `profiles.interface.niri`
+selects only the niri-specific shell and services. Ghostty must not depend on
+niri, and niri-specific keybindings remain owned by the niri unit.
 
 ## Profiles
 
 Profiles compose units by purpose or form factor; they do not replace clear
-application, system, service, or hardware ownership. Suitable profile namespaces
-include:
+application, system, service, or hardware ownership. The current profile
+structure is:
 
 ```text
 modules/profiles/
+├── README.md
 ├── base/
 ├── interface/
-│   ├── niri/
+│   ├── cli/
+│   ├── linux-desktop/
 │   ├── gnome/
-│   ├── cli-minimal/
-│   └── cli-interactive/
+│   └── niri/
+├── networking/
+│   ├── tailscale-client/
+│   └── tailscale-subnet-router/
 ├── platform/
+│   ├── nixos/
 │   ├── laptop/
-│   ├── thinkpad/
+│   ├── thinkpad-x1/
 │   ├── desktop/
-│   ├── vm/
-│   └── wsl/
+│   └── vm/
 ├── workload/
 │   ├── development/
 │   ├── personal/
 │   ├── server/
-│   └── remote/
+│   └── remote-access/
 └── security/
-    └── secure-boot/
+    ├── fingerprint/
+    ├── secrets/
+    ├── secure-boot/
+    └── tpm-storage/
 ```
+
+`modules/profiles/README.md` is the compatibility inventory for this structure.
+Whenever a profile is added, removed, renamed, changes host-class support, or
+changes meaning, update that README and every affected `hosts/default.nix`
+selection in the same change. Remove stale profile directories and references;
+do not retain compatibility aliases.
+
+The profile layers have these responsibilities:
+
+- `base` contains only invariants required by every supported host. It currently
+  includes only `systems.nix`; optional secrets, interface, hardware, and
+  workloads do not belong there.
+- `interface` describes how the host is operated. `interface.cli` is shared by
+  NixOS and macOS and includes `tio`. `interface.linux-desktop` owns the common
+  GNOME/niri desktop selection, including Ghostty, Nautilus, and Vicinae. GNOME
+  and niri remain independently selectable and do not imply CLI or personal
+  workloads.
+- `platform` describes NixOS foundations and physical or virtual form factors.
+  macOS does not need an empty symmetric platform profile.
+- `workload` describes optional host uses. `workload.development` and
+  `workload.personal` are cross-platform profiles, not `*-linux` variants.
+- `networking` describes network roles and topology rather than user workloads.
+- `security` describes optional security policies. Select
+  `security.fingerprint` instead of listing `systems.fingerprint` directly in a
+  host. The underlying `systems.fingerprint` unit owns NixOS fingerprint
+  authentication and macOS Touch ID sudo configuration through its class
+  fragments.
+
+Do not split a semantic profile into `*-linux` and cross-platform variants merely
+because an application is installed differently on each OS. Keep the semantic
+profile cross-platform when its purpose is shared, and implement OS differences
+inside the owning application unit. For example, Chrome, Vesktop, draw.io,
+Slack, and Zoom use Linux Home Manager configuration in `home.nix` and macOS
+Homebrew casks in `darwin.nix`. Guard a Linux-only Home Manager package with the
+host platform when the same unit also has a Darwin implementation.
+
+An explicitly OS-specific profile is appropriate when the composition itself is
+OS-specific, such as `interface.linux-desktop`, `platform.nixos`, or a NixOS
+subnet-router. Do not create an OS suffix for a thin package difference that the
+owning application unit can express.
 
 The `desktop/` name above is a form-factor profile under `profiles/platform/`,
 not a top-level module category.
@@ -351,6 +406,10 @@ conditions holds:
 - Its NixOS, nix-darwin, and Home Manager implementations differ.
 - Other units depend on it.
 - It involves a daemon, permissions, or user groups.
+
+`security.tpm-storage` intentionally does not own a disk identifier. A host that
+selects it must define `boot.initrd.luks.devices.cryptroot.device` in its own
+NixOS module.
 
 ## Registry Responsibilities
 
@@ -416,48 +475,45 @@ A host registry may use a specification like this:
 ```nix
 # hosts/default.nix
 {
-  x1g13 = {
+  x1g9 = {
     system = "x86_64-linux";
+    stateVersion = "26.05";
     user = "moons";
-    path = ./x1g13;
+    path = ./x1g9;
 
     profiles = [
       "base"
-      "platform.thinkpad"
-      "interface.niri"
+      "interface.cli"
       "interface.gnome"
-      "workload.development"
+      "interface.niri"
+      "platform.thinkpad-x1"
+      "security.fingerprint"
       "workload.personal"
-      "security.secure-boot"
-    ];
-
-    applications = [
-      "codex-desktop"
-    ];
-
-    units = [
-      "services.tailscale"
     ];
   };
 
-  macbook = {
+  m2 = {
     system = "aarch64-darwin";
+    stateVersion = "26.05";
     user = "moons";
-    path = ./macbook;
+    path = ./m2;
 
     profiles = [
       "base"
-      "platform.laptop"
+      "interface.cli"
+      "security.fingerprint"
       "workload.development"
       "workload.personal"
-    ];
-
-    applications = [
-      "ghostty"
     ];
   };
 }
 ```
+
+The current role assignment is intentional: x1g9 is a full NixOS desktop with
+niri, GNOME, ly, the shared Linux desktop applications, and the personal
+workload. m2 is the daily-use macOS development and personal machine. Keep the
+desktop sessions independently selectable, and keep m2's development and
+personal profiles usable on Darwin.
 
 Treat entries in `profiles` and `applications` as IDs relative to their
 respective category roots. Add the category prefixes during host construction:
@@ -471,24 +527,29 @@ selectedUnits =
 ```
 
 `units` is an escape hatch for fully qualified service, system, hardware, or
-other unit IDs. Prefer profiles for the main composition; do not make hosts list
-large numbers of low-level units directly.
+other unit IDs. Do not use it when an existing profile expresses the concern or
+when the concern is reusable enough to deserve a small profile. For example,
+select `security.fingerprint`; do not write
+`units = [ "systems.fingerprint" ];`. Prefer profiles for the main composition
+and keep `units` empty unless a genuinely exceptional low-level selection is
+required.
 
 Host modules use normal Nix module semantics and are not Registry-guarded
 configuration fragments. For example:
 
 ```text
-hosts/x1g13/
-├── nixos.nix
-├── home.nix
-├── hardware-configuration.nix
-└── disko.nix
+hosts/
+├── x1g9/
+│   ├── nixos.nix
+│   └── hardware-configuration.nix
+└── m2/
+    └── darwin.nix
 ```
 
-`hosts/x1g13/nixos.nix` may explicitly load `hardware-configuration.nix` and
-`disko.nix` with the normal top-level Nix module `imports`. Do not confuse these
-host imports with the prohibition on top-level `imports` in unit configuration
-fragments.
+`hosts/x1g9/nixos.nix` explicitly loads `hardware-configuration.nix` with the
+normal top-level Nix module `imports`. A future host-local `disko.nix` would be
+loaded the same way. Do not confuse these host imports with the prohibition on
+top-level `imports` in unit configuration fragments.
 
 Derive the system class from the host's `system`:
 
@@ -527,6 +588,16 @@ When implementing or modifying modules:
 - Do not override a path-derived unit ID from `meta.nix`.
 - Keep technical application dependencies separate from the applications a
   personal environment chooses to combine in a profile.
+- Keep cross-platform profile names semantic. Put Linux package installation in
+  an application's `home.nix` and the corresponding macOS Homebrew cask in its
+  `darwin.nix`; do not create a thin `*-linux` profile for that difference.
+- Keep shared GNOME/niri selections in `profiles.interface.linux-desktop` and
+  session-specific applications or services in the respective GNOME or niri
+  profile.
+- Keep `modules/profiles/README.md`, the profile directories, and host profile
+  selections synchronized whenever any of them changes.
+- Prefer an existing or newly justified profile over a host-level `units` entry
+  for reusable concerns such as fingerprint authentication.
 - Do not rely on module-list ordering to override values. Use Nix module
   priorities such as `lib.mkDefault`, `lib.mkForce`, `lib.mkBefore`, or
   `lib.mkAfter` explicitly when required.
@@ -562,6 +633,20 @@ For Registry changes, test discovery of each supported fragment combination,
 dependency closure through `meta.includes`, missing-unit errors, and class
 dispatch. Verify that helper files are ignored until explicitly imported and
 that directories without a directly contained reserved file remain namespaces.
+
+For profile changes, additionally:
+
+- Check for stale profile IDs after every add, removal, or rename.
+- Evaluate every affected real host without switching it.
+- Evaluate a cross-platform profile on both NixOS and nix-darwin, even when only
+  one current host selects it.
+- Confirm `modules/profiles/README.md` accurately states compatibility and any
+  required host-owned values.
+- When adding a Darwin application fragment, verify the resulting
+  `homebrew.casks` selection as well as module evaluation.
+- Preserve the intended host roles: x1g9 provides niri, GNOME, ly, and the
+  personal application set, while m2 remains the daily-use development and
+  personal machine.
 
 ## Commit and Pull Request Guidelines
 

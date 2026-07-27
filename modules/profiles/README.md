@@ -44,10 +44,11 @@ when removing it from any supported host would make that host invalid.
 | `security.tpm-storage`               | NixOS with a host-defined LUKS device |
 
 Select independent concerns independently in `hosts/default.nix`. For example,
-a minimal NixOS laptop can combine `base`, `platform.thinkpad-x1`, and
-`interface.cli`, while a daily-use macOS development machine can add
-`workload.development` and `workload.personal`. Hardware support does not
-implicitly select an interface or workload.
+a NixOS desktop can combine `interface.gnome` and `interface.niri` to provide
+both sessions while sharing `interface.linux-desktop`; niri supplies ly. A
+daily-use macOS development machine can add `workload.development` and
+`workload.personal`. Hardware support does not implicitly select an interface
+or workload.
 
 `security.tpm-storage` deliberately does not own a disk identifier. A host that
 selects it must define `boot.initrd.luks.devices.cryptroot.device` in its
