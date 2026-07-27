@@ -1,13 +1,5 @@
 {
-  description = "base system configuration";
+  description = "Host-independent Nix foundation required everywhere";
 
-  includes = [
-    "systems.boot.base"
-    "systems.disko"
-    "systems.hardware"
-    "systems.locale"
-    "systems.networking.base"
-    "systems.nix"
-    "systems.sops"
-  ];
+  includes = [ "systems.nix" ];
 }

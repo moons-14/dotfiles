@@ -1,9 +1,8 @@
 {
-  description = "virtual-machine platform";
+  description = "QEMU NixOS guest";
 
   includes = [
+    "profiles.platform.nixos"
     "hardwares.qemu-guest"
-    "systems.boot.nfs"
-    "systems.boot.uefi"
   ];
 }

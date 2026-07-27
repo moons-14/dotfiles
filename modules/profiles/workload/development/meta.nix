@@ -1,5 +1,5 @@
 {
-  description = "software development workload";
+  description = "Cross-platform software development environment";
 
   includes = [
     "applications.arduino"
@@ -7,6 +7,7 @@
     "applications.codex"
     "applications.codex-desktop"
     "applications.docker"
+    "applications.drawio"
     "applications.grok"
     "applications.java"
     "applications.opencode"

@@ -1,5 +1,9 @@
 {
-  description = "UEFI desktop platform";
+  description = "Physical NixOS desktop";
 
-  includes = [ "systems.boot.uefi" ];
+  includes = [
+    "profiles.platform.nixos"
+    "systems.boot.uefi"
+    "systems.hardware"
+  ];
 }

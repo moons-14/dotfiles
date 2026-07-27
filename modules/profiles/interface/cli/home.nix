@@ -12,6 +12,7 @@
     jq
     nurl
     ripgrep
+    tio
     unrar
     unzip
     wget

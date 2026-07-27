@@ -1,0 +1,53 @@
+# Profiles
+
+Profiles are host-selectable compositions of independently owned units. They
+describe why a group of units is enabled; application, service, system, and
+hardware configuration remains in its owning unit.
+
+## Layers
+
+| Namespace    | Purpose                                                 | Compatibility   |
+| ------------ | ------------------------------------------------------- | --------------- |
+| `base`       | Invariants required by every host                       | NixOS and macOS |
+| `interface`  | Command-line and graphical ways to operate a host       | Per-profile     |
+| `platform`   | NixOS foundation and physical or virtual hardware shape | NixOS           |
+| `workload`   | Optional activities performed on a host                 | Per-profile     |
+| `networking` | Network roles and topology                              | Per-profile     |
+| `security`   | Optional security and secret-management policies        | Per-profile     |
+
+`base` intentionally contains only `systems.nix`. A unit belongs there only
+when removing it from any supported host would make that host invalid.
+
+## Compatibility
+
+| Profile                              | Supported host class                  |
+| ------------------------------------ | ------------------------------------- |
+| `base`                               | NixOS, macOS                          |
+| `interface.cli`                      | NixOS, macOS with Home Manager        |
+| `interface.linux-desktop`            | NixOS with Home Manager               |
+| `interface.gnome`                    | NixOS with Home Manager               |
+| `interface.niri`                     | NixOS with Home Manager               |
+| `platform.nixos`                     | NixOS                                 |
+| `platform.desktop`                   | Physical NixOS desktop                |
+| `platform.laptop`                    | Physical NixOS laptop                 |
+| `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS       |
+| `platform.vm`                        | QEMU NixOS guest                      |
+| `workload.development`               | NixOS, macOS with Home Manager        |
+| `workload.personal`                  | NixOS, macOS with Home Manager        |
+| `workload.remote-access`             | NixOS, macOS                          |
+| `workload.server`                    | NixOS, macOS with Home Manager        |
+| `networking.tailscale-client`        | NixOS, macOS                          |
+| `networking.tailscale-subnet-router` | NixOS                                 |
+| `security.secrets`                   | NixOS, macOS                          |
+| `security.secure-boot`               | NixOS                                 |
+| `security.tpm-storage`               | NixOS with a host-defined LUKS device |
+
+Select independent concerns independently in `hosts/default.nix`. For example,
+a NixOS laptop can combine `base`, `platform.thinkpad-x1`,
+`interface.cli`, and `interface.niri`, while a macOS host can combine
+`base`, `interface.cli`, and cross-platform workloads. A graphical profile does
+not implicitly select a CLI profile or personal applications.
+
+`security.tpm-storage` deliberately does not own a disk identifier. A host that
+selects it must define `boot.initrd.luks.devices.cryptroot.device` in its
+machine-specific NixOS module.

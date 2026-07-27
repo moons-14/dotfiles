@@ -1,5 +1,5 @@
 {
-  description = "server workload";
+  description = "Cross-platform container and remote-access server";
 
   includes = [
     "applications.docker"

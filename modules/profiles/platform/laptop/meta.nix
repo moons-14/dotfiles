@@ -1,11 +1,11 @@
 {
-  description = "laptop platform configuration";
+  description = "Physical NixOS laptop";
 
   includes = [
+    "profiles.platform.nixos"
     "hardwares.bluetooth"
-    "hardwares.ipu6-camera"
     "systems.boot.uefi"
-    "systems.fingerprint"
+    "systems.hardware"
     "systems.networking.wifi"
     "systems.power"
   ];

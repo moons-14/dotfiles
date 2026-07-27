@@ -7,10 +7,13 @@
 
     profiles = [
       "base"
-      "interface.gui"
-      "platform.thinkpad"
+      "interface.cli"
+      "interface.gnome"
+      "interface.niri"
+      "networking.tailscale-client"
+      "platform.thinkpad-x1"
+      "security.secrets"
       "workload.personal"
-      "workload.tailscale.client"
     ];
   };
 
@@ -22,7 +25,10 @@
 
     profiles = [
       "base"
-      "interface.cli-minimal"
+      "interface.cli"
+      "security.secrets"
     ];
+
+    units = [ "systems.fingerprint" ];
   };
 }
