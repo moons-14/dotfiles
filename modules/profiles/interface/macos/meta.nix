@@ -4,6 +4,7 @@
   includes = [
     "profiles.interface.gui"
     "systems.dock"
+    "systems.keyboard"
     "systems.trackpad"
   ];
 }
