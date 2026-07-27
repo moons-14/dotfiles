@@ -13,8 +13,13 @@
       "/Applications/Slack.app"
       "/Applications/Vesktop.app"
       "/Applications/Ghostty.app"
+      "/Applications/ChatGPT.app"
     ];
     persistent-others = [ ];
+    autohide = true;
+    minimize-to-application = true;
+    mru-spaces = false;
+    expose-group-apps = false;
     show-recents = false;
   };
 
