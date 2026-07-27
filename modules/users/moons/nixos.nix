@@ -4,7 +4,7 @@
 
   users.users.${primaryUser} = {
     isNormalUser = true;
-    description = "moons";
+    description = "moons-14";
     extraGroups = [
       "adbusers"
       "docker"

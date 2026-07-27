@@ -33,10 +33,22 @@ in
   };
 
   perSystem =
-    { pkgs, ... }:
+    { pkgs, system, ... }:
+    let
+      nixosChecks =
+        lib.mapAttrs' (name: nixos: lib.nameValuePair "nixos-${name}" nixos.config.system.build.toplevel)
+          (
+            lib.filterAttrs (
+              _: nixos: nixos.pkgs.stdenv.hostPlatform.system == system
+            ) configurations.nixosConfigurations
+          );
+    in
     {
-      checks.registry = import ../tests/registry.nix {
-        inherit inputs lib pkgs;
-      };
+      checks = {
+        registry = import ../tests/registry.nix {
+          inherit inputs lib pkgs;
+        };
+      }
+      // nixosChecks;
     };
 }
