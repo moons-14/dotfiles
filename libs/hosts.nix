@@ -37,16 +37,25 @@ let
                 "${name}: path must name an existing host directory"
                 (
                   ensure
-                    (lib.all
-                      (field: builtins.isList (spec.${field} or [ ]) && lib.all builtins.isString (spec.${field} or [ ]))
-                      [
-                        "profiles"
-                        "applications"
-                        "units"
-                      ]
+                    (
+                      spec ? stateVersion
+                      && builtins.isString spec.stateVersion
+                      && builtins.match "[0-9][0-9]\\.[0-9][0-9]" spec.stateVersion != null
                     )
-                    "${name}: profiles, applications, and units must be lists of strings"
-                    (ensure (builtins.isBool (spec.homeManager or true)) "${name}: homeManager must be a boolean" spec)
+                    "${name}: stateVersion is required and must have the form YY.MM"
+                    (
+                      ensure
+                        (lib.all
+                          (field: builtins.isList (spec.${field} or [ ]) && lib.all builtins.isString (spec.${field} or [ ]))
+                          [
+                            "profiles"
+                            "applications"
+                            "units"
+                          ]
+                        )
+                        "${name}: profiles, applications, and units must be lists of strings"
+                        (ensure (builtins.isBool (spec.homeManager or true)) "${name}: homeManager must be a boolean" spec)
+                    )
                 )
             )
           )
@@ -67,6 +76,7 @@ let
       homeModules = [
         (registry.mkModule { class = "home"; })
         (registry.mkSelectionModule selected)
+        { home.stateVersion = spec.stateVersion; }
       ]
       ++ lib.optional (homePath != null) homePath;
     in
@@ -88,6 +98,7 @@ let
       homeModules = [
         (registry.mkModule { class = "home"; })
         (registry.mkSelectionModule selected)
+        { home.stateVersion = spec.stateVersion; }
       ]
       ++ lib.optional (homePath != null) homePath;
     in
@@ -111,7 +122,10 @@ let
       modules = [
         (registry.mkModule { class = "nixos"; })
         (registry.mkSelectionModule selected)
-        { networking.hostName = lib.mkDefault name; }
+        {
+          networking.hostName = lib.mkDefault name;
+          system.stateVersion = spec.stateVersion;
+        }
       ]
       ++ lib.optional (spec.homeManager or true) (mkHomeManagerModule name spec selected)
       ++ lib.optional (nixosPath != null) nixosPath;

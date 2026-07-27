@@ -43,6 +43,7 @@ let
 
   nixosHost = hostLib.mkNixos "registry-test" {
     system = "x86_64-linux";
+    stateVersion = "26.05";
     user = "test";
     path = ./fixtures/registry/hosts;
     profiles = [ "interface.test" ];
@@ -50,6 +51,7 @@ let
 
   darwinHost = hostLib.mkDarwin "registry-test-darwin" {
     system = "aarch64-darwin";
+    stateVersion = "26.05";
     user = "test";
     path = ./fixtures/registry/hosts;
     applications = [ "alpha" ];
@@ -109,6 +111,8 @@ let
         "beta-home"
       ];
     assert nixosHost.config.my.profiles.interface.test.enable;
+    assert nixosHost.config.system.stateVersion == "26.05";
+    assert nixosHost.config.home-manager.users.test.home.stateVersion == "26.05";
     assert nixosHost.config.home-manager.users.test.my.applications.alpha.enable;
     assert
       nixosHost.config.home-manager.users.test.test.homeValues == [
@@ -116,6 +120,7 @@ let
         "beta-home"
       ];
     assert darwinHost.config.my.applications.alpha.enable;
+    assert darwinHost.config.home-manager.users.test.home.stateVersion == "26.05";
     assert darwinHost.config.home-manager.users.test.my.applications.alpha.enable;
     assert darwinHost.config.home-manager.users.test.test.homeValues == [ "home" ];
     assert
