@@ -39,6 +39,7 @@ Prefer the following placements:
 | ---------------------------------------------------- | ------------------------------------------------------- |
 | Nix settings shared by every system host             | `modules/systems/nix/common.nix`                        |
 | NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                    |
+| Disko NixOS module and CLI                           | `modules/systems/disko/`                                |
 | macOS Dock defaults                                  | `modules/systems/dock/darwin.nix`                       |
 | macOS trackpad defaults                              | `modules/systems/trackpad/darwin.nix`                   |
 | Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
@@ -312,10 +313,11 @@ Application metadata should include only dependencies technically required for
 the application to work. A profile owns the user's choice to adopt several
 otherwise independent applications together. For example, the niri application
 includes the Wayland foundation as a technical dependency. The
-`profiles.interface.linux-desktop` profile selects Ghostty, Nautilus, and
-Vicinae because both GNOME and niri use them, while `profiles.interface.niri`
-selects only the niri-specific shell and services. Ghostty must not depend on
-niri, and niri-specific keybindings remain owned by the niri unit.
+`profiles.interface.linux-desktop` profile selects Ghostty and Nautilus because
+both GNOME and niri use them, while the cross-platform `profiles.interface.gui`
+profile selects Vicinae for graphical hosts. `profiles.interface.niri` selects
+only the niri-specific shell and services. Ghostty and Vicinae must not depend
+on niri, and niri-specific keybindings remain owned by the niri unit.
 
 ## Profiles
 
@@ -329,6 +331,7 @@ modules/profiles/
 ├── base/
 ├── interface/
 │   ├── cli/
+│   ├── gui/
 │   ├── macos/
 │   ├── linux-desktop/
 │   ├── gnome/
@@ -366,10 +369,13 @@ The profile layers have these responsibilities:
   includes only `systems.nix`; optional secrets, interface, hardware, and
   workloads do not belong there.
 - `interface` describes how the host is operated. `interface.cli` is shared by
-  NixOS and macOS and includes `tio`. `interface.macos` owns the macOS Dock and
-  trackpad defaults. `interface.linux-desktop` owns the common GNOME/niri
-  desktop selection, including Ghostty, Nautilus, and Vicinae. GNOME and niri
-  remain independently selectable and do not imply CLI or personal workloads.
+  NixOS and macOS and includes `tio`. `interface.gui` owns cross-platform
+  graphical interface applications such as Vicinae. `interface.macos` owns the
+  macOS Dock and trackpad defaults and includes `interface.gui`.
+  `interface.linux-desktop` owns the common GNOME/niri desktop selection,
+  including Ghostty and Nautilus, and also includes `interface.gui`. GNOME and
+  niri remain independently selectable and do not imply CLI or personal
+  workloads.
 - `platform` describes NixOS foundations and physical or virtual form factors.
   macOS does not need an empty symmetric platform profile.
 - `workload` describes optional host uses. `workload.development` and

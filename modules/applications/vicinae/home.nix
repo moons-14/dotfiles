@@ -6,6 +6,7 @@
 }:
 let
   isLinux = pkgs.stdenv.hostPlatform.isLinux;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   extensions = inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
@@ -15,6 +16,10 @@ in
       enable = true;
       autoStart = true;
       environment.USE_LAYER_SHELL = 1;
+    };
+    launchd = lib.mkIf isDarwin {
+      enable = true;
+      autoStart = true;
     };
     settings = {
       font.size = 11;

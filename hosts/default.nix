@@ -12,6 +12,7 @@
       "interface.niri"
       "platform.thinkpad-x1"
       "security.fingerprint"
+      # "security.secrets"
       "workload.personal"
     ];
   };
@@ -27,6 +28,7 @@
       "interface.cli"
       "interface.macos"
       "security.fingerprint"
+      # "security.secrets"
       "workload.development"
       "workload.personal"
     ];

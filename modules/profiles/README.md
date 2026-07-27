@@ -24,6 +24,7 @@ when removing it from any supported host would make that host invalid.
 | ------------------------------------ | ------------------------------------- |
 | `base`                               | NixOS, macOS                          |
 | `interface.cli`                      | NixOS, macOS with Home Manager        |
+| `interface.gui`                      | NixOS, macOS with Home Manager        |
 | `interface.macos`                    | macOS                                 |
 | `interface.linux-desktop`            | NixOS with Home Manager               |
 | `interface.gnome`                    | NixOS with Home Manager               |
@@ -46,7 +47,8 @@ when removing it from any supported host would make that host invalid.
 
 Select independent concerns independently in `hosts/default.nix`. For example,
 a NixOS desktop can combine `interface.gnome` and `interface.niri` to provide
-both sessions while sharing `interface.linux-desktop`; niri supplies ly. A
+both sessions while sharing `interface.linux-desktop` and `interface.gui`; niri
+supplies ly. A
 daily-use macOS development machine can combine `interface.macos`,
 `workload.development`, and `workload.personal`. Hardware support does not
 implicitly select an interface or workload.
