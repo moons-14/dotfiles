@@ -487,6 +487,59 @@ A host registry may use a specification like this:
 ```nix
 # hosts/default.nix
 {
+  nix-example = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./nix-example;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.development"
+      "workload.remote-access"
+    ];
+  };
+
+  ops = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./ops;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.remote-access"
+    ];
+  };
+
+  internal-app-01 = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./internal-app-01;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.server"
+    ];
+  };
+
+  installer = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./installer;
+    homeManager = false;
+
+    profiles = [ "base" ];
+  };
+
   x1g9 = {
     system = "x86_64-linux";
     stateVersion = "26.05";
@@ -544,14 +597,16 @@ A host registry may use a specification like this:
 }
 ```
 
-The current role assignment is intentional: x1g9 is a full NixOS desktop with
-niri, GNOME, ly, the shared Linux desktop applications, and the personal
-workload. x1g13 is the secure NixOS development and personal ThinkPad, with the
-same desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed
-disk unlock. m2 is the daily-use macOS development and personal machine with
-the macOS interface defaults. Keep the desktop sessions independently
-selectable, and keep the development and personal profiles usable across NixOS
-and Darwin.
+The current role assignment is intentional: nix-example is the development VM;
+ops is the remote-access VM with host-specific static networking;
+internal-app-01 is the container server VM; and installer builds the minimal
+installation ISO without Home Manager. x1g9 is a full NixOS desktop with niri,
+GNOME, ly, the shared Linux desktop applications, and the personal workload.
+x1g13 is the secure NixOS development and personal ThinkPad, with the same
+desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk
+unlock. m2 is the daily-use macOS development and personal machine with the
+macOS interface defaults. Keep the desktop sessions independently selectable,
+and keep the development and personal profiles usable across NixOS and Darwin.
 
 Treat entries in `profiles` and the exceptional `applications` field as IDs
 relative to their respective category roots. Add the category prefixes during
@@ -581,6 +636,17 @@ configuration fragments. For example:
 
 ```text
 hosts/
+├── installer/
+│   └── nixos.nix
+├── internal-app-01/
+│   ├── nixos.nix
+│   └── hardware-configuration.nix
+├── nix-example/
+│   ├── nixos.nix
+│   └── hardware-configuration.nix
+├── ops/
+│   ├── nixos.nix
+│   └── hardware-configuration.nix
 ├── x1g9/
 │   ├── nixos.nix
 │   └── hardware-configuration.nix
@@ -606,9 +672,10 @@ Derive the system class from the host's `system`:
 - A host with integrated Home Manager additionally receives `home.nix`.
 
 Home Manager is additive, not a system class mutually exclusive with NixOS or
-nix-darwin. The supported combinations are NixOS plus Home Manager and
-nix-darwin plus Home Manager. If standalone Home Manager is supported later, add
-an explicit host kind because `system` alone cannot distinguish it from NixOS.
+nix-darwin. Normal machine configurations combine NixOS or nix-darwin with Home
+Manager; the installer ISO explicitly sets `homeManager = false`. If standalone
+Home Manager is supported later, add an explicit host kind because `system`
+alone cannot distinguish it from NixOS.
 
 Do not duplicate reusable settings in hosts, but do not force genuinely
 machine-specific values into a common unit merely to remove a host-local line.
@@ -694,10 +761,13 @@ For profile changes, additionally:
   required host-owned values.
 - When adding a Darwin application fragment, verify the resulting
   `homebrew.casks` selection as well as module evaluation.
-- Preserve the intended host roles: x1g9 provides niri, GNOME, ly, and the
-  personal application set; x1g13 additionally provides the development,
-  Tailscale client, secrets, Secure Boot, and TPM storage roles; m2 remains the
-  daily-use development and personal machine.
+- Preserve the intended host roles: nix-example remains the development VM;
+  ops remains the statically networked remote-access VM; internal-app-01 remains
+  the container server VM; installer remains the Home Manager-free installation
+  ISO; x1g9 provides niri, GNOME, ly, and the personal application set; x1g13
+  additionally provides the development, Tailscale client, secrets, Secure Boot,
+  and TPM storage roles; m2 remains the daily-use development and personal
+  machine.
 
 ## Commit and Pull Request Guidelines
 

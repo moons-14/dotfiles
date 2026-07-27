@@ -1,4 +1,57 @@
 {
+  nix-example = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./nix-example;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.development"
+      "workload.remote-access"
+    ];
+  };
+
+  ops = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./ops;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.remote-access"
+    ];
+  };
+
+  internal-app-01 = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./internal-app-01;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.server"
+    ];
+  };
+
+  installer = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./installer;
+    homeManager = false;
+
+    profiles = [ "base" ];
+  };
+
   x1g9 = {
     system = "x86_64-linux";
     stateVersion = "26.05";

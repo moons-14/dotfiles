@@ -20,30 +20,30 @@ when removing it from any supported host would make that host invalid.
 
 ## Compatibility
 
-| Profile                              | Supported host class                  |
-| ------------------------------------ | ------------------------------------- |
-| `base`                               | NixOS, macOS                          |
-| `interface.cli`                      | NixOS, macOS with Home Manager        |
-| `interface.gui`                      | NixOS, macOS with Home Manager        |
-| `interface.macos`                    | macOS                                 |
-| `interface.linux-desktop`            | NixOS with Home Manager               |
-| `interface.gnome`                    | NixOS with Home Manager               |
-| `interface.niri`                     | NixOS with Home Manager               |
-| `platform.nixos`                     | NixOS                                 |
-| `platform.desktop`                   | Physical NixOS desktop                |
-| `platform.laptop`                    | Physical NixOS laptop                 |
-| `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS       |
-| `platform.vm`                        | QEMU NixOS guest                      |
-| `workload.development`               | NixOS, macOS with Home Manager        |
-| `workload.personal`                  | NixOS, macOS with Home Manager        |
-| `workload.remote-access`             | NixOS, macOS                          |
-| `workload.server`                    | NixOS, macOS with Home Manager        |
-| `networking.tailscale-client`        | NixOS, macOS                          |
-| `networking.tailscale-subnet-router` | NixOS                                 |
-| `security.fingerprint`               | NixOS, macOS                          |
-| `security.secrets`                   | NixOS, macOS                          |
-| `security.secure-boot`               | NixOS                                 |
-| `security.tpm-storage`               | NixOS with a host-defined LUKS device |
+| Profile                              | Supported host class                          |
+| ------------------------------------ | --------------------------------------------- |
+| `base`                               | NixOS, macOS                                  |
+| `interface.cli`                      | NixOS, macOS with Home Manager                |
+| `interface.gui`                      | NixOS, macOS with Home Manager                |
+| `interface.macos`                    | macOS                                         |
+| `interface.linux-desktop`            | NixOS with Home Manager                       |
+| `interface.gnome`                    | NixOS with Home Manager                       |
+| `interface.niri`                     | NixOS with Home Manager                       |
+| `platform.nixos`                     | NixOS                                         |
+| `platform.desktop`                   | Physical NixOS desktop                        |
+| `platform.laptop`                    | Physical NixOS laptop                         |
+| `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS               |
+| `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
+| `workload.development`               | NixOS, macOS with Home Manager                |
+| `workload.personal`                  | NixOS, macOS with Home Manager                |
+| `workload.remote-access`             | NixOS, macOS                                  |
+| `workload.server`                    | NixOS, macOS with Home Manager                |
+| `networking.tailscale-client`        | NixOS, macOS                                  |
+| `networking.tailscale-subnet-router` | NixOS                                         |
+| `security.fingerprint`               | NixOS, macOS                                  |
+| `security.secrets`                   | NixOS, macOS                                  |
+| `security.secure-boot`               | NixOS                                         |
+| `security.tpm-storage`               | NixOS with a host-defined LUKS device         |
 
 Select independent concerns independently in `hosts/default.nix`. For example,
 a NixOS desktop can combine `interface.gnome` and `interface.niri` to provide
