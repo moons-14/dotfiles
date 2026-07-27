@@ -11,18 +11,4 @@
       primaryUser
     ];
   };
-
-  system.defaults.dock = {
-    # Finder and Trash are managed by macOS and do not belong in this list.
-    persistent-apps = [
-      "/Applications/Google Chrome.app"
-      "/Applications/Zed.app"
-      "/Applications/Visual Studio Code.app"
-      "/Applications/Slack.app"
-      "/Applications/Vesktop.app"
-      "/Applications/Ghostty.app"
-    ];
-    persistent-others = [ ];
-    show-recents = false;
-  };
 }

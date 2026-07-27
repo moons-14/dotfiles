@@ -39,6 +39,8 @@ Prefer the following placements:
 | ---------------------------------------------------- | ------------------------------------------------------- |
 | Nix settings shared by every system host             | `modules/systems/nix/common.nix`                        |
 | NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                    |
+| macOS Dock defaults                                  | `modules/systems/dock/darwin.nix`                       |
+| macOS trackpad defaults                              | `modules/systems/trackpad/darwin.nix`                   |
 | Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
 | niri-specific configuration                          | `modules/applications/niri/`                            |
 | Desktop applications shared by GNOME and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
@@ -327,6 +329,7 @@ modules/profiles/
 ├── base/
 ├── interface/
 │   ├── cli/
+│   ├── macos/
 │   ├── linux-desktop/
 │   ├── gnome/
 │   └── niri/
@@ -363,10 +366,10 @@ The profile layers have these responsibilities:
   includes only `systems.nix`; optional secrets, interface, hardware, and
   workloads do not belong there.
 - `interface` describes how the host is operated. `interface.cli` is shared by
-  NixOS and macOS and includes `tio`. `interface.linux-desktop` owns the common
-  GNOME/niri desktop selection, including Ghostty, Nautilus, and Vicinae. GNOME
-  and niri remain independently selectable and do not imply CLI or personal
-  workloads.
+  NixOS and macOS and includes `tio`. `interface.macos` owns the macOS Dock and
+  trackpad defaults. `interface.linux-desktop` owns the common GNOME/niri
+  desktop selection, including Ghostty, Nautilus, and Vicinae. GNOME and niri
+  remain independently selectable and do not imply CLI or personal workloads.
 - `platform` describes NixOS foundations and physical or virtual form factors.
   macOS does not need an empty symmetric platform profile.
 - `workload` describes optional host uses. `workload.development` and
@@ -387,7 +390,8 @@ Homebrew casks in `darwin.nix`. Guard a Linux-only Home Manager package with the
 host platform when the same unit also has a Darwin implementation.
 
 An explicitly OS-specific profile is appropriate when the composition itself is
-OS-specific, such as `interface.linux-desktop`, `platform.nixos`, or a NixOS
+OS-specific, such as `interface.macos`, `interface.linux-desktop`,
+`platform.nixos`, or a NixOS
 subnet-router. Do not create an OS suffix for a thin package difference that the
 owning application unit can express.
 
@@ -503,6 +507,7 @@ A host registry may use a specification like this:
     profiles = [
       "base"
       "interface.cli"
+      "interface.macos"
       "security.fingerprint"
       "workload.development"
       "workload.personal"
@@ -513,9 +518,9 @@ A host registry may use a specification like this:
 
 The current role assignment is intentional: x1g9 is a full NixOS desktop with
 niri, GNOME, ly, the shared Linux desktop applications, and the personal
-workload. m2 is the daily-use macOS development and personal machine. Keep the
-desktop sessions independently selectable, and keep m2's development and
-personal profiles usable on Darwin.
+workload. m2 is the daily-use macOS development and personal machine with the
+macOS interface defaults. Keep the desktop sessions independently selectable,
+and keep m2's development and personal profiles usable on Darwin.
 
 Treat entries in `profiles` and the exceptional `applications` field as IDs
 relative to their respective category roots. Add the category prefixes during

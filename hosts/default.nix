@@ -25,6 +25,7 @@
     profiles = [
       "base"
       "interface.cli"
+      "interface.macos"
       "security.fingerprint"
       "workload.development"
       "workload.personal"
