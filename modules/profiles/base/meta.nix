@@ -3,7 +3,9 @@
 
   includes = [
     "systems.locale"
-    "systems.networking"
+    "systems.networking.base"
+    "systems.networking.wifi"
     "systems.nix"
+    "systems.sops"
   ];
 }

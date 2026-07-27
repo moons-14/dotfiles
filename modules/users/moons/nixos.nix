@@ -1,5 +1,7 @@
 { primaryUser, pkgs, ... }:
 {
+  users.mutableUsers = true;
+
   users.users.${primaryUser} = {
     isNormalUser = true;
     description = "moons";
