@@ -90,7 +90,6 @@ in
         battery = {
           type = "battery";
           display_mode = "graphic";
-          warning_threshold = 30;
         };
         brightness = {
           type = "brightness";
