@@ -7,8 +7,11 @@
 
     profiles = [
       "base"
-      "interface.cli-minimal"
-      "platform.laptop"
+      "interface.gui"
+      "platform.thinkpad"
+      "workload.development"
+      "workload.personal"
+      "workload.tailscale.client"
     ];
   };
 }
