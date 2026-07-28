@@ -1,3 +1,5 @@
 [user]
 	name = moons-14
 	email = moons@moons14.com
+[core]
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe

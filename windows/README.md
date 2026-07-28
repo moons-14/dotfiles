@@ -34,8 +34,18 @@ windows/
 │
 ├── system/
 │   ├── taskbar.dsc.yaml
+│   ├── personalization.dsc.yaml
+│   ├── start.dsc.yaml
+│   ├── device-usage.dsc.yaml
 │   ├── explorer.dsc.yaml
 │   ├── ime.dsc.yaml
+│   ├── advanced-settings/
+│   │   ├── configuration.dsc.yaml
+│   │   └── apply.ps1
+│   ├── lock-screen/
+│   │   └── apply.ps1
+│   ├── power/
+│   │   └── apply.ps1
 │   └── wallpaper/
 │       ├── apply.ps1
 │       └── wallpaper.theme
@@ -118,10 +128,16 @@ dsc config set --file .\configuration.dsc.yaml
 & .\applications\chatgpt\apply.ps1
 & .\applications\git\apply.ps1
 & .\applications\vscode\apply.ps1
+& .\system\advanced-settings\apply.ps1
+& .\system\lock-screen\apply.ps1
+& .\system\power\apply.ps1
 & .\system\wallpaper\apply.ps1
 ```
 
-The specialized scripts own the details of their own configuration.
+The specialized scripts own the details of their own configuration. Only the
+advanced-settings script requests elevation, for the protected Explorer policy
+and machine-wide long-path setting; Scoop, DSC user settings, and application
+configuration stay in the normal user process.
 
 ## Packages
 
@@ -156,7 +172,7 @@ installation requires explicit package/source agreement acceptance.
 
 ```powershell
 winget install `
-    --id 9NT1R1C2HH7J `
+    --id 9PLM9XGG6VKS `
     --source msstore `
     --accept-package-agreements `
     --accept-source-agreements `
@@ -164,14 +180,43 @@ winget install `
     --disable-interactivity
 ```
 
-The Store product ID `9NT1R1C2HH7J` is the ChatGPT Windows app. The previously
-used `9PLM9XGG6VKS` ID is not used here.
+The Store product ID `9PLM9XGG6VKS` is the ChatGPT Windows app managed here.
+ChatGPT Classic (`9NT1R1C2HH7J`) is intentionally not installed.
 
 7-Zip is intentionally installed with its normal Windows installer through
 WinGet rather than as a portable Scoop package, because the normal installer
 provides Explorer shell integration.
 
 ## Windows settings
+
+### Personalization
+
+`system/personalization.dsc.yaml` configures:
+
+- automatic accent color
+- dark Windows and app modes
+- picture mode for the lock screen
+- lock-screen facts and tips: off
+- automatic lock-screen status selection: off
+
+`system/lock-screen/apply.ps1` uses the Windows LockScreen API to select the
+built-in `%SystemRoot%\Web\Screen\img100.jpg` image. The script first checks the
+current image and only calls the API when the image differs.
+
+### Start
+
+`system/start.dsc.yaml` configures:
+
+- recently added apps: on
+- recommended and recent files: off
+- recommendations for tips, shortcuts, and new apps: off
+- most used apps: on
+
+### Device usage
+
+`system/device-usage.dsc.yaml` explicitly clears both `Intent` and `Priority`
+for Development, Gaming, Family, Creativity, School, Entertainment, and
+Business.
 
 ### Taskbar
 
@@ -187,6 +232,9 @@ provides Explorer shell integration.
 `system/explorer.dsc.yaml` configures:
 
 - show known file extensions
+- show hidden files and protected operating-system files
+- show the full path in the title bar
+- show empty drives
 
 7-Zip context-menu integration is left to the official 7-Zip installer. No
 unsupported Explorer context-menu patches are applied.
@@ -197,6 +245,31 @@ unsupported Explorer context-menu patches are applied.
 
 - Muhenkan: IME Off
 - Henkan: IME On
+
+### Advanced settings and clipboard
+
+`system/advanced-settings/configuration.dsc.yaml` configures:
+
+- End task from the taskbar: on
+- clipboard history: on
+
+`system/advanced-settings/apply.ps1` additionally configures:
+
+- "Run as different user" in Start: on
+- Win32 long paths: on
+
+The long-path setting is machine-wide. The script enables "Run as different
+user" through the protected per-user policy key, passes the original user's SID
+through UAC, writes both settings to the intended hives, and verifies their
+values. A restart is recommended after changing long-path support because a
+process can cache the setting after its first affected file call.
+
+### Power
+
+`system/power/apply.ps1` uses the Windows 11 power-mode API to select Best
+performance independently for both AC and battery power. It verifies both
+configured modes, then sets the automatic Energy Saver threshold to zero on
+every installed power scheme.
 
 ## Git
 
@@ -212,6 +285,8 @@ It currently contains:
 [user]
     name = moons-14
     email = moons@moons14.com
+[core]
+    sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 ```
 
 `applications/git/apply.ps1` copies this file to:
@@ -352,9 +427,12 @@ grouped by responsibility:
 
 ```text
 system/taskbar.dsc.yaml
+system/personalization.dsc.yaml
+system/start.dsc.yaml
+system/device-usage.dsc.yaml
 system/explorer.dsc.yaml
 system/ime.dsc.yaml
-system/privacy.dsc.yaml
+system/advanced-settings/configuration.dsc.yaml
 ```
 
 When adding a new DSC document, include it from `configuration.dsc.yaml`.

@@ -1,0 +1,20 @@
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+
+resources:
+  - name: Enable End task from the taskbar
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings
+      valueName: TaskbarEndTask
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Enable clipboard history
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Clipboard
+      valueName: EnableClipboardHistory
+      valueData:
+        DWord: 1
+      _exist: true

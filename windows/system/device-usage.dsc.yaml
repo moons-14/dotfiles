@@ -1,0 +1,128 @@
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+
+resources:
+  - name: Disable development usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\developer
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear development priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\developer
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable gaming usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\gaming
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear gaming priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\gaming
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable family usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\family
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear family priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\family
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable creativity usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\creative
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear creativity priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\creative
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable school usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\schoolwork
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear school priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\schoolwork
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable entertainment usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\entertainment
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear entertainment priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\entertainment
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable business usage
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\business
+      valueName: Intent
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Clear business priority
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\CloudExperienceHost\Intent\business
+      valueName: Priority
+      valueData:
+        DWord: 0
+      _exist: true
