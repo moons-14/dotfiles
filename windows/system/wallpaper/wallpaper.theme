@@ -1,0 +1,21 @@
+[Theme]
+DisplayName=Moons Wallpapers
+
+[Slideshow]
+Interval=60000
+Shuffle=1
+ImagesRootPath=%USERPROFILE%\.wallpaper
+
+[Control Panel\Desktop]
+TileWallpaper=0
+WallpaperStyle=10
+Pattern=
+
+[VisualStyles]
+Path=%SystemRoot%\resources\themes\Aero\Aero.msstyles
+ColorStyle=NormalColor
+Size=NormalSize
+Transparency=1
+
+[MasterThemeSelector]
+MTSM=DABJDKT

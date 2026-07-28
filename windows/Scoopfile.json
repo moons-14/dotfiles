@@ -1,0 +1,15 @@
+{
+  "buckets": [
+    {
+      "Name": "main",
+      "Source": "https://github.com/ScoopInstaller/Main"
+    }
+  ],
+  "apps": [
+    {
+      "Name": "git",
+      "Source": "main",
+      "Info": ""
+    }
+  ]
+}

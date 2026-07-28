@@ -1,0 +1,22 @@
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+
+resources:
+  - name: WinGet packages
+    type: Microsoft.DSC/Include
+    properties:
+      configurationFile: packages/winget.dsc.yaml
+
+  - name: Taskbar
+    type: Microsoft.DSC/Include
+    properties:
+      configurationFile: system/taskbar.dsc.yaml
+
+  - name: Explorer
+    type: Microsoft.DSC/Include
+    properties:
+      configurationFile: system/explorer.dsc.yaml
+
+  - name: Microsoft IME
+    type: Microsoft.DSC/Include
+    properties:
+      configurationFile: system/ime.dsc.yaml

@@ -1,0 +1,2 @@
+# One Visual Studio Code Marketplace extension ID per line.
+MS-CEINTL.vscode-language-pack-ja

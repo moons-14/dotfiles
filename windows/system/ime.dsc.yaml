@@ -1,0 +1,29 @@
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+
+resources:
+  - name: IME Key Assignment
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\IME\15.0\IMEJP\MSIME
+      valueName: IsKeyAssignmentEnabled
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Muhenkan IME Off
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\IME\15.0\IMEJP\MSIME
+      valueName: KeyAssignmentMuhenkan
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Henkan IME On
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\IME\15.0\IMEJP\MSIME
+      valueName: KeyAssignmentHenkan
+      valueData:
+        DWord: 0
+      _exist: true
