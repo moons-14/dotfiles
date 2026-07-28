@@ -8,6 +8,9 @@ winget install `
     --silent `
     --disable-interactivity
 
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to install or update ChatGPT."
+$exitCode = $LASTEXITCODE
+$updateNotApplicable = -1978335189 # 0x8A15002B
+
+if ($exitCode -notin @(0, $updateNotApplicable)) {
+    throw "Failed to install or update ChatGPT (WinGet exit code $exitCode)."
 }

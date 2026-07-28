@@ -182,6 +182,8 @@ winget install `
 
 The Store product ID `9PLM9XGG6VKS` is the ChatGPT Windows app managed here.
 ChatGPT Classic (`9NT1R1C2HH7J`) is intentionally not installed.
+WinGet's `APPINSTALLER_CLI_ERROR_UPDATE_NOT_APPLICABLE` result is treated as
+success because it means the installed ChatGPT version is already current.
 
 7-Zip is intentionally installed with its normal Windows installer through
 WinGet rather than as a portable Scoop package, because the normal installer
