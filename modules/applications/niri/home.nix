@@ -184,6 +184,17 @@ in
         default-column-width.fixed = 1080;
         default-window-height.fixed = 920;
       }
+      {
+        # Keep Zoom Workplace and meeting windows tiled, but let meeting
+        # controls, screen-share toolbars, and other auxiliary Zoom windows be
+        # positioned freely.
+        matches = [ { app-id = "^(?i:zoom)$"; } ];
+        excludes = [
+          { title = "^(?i:zoom workplace)$"; }
+          { title = "^ミーティング$"; }
+        ];
+        open-floating = true;
+      }
     ];
 
     layer-rules = [

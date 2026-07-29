@@ -15,6 +15,10 @@
         "gnome"
         "gtk"
       ];
+      niri.default = [
+        "gnome"
+        "gtk"
+      ];
     };
   };
 
