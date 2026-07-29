@@ -28,11 +28,11 @@ resources:
         DWord: 0
       _exist: true
 
-  - name: Show most used apps
+  - name: Disable app launch tracking
     type: Microsoft.Windows/Registry
     properties:
       keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
       valueName: Start_TrackProgs
       valueData:
-        DWord: 1
+        DWord: 0
       _exist: true

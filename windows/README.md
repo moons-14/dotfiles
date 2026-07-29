@@ -39,6 +39,11 @@ windows/
 │   ├── device-usage.dsc.yaml
 │   ├── explorer.dsc.yaml
 │   ├── ime.dsc.yaml
+│   ├── privacy/
+│   │   ├── configuration.dsc.yaml
+│   │   ├── machine.dsc.yaml
+│   │   ├── enhanced-search.json
+│   │   └── apply.ps1
 │   ├── advanced-settings/
 │   │   ├── configuration.dsc.yaml
 │   │   └── apply.ps1
@@ -56,6 +61,10 @@ windows/
     ├── git/
     │   ├── apply.ps1
     │   └── gitconfig
+    │
+    ├── parsec/
+    │   ├── apply.ps1
+    │   └── installer.json
     │
     └── vscode/
         ├── apply.ps1
@@ -127,16 +136,19 @@ dsc config set --file .\configuration.dsc.yaml
 
 & .\applications\chatgpt\apply.ps1
 & .\applications\git\apply.ps1
+& .\applications\parsec\apply.ps1
 & .\applications\vscode\apply.ps1
 & .\system\advanced-settings\apply.ps1
 & .\system\lock-screen\apply.ps1
 & .\system\power\apply.ps1
+& .\system\privacy\apply.ps1
 & .\system\wallpaper\apply.ps1
 ```
 
-The specialized scripts own the details of their own configuration. Only the
-advanced-settings script requests elevation, for the protected Explorer policy
-and machine-wide long-path setting; Scoop, DSC user settings, and application
+The specialized scripts own the details of their own configuration. The
+advanced-settings and privacy scripts request elevation for protected policies
+and machine-wide settings. The Parsec installer also requests elevation for its
+machine-wide installation; Scoop, other DSC user settings, and application
 configuration stay in the normal user process.
 
 ## Packages
@@ -185,6 +197,17 @@ ChatGPT Classic (`9NT1R1C2HH7J`) is intentionally not installed.
 WinGet's `APPINSTALLER_CLI_ERROR_UPDATE_NOT_APPLICABLE` result is treated as
 success because it means the installed ChatGPT version is already current.
 
+### Parsec
+
+Parsec is installed by `applications/parsec/apply.ps1` instead of the WinGet
+DSC document. Parsec publishes mutable installer content at a stable URL, which
+can temporarily leave the WinGet manifest with a stale SHA256 and make the
+entire DSC run fail. The application-local declaration pins the verified file
+version, SHA256, and Authenticode signer thumbprint. The script downloads only
+when Parsec is absent, verifies all three values, then requests elevation and
+runs the official installer for all users. It never bypasses WinGet hash
+verification.
+
 7-Zip is intentionally installed with its normal Windows installer through
 WinGet rather than as a portable Scoop package, because the normal installer
 provides Explorer shell integration.
@@ -212,13 +235,50 @@ current image and only calls the API when the image differs.
 - recently added apps: on
 - recommended and recent files: off
 - recommendations for tips, shortcuts, and new apps: off
-- most used apps: on
+- app-launch tracking and most-used app personalization: off
 
 ### Device usage
 
 `system/device-usage.dsc.yaml` explicitly clears both `Intent` and `Priority`
 for Development, Gaming, Family, Creativity, School, Entertainment, and
 Business.
+
+### Privacy, diagnostics, feedback, and search
+
+`system/privacy/configuration.dsc.yaml` configures user-scoped preferences:
+
+- advertising ID: off
+- website access to the language list: off
+- personalized offers and tailored experiences: off
+- Windows Spotlight, third-party content, Settings suggestions, tips, welcome
+  experiences, device-setup suggestions, and suggested app installation: off
+- File Explorer sync-provider promotions: off
+- inking and typing diagnostics: off
+- feedback frequency and prompts: never
+- device search history and search highlights: off
+
+`system/privacy/apply.ps1` requests elevation and applies both the user-scoped
+configuration above and `system/privacy/machine.dsc.yaml`, which configures:
+
+- advertising ID and Windows consumer experiences: off by policy
+- diagnostic data: the lowest level supported by the installed Windows edition
+- feedback notifications and Diagnostic Data Viewer: off
+- diagnostic log and dump collection: limited
+- publishing and uploading activity history: off
+
+The protected Windows Search key doesn't grant write access to administrators,
+so `apply.ps1` applies the desired value from the declarative
+`enhanced-search.json` as `SYSTEM` to set Find my files to Enhanced. It uses a
+uniquely named one-shot Scheduled Task and always unregisters it immediately
+afterward. It doesn't change the key's owner or access-control list and doesn't
+leave a persistent task behind.
+
+Windows Pro still sends required diagnostic data even when `AllowTelemetry` is
+set to the Security value (`0`); only editions that support the Security level
+honor diagnostic data completely off. The configuration nevertheless disables
+optional diagnostic data and every related user-facing toggle. Enhanced search
+indexes the full user profile, so its initial indexing can temporarily use more
+CPU, battery, and storage.
 
 ### Taskbar
 
@@ -434,10 +494,14 @@ system/start.dsc.yaml
 system/device-usage.dsc.yaml
 system/explorer.dsc.yaml
 system/ime.dsc.yaml
+system/privacy/configuration.dsc.yaml
+system/privacy/machine.dsc.yaml
 system/advanced-settings/configuration.dsc.yaml
 ```
 
-When adding a new DSC document, include it from `configuration.dsc.yaml`.
+Include ordinary user-scoped DSC documents from the root
+`configuration.dsc.yaml`. A protected or machine-wide document may instead be
+applied by its feature-local elevated script, as the privacy configuration is.
 
 If a system feature cannot be expressed reliably with DSC and genuinely needs
 procedural setup, give that feature its own directory, following the wallpaper

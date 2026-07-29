@@ -29,13 +29,6 @@ resources:
       source: winget
       useLatest: true
 
-  - name: Parsec
-    type: Microsoft.WinGet/Package
-    properties:
-      id: Parsec.Parsec
-      source: winget
-      useLatest: true
-
   - name: 7-Zip
     type: Microsoft.WinGet/Package
     properties:

@@ -1,0 +1,6 @@
+{
+  "keyPath": "HKLM\\SOFTWARE\\Microsoft\\Windows Search\\Gather\\Windows\\SystemIndex",
+  "valueName": "EnableFindMyFiles",
+  "valueType": "REG_DWORD",
+  "valueData": 1
+}

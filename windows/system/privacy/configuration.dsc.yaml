@@ -1,0 +1,200 @@
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+
+resources:
+  - name: Disable advertising ID
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo
+      valueName: Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Do not share the language list with websites
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Control Panel\International\User Profile
+      valueName: HttpAcceptLanguageOptOut
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Disable personalized offers
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy
+      valueName: TailoredExperiencesWithDiagnosticDataEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable tailored experiences by policy
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Policies\Microsoft\Windows\CloudContent
+      valueName: DisableTailoredExperiencesWithDiagnosticData
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Disable all Windows Spotlight suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Policies\Microsoft\Windows\CloudContent
+      valueName: DisableWindowsSpotlightFeatures
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Disable third-party Spotlight suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Policies\Microsoft\Windows\CloudContent
+      valueName: DisableThirdPartySuggestions
+      valueData:
+        DWord: 1
+      _exist: true
+
+  - name: Disable suggested content in Settings
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-338393Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable Settings suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SystemPaneSuggestionsEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable Settings account suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-353694Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable Settings app suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-353696Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable tips about Windows
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-338389Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable Windows welcome experience
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-310093Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable suggested apps
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SubscribedContent-338388Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable soft-landing tips
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SoftLandingEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable automatic suggested app installation
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+      valueName: SilentInstalledAppsEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable device setup suggestions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement
+      valueName: ScoobeSystemSettingEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable File Explorer sync-provider promotions
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+      valueName: ShowSyncProviderNotifications
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable inking and typing diagnostics
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Input\TIPC
+      valueName: Enabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Set feedback frequency period to never
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Siuf\Rules
+      valueName: PeriodInNanoSeconds
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Set feedback prompts to never
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Siuf\Rules
+      valueName: NumberOfSIUFInPeriod
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable device search history
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings
+      valueName: IsDeviceSearchHistoryEnabled
+      valueData:
+        DWord: 0
+      _exist: true
+
+  - name: Disable search highlights
+    type: Microsoft.Windows/Registry
+    properties:
+      keyPath: HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings
+      valueName: IsDynamicSearchBoxEnabled
+      valueData:
+        DWord: 0
+      _exist: true
