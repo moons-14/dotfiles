@@ -1,0 +1,48 @@
+# Reference: https://github.com/ryoppippi/dotfiles/blob/main/.github/workflows/update-flake.yaml
+name: "Bot: Update flake inputs"
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update:
+    name: Update and validate flake inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Update flake inputs
+        id: update
+        run: |
+          nix flake update
+          if git diff --quiet -- flake.lock; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Check updated NixOS configurations
+        if: steps.update.outputs.changed == 'true'
+        uses: ./.github/actions/check-nixos
+      - name: Create update pull request
+        if: steps.update.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: flake.lock
+          branch: automation/update-flake-lock
+          delete-branch: true
+          commit-message: "flake: update inputs"
+          title: "flake: update inputs"
+          body: |
+            Automated update of `flake.lock`.
+
+            The updated inputs passed the Registry tests and a build of every NixOS configuration.

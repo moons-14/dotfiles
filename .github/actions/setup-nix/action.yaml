@@ -1,0 +1,22 @@
+# Reference: https://github.com/ryoppippi/dotfiles/blob/main/.github/actions/setup-nix/action.yaml
+name: Setup Nix
+description: Install Nix and cache the Nix store
+runs:
+  using: composite
+  steps:
+    - name: Allow unprivileged user namespaces
+      if: runner.os == 'Linux'
+      shell: bash
+      run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 2>/dev/null || true
+    - name: Install Nix
+      uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+      with:
+        nix_conf: |
+          accept-flake-config = true
+          max-jobs = auto
+    - name: Cache Nix store
+      uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7.0.2
+      with:
+        primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.lock') }}
+        restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}-
+        gc-max-store-size-linux: 4G

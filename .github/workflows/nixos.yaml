@@ -1,0 +1,51 @@
+# Reference: https://github.com/ryoppippi/dotfiles/blob/main/.github/workflows/nix-build.yaml
+name: "CI: NixOS"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - flake.nix
+      - flake.lock
+      - "flake/**"
+      - "hosts/**"
+      - "libs/**"
+      - "modules/**"
+      - "overlays/**"
+      - "shells/**"
+      - "tests/**"
+      - ".github/actions/check-nixos/**"
+      - ".github/actions/setup-nix/**"
+      - ".github/workflows/nixos.yaml"
+  pull_request:
+    paths:
+      - flake.nix
+      - flake.lock
+      - "flake/**"
+      - "hosts/**"
+      - "libs/**"
+      - "modules/**"
+      - "overlays/**"
+      - "shells/**"
+      - "tests/**"
+      - ".github/actions/check-nixos/**"
+      - ".github/actions/setup-nix/**"
+      - ".github/workflows/nixos.yaml"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  check:
+    name: Check all NixOS configurations
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Check NixOS configurations
+        uses: ./.github/actions/check-nixos
