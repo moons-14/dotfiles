@@ -1,0 +1,22 @@
+diff --git a/src/headform.c b/src/headform.c
+--- a/src/headform.c
++++ b/src/headform.c
+@@ -39,1 +39,8 @@
++/* The output-management protocol transmits scale as a Wayland 24.8 fixed
++ * point value. Use that same value for preview geometry so a fractional scale
++ * cannot change underneath positions during the first apply. */
++static double canonicalize_scale(double scale) {
++  return wl_fixed_to_double(wl_fixed_from_double(scale));
++}
++
+ static void head_form_update_sensitivity(WdHeadForm *form) {
+@@ -359,2 +366,3 @@ void wd_head_form_fill_config(WdHeadForm *form, struct wd_head_config *output) {
+-  output->scale = gtk_spin_button_get_value(GTK_SPIN_BUTTON(priv->scale));
++  output->scale = canonicalize_scale(
++      gtk_spin_button_get_value(GTK_SPIN_BUTTON(priv->scale)));
+   output->x = gtk_spin_button_get_value(GTK_SPIN_BUTTON(priv->pos_x));
+@@ -385,2 +393,3 @@ void wd_head_form_get_dimensions(WdHeadForm *form, WdHeadDimensions *dimensions)
+-  dimensions->scale = gtk_spin_button_get_value(GTK_SPIN_BUTTON(priv->scale));
++  dimensions->scale = canonicalize_scale(
++      gtk_spin_button_get_value(GTK_SPIN_BUTTON(priv->scale)));
+   dimensions->rotation_id = g_variant_get_int32(g_action_get_state(priv->rotate_action)) / 90;

@@ -185,9 +185,38 @@ in
         default-window-height.fixed = 920;
       }
       {
-        # Keep Zoom Workplace and meeting windows tiled, but let meeting
-        # controls, screen-share toolbars, and other auxiliary Zoom windows be
-        # positioned freely.
+        # Zoom presents these two fixed-size primary windows. Explicitly keep
+        # them tiled, overriding Niri's automatic fixed-size-window floating.
+        matches = [
+          {
+            app-id = "^(?i:zoom)$";
+            title = "^(?i:zoom workplace)$";
+          }
+          {
+            app-id = "^(?i:zoom)$";
+            title = "^ミーティング$";
+          }
+        ];
+        open-floating = false;
+      }
+      {
+        # Zoom's screen-share controls are a toolbar, so open them where the
+        # client expects them rather than in the middle of the workspace.
+        matches = [
+          {
+            app-id = "^(?i:zoom)$";
+            title = "^as_toolbar$";
+          }
+        ];
+        open-floating = true;
+        default-floating-position = {
+          x = 0;
+          y = 8;
+          relative-to = "top";
+        };
+      }
+      {
+        # Keep all other Zoom auxiliary windows freely positionable.
         matches = [ { app-id = "^(?i:zoom)$"; } ];
         excludes = [
           { title = "^(?i:zoom workplace)$"; }
