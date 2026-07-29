@@ -35,6 +35,7 @@ when removing it from any supported host would make that host invalid.
 | `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS               |
 | `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
 | `workload.development`               | NixOS, macOS with Home Manager                |
+| `workload.game`                      | NixOS with Home Manager                       |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
 | `workload.remote-access`             | NixOS, macOS                                  |
 | `workload.server`                    | NixOS, macOS with Home Manager                |

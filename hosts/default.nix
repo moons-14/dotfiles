@@ -88,6 +88,7 @@
       "security.secure-boot"
       "security.tpm-storage"
       "workload.development"
+      "workload.game"
       "workload.personal"
     ];
   };
