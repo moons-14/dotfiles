@@ -6,6 +6,7 @@
     "applications.chrome"
     "applications.discord"
     "applications.kde"
+    "applications.parsec"
     "applications.slack"
     "applications.zoom"
   ];
