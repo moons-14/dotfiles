@@ -1,5 +1,5 @@
 {
-  description = "Linux gaming applications";
+  description = "Gaming applications";
 
   includes = [
     "applications.minecraft"

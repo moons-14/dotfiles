@@ -106,6 +106,7 @@
       "security.fingerprint"
       # "security.secrets"
       "workload.development"
+      "workload.game"
       "workload.personal"
     ];
   };
