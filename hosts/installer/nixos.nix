@@ -51,6 +51,11 @@
     parted
     cryptsetup
     btrfs-progs
+    efibootmgr
+    pciutils
+    sbctl
+    tpm2-tools
+    util-linux
   ];
 
   services.pcscd.enable = true;

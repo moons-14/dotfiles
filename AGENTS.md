@@ -35,31 +35,33 @@ Before adding configuration, decide whether it is owned by an application,
 system foundation, service, hardware family, user, profile, or individual host.
 Prefer the following placements:
 
-| Configuration                                        | Placement                                               |
-| ---------------------------------------------------- | ------------------------------------------------------- |
-| Nix settings shared by every system host             | `modules/systems/nix/common.nix`                        |
-| NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                    |
-| Disko NixOS module and CLI                           | `modules/systems/disko/`                                |
-| macOS-wide input, document, and dialog defaults      | `modules/systems/macos-defaults/darwin.nix`             |
-| macOS Dock defaults                                  | `modules/systems/dock/darwin.nix`                       |
-| macOS trackpad defaults                              | `modules/systems/trackpad/darwin.nix`                   |
-| Finder-specific preferences                          | `modules/applications/finder/darwin.nix`                |
-| Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
-| niri-specific configuration                          | `modules/applications/niri/`                            |
-| Desktop applications shared by labwc and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
-| Applications and services specific to niri           | `modules/profiles/interface/niri/meta.nix`              |
-| labwc and its session configuration                  | `modules/applications/labwc/`                           |
-| A Linux package plus its macOS Homebrew cask         | `modules/applications/<name>/home.nix` and `darwin.nix` |
-| Docker daemon and Docker group membership            | `modules/services/docker/nixos.nix`                     |
-| The laptop unit composition                          | `modules/profiles/platform/laptop/meta.nix`             |
-| The Intel ThinkPad X1 composition                    | `modules/profiles/platform/thinkpad-x1/meta.nix`        |
-| The development-environment unit composition         | `modules/profiles/workload/development/meta.nix`        |
-| Cross-platform fingerprint selection                 | `modules/profiles/security/fingerprint/meta.nix`        |
-| A user's OS- and Home Manager-specific configuration | `modules/users/<name>/`                                 |
-| Host-specific monitor layout                         | `hosts/<name>/home.nix`                                 |
-| Generated host disk UUIDs                            | `hosts/<name>/hardware-configuration.nix`               |
-| Package replacement or addition                      | `overlays/`                                             |
-| Formatter, checks, or Git hooks                      | `flake/`                                                |
+| Configuration                                        | Placement                                                 |
+| ---------------------------------------------------- | --------------------------------------------------------- |
+| Nix settings shared by every system host             | `modules/systems/nix/common.nix`                          |
+| NixOS-only boot configuration                        | `modules/systems/boot/.../nixos.nix`                      |
+| Disko NixOS module and CLI                           | `modules/systems/disko/`                                  |
+| macOS-wide input, document, and dialog defaults      | `modules/systems/macos-defaults/darwin.nix`               |
+| macOS Dock defaults                                  | `modules/systems/dock/darwin.nix`                         |
+| macOS trackpad defaults                              | `modules/systems/trackpad/darwin.nix`                     |
+| Finder-specific preferences                          | `modules/applications/finder/darwin.nix`                  |
+| Ghostty-specific configuration                       | `modules/applications/ghostty/`                           |
+| niri-specific configuration                          | `modules/applications/niri/`                              |
+| Desktop applications shared by labwc and niri        | `modules/profiles/interface/linux-desktop/meta.nix`       |
+| Applications and services specific to niri           | `modules/profiles/interface/niri/meta.nix`                |
+| labwc and its session configuration                  | `modules/applications/labwc/`                             |
+| A Linux package plus its macOS Homebrew cask         | `modules/applications/<name>/home.nix` and `darwin.nix`   |
+| Docker daemon and Docker group membership            | `modules/services/docker/nixos.nix`                       |
+| The laptop unit composition                          | `modules/profiles/platform/laptop/meta.nix`               |
+| The Intel ThinkPad X1 composition                    | `modules/profiles/platform/thinkpad-x1/meta.nix`          |
+| The Intel/NVIDIA desktop composition                 | `modules/profiles/platform/intel-nvidia-desktop/meta.nix` |
+| NVIDIA GPU driver configuration                      | `modules/hardwares/nvidia/`                               |
+| The development-environment unit composition         | `modules/profiles/workload/development/meta.nix`          |
+| Cross-platform fingerprint selection                 | `modules/profiles/security/fingerprint/meta.nix`          |
+| A user's OS- and Home Manager-specific configuration | `modules/users/<name>/`                                   |
+| Host-specific monitor layout                         | `hosts/<name>/home.nix`                                   |
+| Generated host disk UUIDs                            | `hosts/<name>/hardware-configuration.nix`                 |
+| Package replacement or addition                      | `overlays/`                                               |
+| Formatter, checks, or Git hooks                      | `flake/`                                                  |
 
 ## Unit Discovery and Identity
 
@@ -344,6 +346,7 @@ modules/profiles/
 │   └── tailscale-subnet-router/
 ├── platform/
 │   ├── nixos/
+│   ├── intel-nvidia-desktop/
 │   ├── laptop/
 │   ├── thinkpad-x1/
 │   ├── desktop/
@@ -583,6 +586,27 @@ A host registry may use a specification like this:
     ];
   };
 
+  galleria = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./galleria;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "interface.labwc"
+      "interface.niri"
+      "platform.intel-nvidia-desktop"
+      "security.secrets"
+      "security.secure-boot"
+      "security.tpm-storage"
+      "workload.development"
+      "workload.game"
+      "workload.personal"
+    ];
+  };
+
   m2 = {
     system = "aarch64-darwin";
     stateVersion = "26.05";
@@ -608,9 +632,11 @@ installation ISO without Home Manager. x1g9 is a full NixOS desktop with niri,
 labwc, ly, the shared Linux desktop applications, and the personal workload.
 x1g13 is the secure NixOS development and personal ThinkPad, with the same
 desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk
-unlock. m2 is the daily-use macOS development and personal machine with the
-macOS interface defaults. Keep the desktop sessions independently selectable,
-and keep the development and personal profiles usable across NixOS and Darwin.
+unlock. galleria is the Intel/NVIDIA physical desktop shared with Windows; it
+uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
+m2 is the daily-use macOS development and personal machine with the macOS
+interface defaults. Keep the desktop sessions independently selectable, and
+keep the development and personal profiles usable across NixOS and Darwin.
 
 Treat entries in `profiles` and the exceptional `applications` field as IDs
 relative to their respective category roots. Add the category prefixes during
@@ -651,6 +677,11 @@ hosts/
 ├── ops/
 │   ├── nixos.nix
 │   └── hardware-configuration.nix
+├── galleria/
+│   ├── disk-identifiers.nix
+│   ├── disko.nix
+│   ├── hardware-configuration.nix
+│   └── nixos.nix
 ├── x1g9/
 │   ├── nixos.nix
 │   └── hardware-configuration.nix
@@ -667,7 +698,9 @@ hosts/
 normal top-level Nix module `imports`. `hosts/x1g13/nixos.nix` loads its
 generated hardware configuration and host-local `disko.nix` the same way. Do
 not confuse these host imports with the prohibition on top-level `imports` in
-unit configuration fragments.
+unit configuration fragments. `hosts/galleria/disko.nix` manages only the two
+dedicated NixOS partitions by PARTUUID and deliberately excludes the Windows
+disk, Windows partitions, and the Windows EFI System Partition.
 
 Derive the system class from the host's `system`:
 
@@ -770,8 +803,9 @@ For profile changes, additionally:
   the container server VM; installer remains the Home Manager-free installation
   ISO; x1g9 provides niri, labwc, ly, and the personal application set; x1g13
   additionally provides the development, Tailscale client, secrets, Secure Boot,
-  and TPM storage roles; m2 remains the daily-use development and personal
-  machine.
+  and TPM storage roles; galleria remains the Intel/NVIDIA dual-boot desktop
+  with LUKS, Secure Boot, and TPM storage; m2 remains the daily-use development
+  and personal machine.
 
 ## Commit and Pull Request Guidelines
 

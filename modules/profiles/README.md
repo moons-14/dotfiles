@@ -31,6 +31,7 @@ when removing it from any supported host would make that host invalid.
 | `interface.niri`                     | NixOS with Home Manager                       |
 | `platform.nixos`                     | NixOS                                         |
 | `platform.desktop`                   | Physical NixOS desktop                        |
+| `platform.intel-nvidia-desktop`      | Intel/NVIDIA physical NixOS desktop           |
 | `platform.laptop`                    | Physical NixOS laptop                         |
 | `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS               |
 | `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
@@ -48,8 +49,9 @@ when removing it from any supported host would make that host invalid.
 
 Select independent concerns independently in `hosts/default.nix`. For example,
 a NixOS desktop can combine `interface.labwc` and `interface.niri` to provide
-both sessions while sharing `interface.linux-desktop` and `interface.gui`; both
-session profiles select ly. A
+both sessions while sharing `interface.linux-desktop` and `interface.gui`.
+The shared Linux desktop profile provides the resident application drawer and
+four-finger pinch gesture service; both session profiles select ly. A
 daily-use macOS development machine can combine `interface.macos`,
 `workload.development`, and `workload.personal`. Hardware support does not
 implicitly select an interface or workload.

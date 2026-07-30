@@ -93,6 +93,27 @@
     ];
   };
 
+  galleria = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./galleria;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "interface.labwc"
+      "interface.niri"
+      "platform.intel-nvidia-desktop"
+      "security.secrets"
+      "security.secure-boot"
+      "security.tpm-storage"
+      "workload.development"
+      "workload.game"
+      "workload.personal"
+    ];
+  };
+
   m2 = {
     system = "aarch64-darwin";
     stateVersion = "26.05";
