@@ -14,7 +14,7 @@
     <dropShadowsOnTiled>yes</dropShadowsOnTiled>
   </theme>
 
-  <windowSwitcher preview="no" outlines="yes">
+  <windowSwitcher preview="yes" outlines="yes">
     <osd style="thumbnail" />
   </windowSwitcher>
 
@@ -31,6 +31,28 @@
 
     <keybind key="W-q">
       <action name="Close" />
+    </keybind>
+    <keybind key="W-f">
+      <action name="ToggleMaximize" />
+    </keybind>
+    <keybind key="W-Tab">
+      <action name="NextWindow" />
+    </keybind>
+    <keybind key="W-S-Tab">
+      <action name="PreviousWindow" />
+    </keybind>
+    <keybind key="W-j">
+      <action name="NextWindow" />
+    </keybind>
+    <keybind key="W-k">
+      <action name="PreviousWindow" />
+    </keybind>
+    <keybind key="W-a">
+      <action name="ShowMenu" menu="client-list-combined-menu" />
+      <position>
+        <x>center</x>
+        <y>center</y>
+      </position>
     </keybind>
     <keybind key="W-t">
       <action name="Execute" command="ghostty" />

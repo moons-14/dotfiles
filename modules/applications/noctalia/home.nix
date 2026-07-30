@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   wallpapers = pkgs.fetchFromGitHub {
     owner = "moons-14";
@@ -6,6 +11,34 @@ let
     rev = "cc3256f4aaf2c8e7d16fb000b1ee251af54085db";
     hash = "sha256-emQ/FqKqMq3YI5bLx8gBZg/ZE72OG9Ilh71ggq78WdQ=";
   };
+
+  labwcSettings = lib.recursiveUpdate config.programs.noctalia.settings {
+    dock = {
+      position = "bottom";
+      icon_size = 32;
+      main_axis_padding = 10;
+      cross_axis_padding = 4;
+      item_spacing = 4;
+      margin_edge = 0;
+      radius = 8;
+      background_opacity = 0.9;
+      show_running = true;
+      auto_hide = false;
+      smart_auto_hide = false;
+      reserve_space = true;
+      active_scale = 1.0;
+      inactive_scale = 1.0;
+      magnification = false;
+      show_instance_count = true;
+      active_monitor_only = false;
+    };
+  };
+
+  labwcRawConfig = (pkgs.formats.toml { }).generate "noctalia-labwc-config.toml" labwcSettings;
+  labwcConfig = pkgs.runCommand "noctalia-labwc-config" { } ''
+    ${lib.getExe config.programs.noctalia.package} config validate ${labwcRawConfig}
+    cp ${labwcRawConfig} $out
+  '';
 in
 {
   home.packages = [ pkgs.networkmanagerapplet ];
@@ -20,7 +53,10 @@ in
 
   programs.noctalia = {
     enable = true;
-    systemd.enable = true;
+
+    # Both compositors start Noctalia themselves so labwc can select its own
+    # config home without racing the generic graphical-session service.
+    systemd.enable = false;
 
     settings = {
       theme = {
@@ -164,4 +200,6 @@ in
       ];
     };
   };
+
+  xdg.configFile."noctalia-labwc/noctalia/config.toml".source = labwcConfig;
 }
