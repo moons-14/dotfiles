@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+  <core>
+    <decoration>server</decoration>
+    <gap>10</gap>
+    <autoEnableOutputs>yes</autoEnableOutputs>
+    <reuseOutputMode>yes</reuseOutputMode>
+  </core>
+
+  <theme>
+    <name>Dracula</name>
+    <cornerRadius>8</cornerRadius>
+    <dropShadows>yes</dropShadows>
+    <dropShadowsOnTiled>yes</dropShadowsOnTiled>
+  </theme>
+
+  <windowSwitcher preview="no" outlines="yes">
+    <osd style="thumbnail" />
+  </windowSwitcher>
+
+  <focus>
+    <followMouse>yes</followMouse>
+    <followMouseRequiresMovement>yes</followMouseRequiresMovement>
+    <raiseOnFocus>no</raiseOnFocus>
+  </focus>
+
+  <desktops number="9" popupTime="500" prefix="Workspace" />
+
+  <keyboard>
+    <default />
+
+    <keybind key="W-q">
+      <action name="Close" />
+    </keybind>
+    <keybind key="W-t">
+      <action name="Execute" command="ghostty" />
+    </keybind>
+    <keybind key="W-d">
+      <action name="Execute" command="vicinae toggle" />
+    </keybind>
+    <keybind key="W-e">
+      <action name="Execute" command="nautilus --new-window" />
+    </keybind>
+    <keybind key="W-l">
+      <action name="Execute" command="loginctl lock-session" />
+    </keybind>
+    <keybind key="W-v">
+      <action name="Execute" command="vicinae vicinae://launch/clipboard/history?toggle=true" />
+    </keybind>
+    <keybind key="W-space">
+      <action name="Execute" command="ghostty +toggle-quick-terminal" />
+    </keybind>
+    <keybind key="W-p">
+      <action name="Execute" command="wdisplays" />
+    </keybind>
+    <keybind key="W-s">
+      <action name="Execute" command="noctalia msg panel-toggle control-center" />
+    </keybind>
+    <keybind key="W-comma">
+      <action name="Execute" command="noctalia msg settings-toggle" />
+    </keybind>
+    <keybind key="W-S-e">
+      <action name="Exit" />
+    </keybind>
+
+    <keybind key="W-1"><action name="GoToDesktop" to="1" /></keybind>
+    <keybind key="W-2"><action name="GoToDesktop" to="2" /></keybind>
+    <keybind key="W-3"><action name="GoToDesktop" to="3" /></keybind>
+    <keybind key="W-4"><action name="GoToDesktop" to="4" /></keybind>
+    <keybind key="W-5"><action name="GoToDesktop" to="5" /></keybind>
+    <keybind key="W-6"><action name="GoToDesktop" to="6" /></keybind>
+    <keybind key="W-7"><action name="GoToDesktop" to="7" /></keybind>
+    <keybind key="W-8"><action name="GoToDesktop" to="8" /></keybind>
+    <keybind key="W-9"><action name="GoToDesktop" to="9" /></keybind>
+
+    <keybind key="W-C-1"><action name="SendToDesktop" to="1" /></keybind>
+    <keybind key="W-C-2"><action name="SendToDesktop" to="2" /></keybind>
+    <keybind key="W-C-3"><action name="SendToDesktop" to="3" /></keybind>
+    <keybind key="W-C-4"><action name="SendToDesktop" to="4" /></keybind>
+    <keybind key="W-C-5"><action name="SendToDesktop" to="5" /></keybind>
+    <keybind key="W-C-6"><action name="SendToDesktop" to="6" /></keybind>
+    <keybind key="W-C-7"><action name="SendToDesktop" to="7" /></keybind>
+    <keybind key="W-C-8"><action name="SendToDesktop" to="8" /></keybind>
+    <keybind key="W-C-9"><action name="SendToDesktop" to="9" /></keybind>
+
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute" command="noctalia msg volume-up" />
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute" command="noctalia msg volume-down" />
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute" command="noctalia msg volume-mute" />
+    </keybind>
+    <keybind key="XF86AudioMicMute">
+      <action name="Execute" command="noctalia msg mic-mute" />
+    </keybind>
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute" command="noctalia msg brightness-up" />
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute" command="noctalia msg brightness-down" />
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <default />
+  </mouse>
+
+  <libinput>
+    <device category="touchpad">
+      <naturalScroll>yes</naturalScroll>
+      <tap>yes</tap>
+      <tapAndDrag>yes</tapAndDrag>
+      <dragLock>yes</dragLock>
+      <clickMethod>clickfinger</clickMethod>
+      <scrollMethod>twoFinger</scrollMethod>
+      <scrollFactor>4.0</scrollFactor>
+    </device>
+    <device category="non-touch">
+      <pointerSpeed>-0.1</pointerSpeed>
+      <accelProfile>flat</accelProfile>
+    </device>
+  </libinput>
+</labwc_config>

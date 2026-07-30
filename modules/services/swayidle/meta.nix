@@ -1,5 +1,3 @@
 {
-  description = "swayidle idle management for Niri";
-
-  includes = [ "applications.niri" ];
+  description = "swayidle idle management for Wayland sessions";
 }

@@ -1,9 +1,9 @@
 { lib, pkgs, ... }:
 let
   brightnessctl = lib.getExe pkgs.brightnessctl;
-  niri = lib.getExe pkgs.niri;
   rm = "${pkgs.coreutils}/bin/rm";
   systemctl = lib.getExe' pkgs.systemd "systemctl";
+  wlopm = lib.getExe pkgs.wlopm;
   brightnessState = "$XDG_RUNTIME_DIR/swayidle-brightness";
 
   skipIfOnAC = ''
@@ -37,7 +37,7 @@ let
   '';
 
   afterResume = pkgs.writeShellScript "swayidle-after-resume" ''
-    ${niri} msg action power-on-monitors
+    ${wlopm} --on '*'
     ${restoreBrightness}
   '';
 in

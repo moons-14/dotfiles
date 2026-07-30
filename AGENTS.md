@@ -28,7 +28,7 @@ makes any statement here stale, update `AGENTS.md` in the same change.
 Use **unit** as the generic internal term for a Registry-managed component and
 **profile** for a unit that composes multiple units. Do not introduce a
 `features/` layer. Window managers and desktop environments such as niri and
-GNOME belong in `modules/applications/`; do not create a separate `desktop/`
+labwc belong in `modules/applications/`; do not create a separate `desktop/`
 module category.
 
 Before adding configuration, decide whether it is owned by an application,
@@ -46,9 +46,9 @@ Prefer the following placements:
 | Finder-specific preferences                          | `modules/applications/finder/darwin.nix`                |
 | Ghostty-specific configuration                       | `modules/applications/ghostty/`                         |
 | niri-specific configuration                          | `modules/applications/niri/`                            |
-| Desktop applications shared by GNOME and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
+| Desktop applications shared by labwc and niri        | `modules/profiles/interface/linux-desktop/meta.nix`     |
 | Applications and services specific to niri           | `modules/profiles/interface/niri/meta.nix`              |
-| GNOME itself                                         | `modules/applications/gnome/`                           |
+| labwc and its session configuration                  | `modules/applications/labwc/`                           |
 | A Linux package plus its macOS Homebrew cask         | `modules/applications/<name>/home.nix` and `darwin.nix` |
 | Docker daemon and Docker group membership            | `modules/services/docker/nixos.nix`                     |
 | The laptop unit composition                          | `modules/profiles/platform/laptop/meta.nix`             |
@@ -138,7 +138,7 @@ modules/applications/ghostty/
 └── settings.nix
 
 # NixOS only
-modules/applications/gnome/
+modules/services/docker/
 └── nixos.nix
 
 # nix-darwin only
@@ -316,10 +316,11 @@ the application to work. A profile owns the user's choice to adopt several
 otherwise independent applications together. For example, the niri application
 includes the Wayland foundation as a technical dependency. The
 `profiles.interface.linux-desktop` profile selects Ghostty and Nautilus because
-both GNOME and niri use them, while the cross-platform `profiles.interface.gui`
-profile selects Vicinae for graphical hosts. `profiles.interface.niri` selects
-only the niri-specific shell and services. Ghostty and Vicinae must not depend
-on niri, and niri-specific keybindings remain owned by the niri unit.
+both labwc and niri use them, while the cross-platform `profiles.interface.gui`
+profile selects Vicinae for graphical hosts. The labwc and niri profiles select
+their compositor, Noctalia, and the session services they require. Ghostty and
+Vicinae must not depend on either compositor, and compositor-specific
+keybindings remain owned by the corresponding application unit.
 
 ## Profiles
 
@@ -336,7 +337,7 @@ modules/profiles/
 │   ├── gui/
 │   ├── macos/
 │   ├── linux-desktop/
-│   ├── gnome/
+│   ├── labwc/
 │   └── niri/
 ├── networking/
 │   ├── tailscale-client/
@@ -375,8 +376,8 @@ The profile layers have these responsibilities:
   graphical interface applications such as Vicinae. `interface.macos` owns the
   macOS Finder, Dock, trackpad, and shared default preferences and includes
   `interface.gui`.
-  `interface.linux-desktop` owns the common GNOME/niri desktop selection,
-  including Ghostty and Nautilus, and also includes `interface.gui`. GNOME and
+  `interface.linux-desktop` owns the common labwc/niri desktop selection,
+  including Ghostty and Nautilus, and also includes `interface.gui`. Labwc and
   niri remain independently selectable and do not imply CLI or personal
   workloads.
 - `platform` describes NixOS foundations and physical or virtual form factors.
@@ -552,7 +553,7 @@ A host registry may use a specification like this:
     profiles = [
       "base"
       "interface.cli"
-      "interface.gnome"
+      "interface.labwc"
       "interface.niri"
       "platform.thinkpad-x1"
       "security.fingerprint"
@@ -569,7 +570,7 @@ A host registry may use a specification like this:
     profiles = [
       "base"
       "interface.cli"
-      "interface.gnome"
+      "interface.labwc"
       "interface.niri"
       "networking.tailscale-client"
       "platform.thinkpad-x1"
@@ -604,7 +605,7 @@ The current role assignment is intentional: nix-example is the development VM;
 ops is the remote-access VM with host-specific static networking;
 internal-app-01 is the container server VM; and installer builds the minimal
 installation ISO without Home Manager. x1g9 is a full NixOS desktop with niri,
-GNOME, ly, the shared Linux desktop applications, and the personal workload.
+labwc, ly, the shared Linux desktop applications, and the personal workload.
 x1g13 is the secure NixOS development and personal ThinkPad, with the same
 desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk
 unlock. m2 is the daily-use macOS development and personal machine with the
@@ -709,8 +710,8 @@ When implementing or modifying modules:
 - Keep cross-platform profile names semantic. Put Linux package installation in
   an application's `home.nix` and the corresponding macOS Homebrew cask in its
   `darwin.nix`; do not create a thin `*-linux` profile for that difference.
-- Keep shared GNOME/niri selections in `profiles.interface.linux-desktop` and
-  session-specific applications or services in the respective GNOME or niri
+- Keep shared labwc/niri selections in `profiles.interface.linux-desktop` and
+  session-specific applications or services in the respective labwc or niri
   profile.
 - Keep `modules/profiles/README.md`, the profile directories, and host profile
   selections synchronized whenever any of them changes.
@@ -767,7 +768,7 @@ For profile changes, additionally:
 - Preserve the intended host roles: nix-example remains the development VM;
   ops remains the statically networked remote-access VM; internal-app-01 remains
   the container server VM; installer remains the Home Manager-free installation
-  ISO; x1g9 provides niri, GNOME, ly, and the personal application set; x1g13
+  ISO; x1g9 provides niri, labwc, ly, and the personal application set; x1g13
   additionally provides the development, Tailscale client, secrets, Secure Boot,
   and TPM storage roles; m2 remains the daily-use development and personal
   machine.

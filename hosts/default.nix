@@ -61,7 +61,7 @@
     profiles = [
       "base"
       "interface.cli"
-      "interface.gnome"
+      "interface.labwc"
       "interface.niri"
       "platform.thinkpad-x1"
       "security.fingerprint"
@@ -79,7 +79,7 @@
     profiles = [
       "base"
       "interface.cli"
-      "interface.gnome"
+      "interface.labwc"
       "interface.niri"
       "networking.tailscale-client"
       "platform.thinkpad-x1"
