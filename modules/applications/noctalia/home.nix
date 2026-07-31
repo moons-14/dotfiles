@@ -163,6 +163,10 @@ in
           type = "tray";
           pinned = [ "org.fcitx.Fcitx5" ];
         };
+        workspaces = {
+          type = "workspaces";
+          hide_when_empty = true;
+        };
       };
 
       shell = {
