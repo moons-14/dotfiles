@@ -3,6 +3,7 @@ keys:
   - &host_x1g13 age12g85cuvg4kjfr79lqf5fx2k0d82tchrgv88xgkt7ukk2cfcsw98s2rjyat
   - &host_ops age18rtm2dq2r62zvnhwdq0gkm24hu85r7zyleyk3jqv22zpdtw064eq7ay7dl
   - &host_internal-app-01 age1mcp5gma7y0k59equhzqfsnn0ed335ljjtn0k08ua77htlxf0x54qsravch
+  - &host_galleria age1wh7r9wnvyrgt5efjvg2324khsf4w6e9atpmz2udr4uw7frhnvvwquzcu72
 creation_rules:
   - path_regex: ^secrets/common/[^/]+\.ya?ml$
     key_groups:
@@ -11,6 +12,7 @@ creation_rules:
           - *host_x1g13
           - *host_ops
           - *host_internal-app-01
+          - *host_galleria
   - path_regex: ^secrets/hosts/x1g13/[^/]+\.ya?ml$
     key_groups:
       - age:
