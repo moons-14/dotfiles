@@ -1,5 +1,11 @@
 {
-  description = "Host-independent Nix foundation required everywhere";
+  description = "Host-independent Nix foundation and command-line tools required everywhere";
 
-  includes = [ "systems.nix" ];
+  includes = [
+    "applications.atuin"
+    "applications.tealdeer"
+    "applications.trippy"
+    "applications.xh"
+    "systems.nix"
+  ];
 }

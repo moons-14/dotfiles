@@ -371,9 +371,9 @@ do not retain compatibility aliases.
 
 The profile layers have these responsibilities:
 
-- `base` contains only invariants required by every supported host. It currently
-  includes only `systems.nix`; optional secrets, interface, hardware, and
-  workloads do not belong there.
+- `base` contains only invariants required by every supported host. It includes
+  `systems.nix` and the universal Atuin, tealdeer, trippy, and xh CLI tools;
+  optional secrets, interface, hardware, and workloads do not belong there.
 - `interface` describes how the host is operated. `interface.cli` is shared by
   NixOS and macOS and includes `tio`. `interface.gui` owns cross-platform
   graphical interface applications such as Vicinae. `interface.macos` owns the

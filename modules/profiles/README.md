@@ -15,8 +15,9 @@ hardware configuration remains in its owning unit.
 | `networking` | Network roles and topology                              | Per-profile     |
 | `security`   | Optional security and secret-management policies        | Per-profile     |
 
-`base` intentionally contains only `systems.nix`. A unit belongs there only
-when removing it from any supported host would make that host invalid.
+`base` contains the shared Nix foundation plus the universally available CLI
+tools (Atuin, tealdeer, trippy, and xh). A unit belongs there only when it is
+required on every supported host.
 
 ## Compatibility
 
