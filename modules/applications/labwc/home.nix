@@ -151,6 +151,10 @@ in
     # Pull in graphical-session.target so Home Manager services such as
     # portals, Vicinae, and the idle manager follow the labwc session.
     systemd.extraCommands = [
+      # Clear the previous session's target first. Otherwise services such as
+      # kanshi that lose their Wayland connection on logout remain in a
+      # failed/start-limit-hit state and are not started for the next login.
+      "${lib.getExe' pkgs.systemd "systemctl"} --user stop labwc-session.target"
       "${lib.getExe' pkgs.systemd "systemctl"} --user --no-block start labwc-session.target"
     ];
   };

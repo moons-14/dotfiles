@@ -1,0 +1,13 @@
+id = "moons/codexbar-usage"
+name = "CodexBar Usage"
+version = "1.0.0"
+plugin_api = 3
+min_noctalia = "5.0.0"
+author = "moons"
+license = "MIT"
+icon = "ai"
+description = "Codex usage limits from the CodexBar CLI."
+
+[[widget]]
+id = "usage"
+entry = "usage.luau"

@@ -5,6 +5,14 @@
   ...
 }:
 let
+  codexbar = import ./codexbar.nix { inherit lib pkgs; };
+  codexbarUsagePlugin = pkgs.runCommand "noctalia-codexbar-usage-plugin" { } ''
+    mkdir -p "$out"
+    cp ${./plugins/codexbar-usage/plugin.toml} "$out/plugin.toml"
+    substitute ${./plugins/codexbar-usage/usage.luau} "$out/usage.luau" \
+      --replace-fail "@codexbarPath@" "${lib.getExe codexbar}"
+  '';
+
   wallpapers = pkgs.fetchFromGitHub {
     owner = "moons-14";
     repo = "wallpapers";
@@ -19,6 +27,14 @@ let
     "spacer"
     "cpu"
     "cpu-graph"
+    "ram"
+  ];
+  labwcSystemWidgets = [
+    "network"
+    "bluetooth"
+    "network-connection"
+    "spacer"
+    "cpu"
     "ram"
   ];
   centerWidgets = [
@@ -45,7 +61,13 @@ let
       margin_ends = 0;
       start = [ "taskbar" ];
       center = centerWidgets;
-      end = systemWidgets ++ [ "spacer" ] ++ endWidgets;
+      end =
+        labwcSystemWidgets
+        ++ [
+          "moons/codexbar-usage:usage"
+          "spacer"
+        ]
+        ++ endWidgets;
     };
 
     dock = {
@@ -56,6 +78,7 @@ let
       network.show_label = false;
       taskbar = {
         type = "taskbar";
+        scale = 1.5;
         pinned = [
           "org.gnome.Nautilus"
           "org.gnome.TextEditor"
@@ -64,10 +87,14 @@ let
           "code"
           "dev.zed.Zed"
           "codex"
+          "vesktop"
         ];
         group_by_workspace = false;
         show_window_title = false;
+        pinned_opacity = 0.60;
+        inactive_opacity = 1.0;
       };
+      input-volume.show_label = false;
     };
   };
 
@@ -97,7 +124,10 @@ let
   };
 in
 {
-  home.packages = [ pkgs.networkmanagerapplet ];
+  home.packages = [
+    codexbar
+    pkgs.networkmanagerapplet
+  ];
 
   home.file = {
     ".face".source = ../../../images/avatar.jpg;
@@ -105,6 +135,11 @@ in
       source = wallpapers;
       recursive = true;
     };
+  };
+
+  xdg.dataFile."noctalia/plugins/codexbar-usage" = {
+    source = codexbarUsagePlugin;
+    recursive = true;
   };
 
   programs.noctalia = {
@@ -141,9 +176,14 @@ in
         center = centerWidgets;
         end = [
           "media"
+          "moons/codexbar-usage:usage"
           "spacer"
         ]
         ++ endWidgets;
+      };
+
+      plugins = {
+        enabled = [ "moons/codexbar-usage" ];
       };
 
       widget = {
