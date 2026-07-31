@@ -11,7 +11,7 @@ in
   services.displayManager.ly = {
     enable = true;
     settings = {
-      default_session = "niri";
+      default_session = lib.mkDefault "niri";
       animate = true;
       animation = "dur_file";
       dur_file_path = "${indyzLinuxfire}";
