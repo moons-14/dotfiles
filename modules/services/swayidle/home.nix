@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 let
   brightnessctl = lib.getExe pkgs.brightnessctl;
+  loginctl = lib.getExe' pkgs.systemd "loginctl";
   rm = "${pkgs.coreutils}/bin/rm";
   systemctl = lib.getExe' pkgs.systemd "systemctl";
   wlopm = lib.getExe pkgs.wlopm;
@@ -40,6 +41,17 @@ let
     ${wlopm} --on '*'
     ${restoreBrightness}
   '';
+
+  turnOffLockedDisplays = pkgs.writeShellScript "swayidle-turn-off-locked-displays" ''
+    if [ -n "$XDG_SESSION_ID" ] \
+      && [ "$(${loginctl} show-session "$XDG_SESSION_ID" --property=LockedHint --value)" = "yes" ]; then
+      ${wlopm} --off '*'
+    fi
+  '';
+
+  turnOnDisplays = pkgs.writeShellScript "swayidle-turn-on-displays" ''
+    ${wlopm} --on '*'
+  '';
 in
 lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   services.swayidle = {
@@ -55,6 +67,13 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         timeout = 360;
         command = "${suspendOnBattery}";
       }
+      {
+        # Do not blank an unlocked desktop.  Once the logind session is locked,
+        # blank its outputs after ten minutes and restore them on input.
+        timeout = 600;
+        command = "${turnOffLockedDisplays}";
+        resumeCommand = "${turnOnDisplays}";
+      }
     ];
     events.after-resume = "${afterResume}";
   };
@@ -63,5 +82,6 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "WAYLAND_DISPLAY"
     "XDG_RUNTIME_DIR"
     "DBUS_SESSION_BUS_ADDRESS"
+    "XDG_SESSION_ID"
   ];
 }

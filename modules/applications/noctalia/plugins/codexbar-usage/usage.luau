@@ -3,6 +3,7 @@ local refreshIntervalMs = 60000
 local usagePage = "https://chatgpt.com/codex/settings/usage"
 
 local refreshing = false
+local lastSuccessfulUsage = nil
 
 local function percent(value)
     if type(value) ~= "number" then
@@ -71,7 +72,7 @@ local function showError(message)
     barWidget.setTooltip("CodexBar: " .. message)
 end
 
-local function showUsage(item)
+local function showUsage(item, refreshError)
     local usage = item.usage or {}
     local primary = usage.primary or {}
     local secondary = usage.secondary or {}
@@ -90,11 +91,26 @@ local function showUsage(item)
             .. secondaryReset
             .. ")"
     )
-    barWidget.setTooltip({
+    local tooltip = {
         { "5-hour usage", percent(primary.usedPercent) .. " · resets in " .. primaryReset },
         { "Weekly usage", percent(secondary.usedPercent) .. " · resets in " .. secondaryReset },
         { "Click", "Open Codex usage settings" },
-    })
+    }
+
+    if refreshError ~= nil then
+        table.insert(tooltip, 3, { "Status", "Showing the last successful result (refresh failed: " .. refreshError .. ")" })
+    end
+
+    barWidget.setTooltip(tooltip)
+end
+
+local function showRefreshFailure(message)
+    if lastSuccessfulUsage ~= nil then
+        showUsage(lastSuccessfulUsage, message)
+        return
+    end
+
+    showError(message)
 end
 
 local function refresh()
@@ -104,27 +120,31 @@ local function refresh()
 
     refreshing = true
     noctalia.runAsync(
-        codexbar .. " usage --provider codex --source cli --format json",
+        -- OAuth reads the credential that Codex already stores locally and queries
+        -- the usage API directly.  The CLI source instead starts an app-server RPC
+        -- for every refresh, which is intermittent on Linux.
+        codexbar .. " usage --provider codex --source oauth --format json",
         function(result)
             refreshing = false
 
             if result.exitCode ~= 0 then
-                showError(result.stderr ~= "" and result.stderr or "codexbar exited " .. tostring(result.exitCode))
+                showRefreshFailure(result.stderr ~= "" and result.stderr or "codexbar exited " .. tostring(result.exitCode))
                 return
             end
 
             local data, error = noctalia.json.decode(result.stdout)
             if data == nil then
-                showError("invalid CodexBar JSON: " .. (error or "unknown error"))
+                showRefreshFailure("invalid CodexBar JSON: " .. (error or "unknown error"))
                 return
             end
 
             local item = data[1] or data
             if item.error ~= nil then
-                showError(item.error.message or "CodexBar returned an error")
+                showRefreshFailure(item.error.message or "CodexBar returned an error")
                 return
             end
 
+            lastSuccessfulUsage = item
             showUsage(item)
         end,
         30000

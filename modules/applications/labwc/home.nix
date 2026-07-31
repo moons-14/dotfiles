@@ -107,7 +107,7 @@ in
           (execute "W-v" "vicinae vicinae://launch/clipboard/history?toggle=true")
           (execute "W-space" "ghostty +toggle-quick-terminal")
           (execute "W-p" "wdisplays")
-          (execute "W-s" "noctalia msg panel-toggle control-center")
+          (execute "W-s" "noctalia msg panel-toggle launcher")
           (execute "W-comma" "noctalia msg settings-toggle")
           (action "W-S-e" "Exit")
         ]

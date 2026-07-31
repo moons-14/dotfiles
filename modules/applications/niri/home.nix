@@ -59,6 +59,15 @@ in
         ];
         hotkey-overlay.title = "Run an Application: vicinae";
       };
+      "Mod+S" = {
+        action.spawn = [
+          "noctalia"
+          "msg"
+          "panel-toggle"
+          "launcher"
+        ];
+        hotkey-overlay.title = "Run an Application: Noctalia Launcher";
+      };
       "Mod+E" = {
         action.spawn = [
           "nautilus"
