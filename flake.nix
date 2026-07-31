@@ -94,6 +94,11 @@
 
     # Systems
     systems.url = "github:nix-systems/default";
+
+    browser-previews = {
+      url = "github:nix-community/browser-previews";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
