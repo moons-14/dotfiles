@@ -1,41 +1,33 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: WinGet packages
     type: Microsoft.DSC/Include
     properties:
       configurationFile: packages/winget.dsc.yaml
-
   - name: Taskbar
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/taskbar.dsc.yaml
-
   - name: Personalization
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/personalization.dsc.yaml
-
   - name: Start
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/start.dsc.yaml
-
   - name: Device usage
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/device-usage.dsc.yaml
-
   - name: Explorer
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/explorer.dsc.yaml
-
   - name: Advanced settings
     type: Microsoft.DSC/Include
     properties:
       configurationFile: system/advanced-settings/configuration.dsc.yaml
-
   - name: Microsoft IME
     type: Microsoft.DSC/Include
     properties:

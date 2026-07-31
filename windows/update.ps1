@@ -15,7 +15,6 @@ try {
 
     & .\applications\chatgpt\apply.ps1
     & .\applications\git\apply.ps1
-    & .\applications\parsec\apply.ps1
     & .\applications\vscode\apply.ps1
     & .\system\advanced-settings\apply.ps1
     & .\system\lock-screen\apply.ps1

@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Show file extensions
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Show hidden files
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Show protected operating system files
     type: Microsoft.Windows/Registry
     properties:
@@ -27,7 +24,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Show full path in title bar
     type: Microsoft.Windows/Registry
     properties:
@@ -36,7 +32,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Show empty drives
     type: Microsoft.Windows/Registry
     properties:

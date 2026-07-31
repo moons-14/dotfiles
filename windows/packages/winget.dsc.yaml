@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Google Chrome
     type: Microsoft.WinGet/Package
@@ -7,28 +6,30 @@ resources:
       id: Google.Chrome
       source: winget
       useLatest: true
-
   - name: 1Password
     type: Microsoft.WinGet/Package
     properties:
       id: AgileBits.1Password
       source: winget
       useLatest: true
-
   - name: Visual Studio Code
     type: Microsoft.WinGet/Package
     properties:
       id: Microsoft.VisualStudioCode
       source: winget
       useLatest: true
-
   - name: Vesktop
     type: Microsoft.WinGet/Package
     properties:
       id: Vencord.Vesktop
       source: winget
       useLatest: true
-
+  - name: Moonlight
+    type: Microsoft.WinGet/Package
+    properties:
+      id: MoonlightGameStreamingProject.Moonlight
+      source: winget
+      useLatest: true
   - name: 7-Zip
     type: Microsoft.WinGet/Package
     properties:

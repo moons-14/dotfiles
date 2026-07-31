@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Taskbar Widgets
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Taskbar Resume
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Taskbar Search
     type: Microsoft.Windows/Registry
     properties:
@@ -27,7 +24,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Taskbar Alignment
     type: Microsoft.Windows/Registry
     properties:

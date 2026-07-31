@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Enable End task from the taskbar
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Enable clipboard history
     type: Microsoft.Windows/Registry
     properties:

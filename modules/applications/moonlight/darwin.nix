@@ -1,6 +1,6 @@
 {
   homebrew = {
     enable = true;
-    casks = [ "parsec" ];
+    casks = [ "moonlight" ];
   };
 }

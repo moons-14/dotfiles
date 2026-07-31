@@ -1,4 +1,4 @@
 { lib, pkgs, ... }:
 lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-  home.packages = [ pkgs.parsec-bin ];
+  home.packages = [ pkgs.moonlight-qt ];
 }

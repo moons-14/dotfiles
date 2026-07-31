@@ -62,10 +62,6 @@ windows/
     │   ├── apply.ps1
     │   └── gitconfig
     │
-    ├── parsec/
-    │   ├── apply.ps1
-    │   └── installer.json
-    │
     └── vscode/
         ├── apply.ps1
         ├── settings.json
@@ -136,7 +132,6 @@ dsc config set --file .\configuration.dsc.yaml
 
 & .\applications\chatgpt\apply.ps1
 & .\applications\git\apply.ps1
-& .\applications\parsec\apply.ps1
 & .\applications\vscode\apply.ps1
 & .\system\advanced-settings\apply.ps1
 & .\system\lock-screen\apply.ps1
@@ -147,8 +142,7 @@ dsc config set --file .\configuration.dsc.yaml
 
 The specialized scripts own the details of their own configuration. The
 advanced-settings and privacy scripts request elevation for protected policies
-and machine-wide settings. The Parsec installer also requests elevation for its
-machine-wide installation; Scoop, other DSC user settings, and application
+and machine-wide settings. Scoop, DSC user settings, and application
 configuration stay in the normal user process.
 
 ## Packages
@@ -173,6 +167,7 @@ The update entry point:
 - 1Password
 - Visual Studio Code
 - Vesktop (`Vencord.Vesktop`)
+- Moonlight (`MoonlightGameStreamingProject.Moonlight`)
 - 7-Zip
 
 ChatGPT is intentionally not part of this DSC file because its Microsoft Store
@@ -196,17 +191,6 @@ The Store product ID `9PLM9XGG6VKS` is the ChatGPT Windows app managed here.
 ChatGPT Classic (`9NT1R1C2HH7J`) is intentionally not installed.
 WinGet's `APPINSTALLER_CLI_ERROR_UPDATE_NOT_APPLICABLE` result is treated as
 success because it means the installed ChatGPT version is already current.
-
-### Parsec
-
-Parsec is installed by `applications/parsec/apply.ps1` instead of the WinGet
-DSC document. Parsec publishes mutable installer content at a stable URL, which
-can temporarily leave the WinGet manifest with a stale SHA256 and make the
-entire DSC run fail. The application-local declaration pins the verified file
-version, SHA256, and Authenticode signer thumbprint. The script downloads only
-when Parsec is absent, verifies all three values, then requests elevation and
-runs the official installer for all users. It never bypasses WinGet hash
-verification.
 
 7-Zip is intentionally installed with its normal Windows installer through
 WinGet rather than as a portable Scoop package, because the normal installer

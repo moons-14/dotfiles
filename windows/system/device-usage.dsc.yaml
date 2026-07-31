@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Disable development usage
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear development priority
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable gaming usage
     type: Microsoft.Windows/Registry
     properties:
@@ -27,7 +24,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear gaming priority
     type: Microsoft.Windows/Registry
     properties:
@@ -36,7 +32,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable family usage
     type: Microsoft.Windows/Registry
     properties:
@@ -45,7 +40,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear family priority
     type: Microsoft.Windows/Registry
     properties:
@@ -54,7 +48,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable creativity usage
     type: Microsoft.Windows/Registry
     properties:
@@ -63,7 +56,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear creativity priority
     type: Microsoft.Windows/Registry
     properties:
@@ -72,7 +64,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable school usage
     type: Microsoft.Windows/Registry
     properties:
@@ -81,7 +72,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear school priority
     type: Microsoft.Windows/Registry
     properties:
@@ -90,7 +80,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable entertainment usage
     type: Microsoft.Windows/Registry
     properties:
@@ -99,7 +88,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear entertainment priority
     type: Microsoft.Windows/Registry
     properties:
@@ -108,7 +96,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable business usage
     type: Microsoft.Windows/Registry
     properties:
@@ -117,7 +104,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Clear business priority
     type: Microsoft.Windows/Registry
     properties:

@@ -7,7 +7,7 @@
     "applications.discord"
     "applications.gnome-text-editor"
     "applications.kde"
-    "applications.parsec"
+    "applications.moonlight"
     "applications.slack"
     "applications.zoom"
   ];

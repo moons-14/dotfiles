@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: IME Key Assignment
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Muhenkan IME Off
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Henkan IME On
     type: Microsoft.Windows/Registry
     properties:

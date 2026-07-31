@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Disable advertising ID by policy
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable Windows consumer experiences
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Set diagnostic data to the lowest available level
     type: Microsoft.Windows/Registry
     properties:
@@ -27,7 +24,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable feedback notifications
     type: Microsoft.Windows/Registry
     properties:
@@ -36,7 +32,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable Diagnostic Data Viewer
     type: Microsoft.Windows/Registry
     properties:
@@ -45,7 +40,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Limit diagnostic log collection
     type: Microsoft.Windows/Registry
     properties:
@@ -54,7 +48,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Limit diagnostic dump collection
     type: Microsoft.Windows/Registry
     properties:
@@ -63,7 +56,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable activity feed
     type: Microsoft.Windows/Registry
     properties:
@@ -72,7 +64,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable publishing user activity
     type: Microsoft.Windows/Registry
     properties:
@@ -81,7 +72,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable uploading user activity
     type: Microsoft.Windows/Registry
     properties:

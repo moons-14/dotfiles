@@ -1,5 +1,4 @@
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-
 resources:
   - name: Disable advertising ID
     type: Microsoft.Windows/Registry
@@ -9,7 +8,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Do not share the language list with websites
     type: Microsoft.Windows/Registry
     properties:
@@ -18,7 +16,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable personalized offers
     type: Microsoft.Windows/Registry
     properties:
@@ -27,7 +24,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable tailored experiences by policy
     type: Microsoft.Windows/Registry
     properties:
@@ -36,7 +32,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable all Windows Spotlight suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -45,7 +40,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable third-party Spotlight suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -54,7 +48,6 @@ resources:
       valueData:
         DWord: 1
       _exist: true
-
   - name: Disable suggested content in Settings
     type: Microsoft.Windows/Registry
     properties:
@@ -63,7 +56,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable Settings suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -72,7 +64,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable Settings account suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -81,7 +72,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable Settings app suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -90,7 +80,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable tips about Windows
     type: Microsoft.Windows/Registry
     properties:
@@ -99,7 +88,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable Windows welcome experience
     type: Microsoft.Windows/Registry
     properties:
@@ -108,7 +96,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable suggested apps
     type: Microsoft.Windows/Registry
     properties:
@@ -117,7 +104,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable soft-landing tips
     type: Microsoft.Windows/Registry
     properties:
@@ -126,7 +112,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable automatic suggested app installation
     type: Microsoft.Windows/Registry
     properties:
@@ -135,7 +120,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable device setup suggestions
     type: Microsoft.Windows/Registry
     properties:
@@ -144,7 +128,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable File Explorer sync-provider promotions
     type: Microsoft.Windows/Registry
     properties:
@@ -153,7 +136,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable inking and typing diagnostics
     type: Microsoft.Windows/Registry
     properties:
@@ -162,7 +144,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Set feedback frequency period to never
     type: Microsoft.Windows/Registry
     properties:
@@ -171,7 +152,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Set feedback prompts to never
     type: Microsoft.Windows/Registry
     properties:
@@ -180,7 +160,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable device search history
     type: Microsoft.Windows/Registry
     properties:
@@ -189,7 +168,6 @@ resources:
       valueData:
         DWord: 0
       _exist: true
-
   - name: Disable search highlights
     type: Microsoft.Windows/Registry
     properties:
