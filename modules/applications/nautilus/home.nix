@@ -26,6 +26,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   gtk.gtk3.bookmarks = [
     "file://${config.home.homeDirectory}/Desktop Desktop"
     "file://${config.home.homeDirectory}/Pictures Pictures"
+    "file://${config.home.homeDirectory}/Downloads Downloads"
     "file://${config.home.homeDirectory}/projects projects"
   ];
 
