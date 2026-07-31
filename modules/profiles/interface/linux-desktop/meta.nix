@@ -8,7 +8,6 @@
     "applications.gtk"
     "applications.nautilus"
     "hardwares.graphics"
-    "services.fusuma"
     "systems.audio"
     "systems.fonts"
   ];

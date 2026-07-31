@@ -50,9 +50,8 @@ when removing it from any supported host would make that host invalid.
 Select independent concerns independently in `hosts/default.nix`. For example,
 a NixOS desktop can combine `interface.labwc` and `interface.niri` to provide
 both sessions while sharing `interface.linux-desktop` and `interface.gui`.
-The shared Linux desktop profile provides the resident application drawer and
-four-finger pinch gesture service; both session profiles select ly. A
-daily-use macOS development machine can combine `interface.macos`,
+The shared Linux desktop profile provides the common desktop applications; both
+session profiles select ly. A daily-use macOS development machine can combine `interface.macos`,
 `workload.development`, and `workload.personal`. Hardware support does not
 implicitly select an interface or workload.
 

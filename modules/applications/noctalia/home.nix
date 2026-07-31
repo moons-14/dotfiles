@@ -86,7 +86,10 @@ in
           "cpu-graph"
           "ram"
         ];
-        center = [ "workspaces" ];
+        center = [
+          "app-launcher"
+          "workspaces"
+        ];
         end = [
           "media"
           "spacer"
@@ -104,6 +107,12 @@ in
       };
 
       widget = {
+        app-launcher = {
+          type = "custom_button";
+          glyph = "apps";
+          command = "vicinae toggle";
+          tooltip = "Applications";
+        };
         cpu = {
           type = "sysmon";
           stat = "cpu_usage";
