@@ -105,7 +105,7 @@
       "interface.labwc"
       "interface.niri"
       "platform.intel-nvidia-desktop"
-      # "security.secrets"
+      "security.secrets"
       "security.secure-boot"
       "security.tpm-storage"
       "workload.development"
