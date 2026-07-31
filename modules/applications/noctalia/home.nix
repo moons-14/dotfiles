@@ -115,6 +115,11 @@ let
     Service = {
       ExecStart = lib.getExe config.programs.noctalia.package;
       Restart = "on-failure";
+      # A compositor restart closes Noctalia's Wayland connection.  Back off
+      # long enough for labwc's session target to be stopped and recreated,
+      # instead of exhausting systemd's start limit before the new Wayland
+      # socket is available.
+      RestartSec = 5;
     }
     // lib.optionalAttrs (environment != [ ]) {
       Environment = environment;
