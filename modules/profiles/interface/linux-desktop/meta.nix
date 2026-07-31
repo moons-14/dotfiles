@@ -8,6 +8,7 @@
     "applications.gtk"
     "applications.nautilus"
     "hardwares.graphics"
+    "services.polkit-gnome"
     "systems.audio"
     "systems.fonts"
   ];

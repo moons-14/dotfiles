@@ -39,6 +39,25 @@ let
     ${lib.getExe config.programs.noctalia.package} config validate ${labwcRawConfig}
     cp ${labwcRawConfig} $out
   '';
+
+  mkSessionService = target: environment: {
+    Unit = {
+      Description = "Noctalia Wayland desktop shell";
+      Documentation = [ "https://docs.noctalia.dev/" ];
+      PartOf = [ target ];
+      After = [ target ];
+    };
+
+    Service = {
+      ExecStart = lib.getExe config.programs.noctalia.package;
+      Restart = "on-failure";
+    }
+    // lib.optionalAttrs (environment != [ ]) {
+      Environment = environment;
+    };
+
+    Install.WantedBy = [ target ];
+  };
 in
 {
   home.packages = [ pkgs.networkmanagerapplet ];
@@ -54,8 +73,7 @@ in
   programs.noctalia = {
     enable = true;
 
-    # Both compositors start Noctalia themselves so labwc can select its own
-    # config home without racing the generic graphical-session service.
+    # Session-specific services below let labwc select its own config home.
     systemd.enable = false;
 
     settings = {
@@ -72,6 +90,11 @@ in
       lockscreen = {
         enabled = false;
         fingerprint = false;
+      };
+
+      osd.kinds = {
+        keyboard_layout = false;
+        media = false;
       };
 
       bar.main = {
@@ -213,6 +236,16 @@ in
       ];
     };
   };
+
+  systemd.user.services =
+    lib.optionalAttrs config.my.applications.niri.enable {
+      noctalia-niri = mkSessionService "niri.service" [ ];
+    }
+    // lib.optionalAttrs config.my.applications.labwc.enable {
+      noctalia-labwc = mkSessionService "labwc-session.target" [
+        "NOCTALIA_CONFIG_HOME=%h/.config/noctalia-labwc"
+      ];
+    };
 
   xdg.configFile."noctalia-labwc/noctalia/config.toml".source = labwcConfig;
 }
