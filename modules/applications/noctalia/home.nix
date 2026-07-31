@@ -12,25 +12,62 @@ let
     hash = "sha256-emQ/FqKqMq3YI5bLx8gBZg/ZE72OG9Ilh71ggq78WdQ=";
   };
 
+  systemWidgets = [
+    "network"
+    "bluetooth"
+    "network-connection"
+    "spacer"
+    "cpu"
+    "cpu-graph"
+    "ram"
+  ];
+  centerWidgets = [
+    "app-launcher"
+    "workspaces"
+  ];
+  endWidgets = [
+    "notifications"
+    "tray"
+    "spacer"
+    "battery"
+    "input-volume"
+    "output-volume"
+    "privacy"
+    "brightness"
+    "clock"
+    "control-center"
+  ];
+
   labwcSettings = lib.recursiveUpdate config.programs.noctalia.settings {
-    dock = {
+    bar.main = {
       position = "bottom";
-      icon_size = 32;
-      main_axis_padding = 10;
-      cross_axis_padding = 4;
-      item_spacing = 4;
-      margin_edge = 0;
-      radius = 8;
-      background_opacity = 0.9;
-      show_running = true;
-      auto_hide = false;
-      smart_auto_hide = false;
-      reserve_space = true;
-      active_scale = 1.0;
-      inactive_scale = 1.0;
-      magnification = false;
-      show_instance_count = true;
-      active_monitor_only = false;
+      thickness = 51;
+      margin_ends = 0;
+      start = [ "taskbar" ];
+      center = centerWidgets;
+      end = systemWidgets ++ [ "spacer" ] ++ endWidgets;
+    };
+
+    dock = {
+      enabled = false;
+    };
+
+    widget = {
+      network.show_label = false;
+      taskbar = {
+        type = "taskbar";
+        pinned = [
+          "org.gnome.Nautilus"
+          "org.gnome.TextEditor"
+          "com.mitchellh.ghostty"
+          "google-chrome"
+          "code"
+          "dev.zed.Zed"
+          "codex"
+        ];
+        group_by_workspace = false;
+        show_window_title = false;
+      };
     };
   };
 
@@ -100,33 +137,13 @@ in
       bar.main = {
         margin_ends = 15;
         position = "top";
-        start = [
-          "network"
-          "bluetooth"
-          "network-connection"
-          "spacer"
-          "cpu"
-          "cpu-graph"
-          "ram"
-        ];
-        center = [
-          "app-launcher"
-          "workspaces"
-        ];
+        start = systemWidgets;
+        center = centerWidgets;
         end = [
           "media"
           "spacer"
-          "notifications"
-          "tray"
-          "spacer"
-          "battery"
-          "input-volume"
-          "output-volume"
-          "privacy"
-          "brightness"
-          "clock"
-          "control-center"
-        ];
+        ]
+        ++ endWidgets;
       };
 
       widget = {

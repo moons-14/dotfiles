@@ -1,22 +1,30 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    bat
-    duf
-    dust
-    eza
-    fd
-    fastfetch
-    fzf
-    htop
-    jq
-    nurl
-    ripgrep
-    tio
-    unrar
-    unzip
-    wget
-  ];
+  home.packages =
+    with pkgs;
+    [
+      bat
+      duf
+      dust
+      eza
+      fd
+      fastfetch
+      fzf
+      htop
+      jq
+      lsof
+      nurl
+      ripgrep
+      tio
+      unrar
+      unzip
+      wget
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      lm_sensors
+      psmisc
+      strace
+    ];
 
   home.activation.generateSshKey = {
     after = [ "writeBoundary" ];
