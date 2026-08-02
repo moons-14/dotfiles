@@ -3,6 +3,15 @@
     enable = true;
     enableRenice = true;
 
-    settings.general.renice = 10;
+    settings = {
+      general = {
+        softrealtime = "auto";
+        renice = 10;
+      };
+      custom = {
+        start = "notify-send -a 'Gamemode' 'Optimizations activated'";
+        end = "notify-send -a 'Gamemode' 'Optimizations deactivated'";
+      };
+    };
   };
 }
