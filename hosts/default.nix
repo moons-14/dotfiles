@@ -108,6 +108,7 @@
       "security.secrets"
       "security.secure-boot"
       "security.tpm-storage"
+      "security.fingerprint"
       "workload.development"
       "workload.game"
       "workload.personal"
