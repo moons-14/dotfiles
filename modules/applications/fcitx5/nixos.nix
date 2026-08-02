@@ -39,6 +39,8 @@ let
   };
 in
 {
+  services.hazkey.enable = true;
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
@@ -65,6 +67,10 @@ in
         };
         "Groups/0/Items/1" = {
           Name = "mozc";
+          Layout = "";
+        };
+        "Groups/0/Items/2" = {
+          Name = "hazkey";
           Layout = "";
         };
       };

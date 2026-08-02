@@ -151,6 +151,12 @@ in
     # Pull in graphical-session.target so Home Manager services such as
     # portals, Vicinae, and the idle manager follow the labwc session.
     systemd.extraCommands = [
+      # The wlroots portal is conditionally started with WAYLAND_DISPLAY. It
+      # can otherwise be skipped before labwc imports its session environment,
+      # leaving the desktop portal without the ScreenCast interface.
+      "${lib.getExe' pkgs.systemd "systemctl"} --user restart xdg-desktop-portal-wlr.service"
+      "${lib.getExe' pkgs.systemd "systemctl"} --user restart xdg-desktop-portal.service"
+
       # Clear the previous session's target first. Otherwise services such as
       # kanshi that lose their Wayland connection on logout remain in a
       # failed/start-limit-hit state and are not started for the next login.

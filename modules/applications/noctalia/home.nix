@@ -89,6 +89,7 @@ let
           "codex"
           "vesktop"
         ];
+        show_all_outputs = true;
         group_by_workspace = false;
         show_window_title = false;
         pinned_opacity = 0.60;

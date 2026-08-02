@@ -23,6 +23,11 @@
     # Desktop
     niri-flake.url = "github:sodiboo/niri-flake";
 
+    nix-hazkey = {
+      url = "github:aster-void/nix-hazkey";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -54,9 +54,20 @@ both sessions while sharing `interface.linux-desktop` and `interface.gui`.
 The shared Linux desktop profile provides the common desktop applications and
 session-independent services; both session profiles select ly. The laptop
 platform selects niri as Ly's default session, while the desktop platform
-selects labwc. A daily-use macOS development machine can combine `interface.macos`,
-`workload.development`, and `workload.personal`. Hardware support does not
-implicitly select an interface or workload.
+selects labwc. A daily-use macOS development machine can combine
+`interface.macos`, `workload.development`, and `workload.personal`. Hardware
+support does not implicitly select an interface or workload.
+
+`workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
+enables performance improvements, synced lyrics, tracker blocking, the album
+color theme, and custom output-device selection while preserving user-owned
+settings such as the selected device.
+
+On NixOS, `workload.game` provides Steam with Valve Proton and Proton-GE,
+Protontricks, Wayland-compatible Steam Input, GameMode, Gamescope, and MangoHud.
+Enabling Steam also activates the 32-bit graphics and PipeWire support required
+by older games. On macOS the same profile currently provides the portable game
+applications that support that host class.
 
 `security.tpm-storage` deliberately does not own a disk identifier. A host that
 selects it must define `boot.initrd.luks.devices.cryptroot.device` in its
