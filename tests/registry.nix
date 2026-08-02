@@ -24,7 +24,7 @@ let
   };
 
   eval =
-    class: selected:
+    class: systemClass: selected:
     lib.evalModules {
       specialArgs = {
         inherit pkgs;
@@ -32,14 +32,17 @@ let
       };
       modules = [
         baseModule
-        (registry.mkModule { inherit class; })
+        (registry.mkModule { inherit class systemClass; })
         (registry.mkSelectionModule selected)
       ];
     };
 
-  nixos = eval "nixos" [ "profiles.interface.test" ];
-  darwin = eval "darwin" [ "applications.alpha" ];
-  home = eval "home" [ "profiles.interface.test" ];
+  nixos = eval "nixos" null [ "profiles.interface.test" ];
+  darwin = eval "darwin" null [ "applications.alpha" ];
+  nixosHome = eval "home" "nixos" [ "profiles.interface.test" ];
+  darwinHome = eval "home" "darwin" [ "applications.alpha" ];
+  nixosOnlyHome = eval "home" "nixos" [ "applications.gamma" ];
+  darwinWithoutNixosHome = eval "home" "darwin" [ "applications.gamma" ];
 
   nixosHost = hostLib.mkNixos "registry-test" {
     system = "x86_64-linux";
@@ -60,6 +63,19 @@ let
   missingUnit = builtins.tryEval (
     builtins.deepSeq (registry.validateUnitIds [ "applications.missing" ]) true
   );
+  homeWithoutSystemClass = builtins.tryEval (registry.mkModule { class = "home"; });
+  homeWithInvalidSystemClass = builtins.tryEval (
+    registry.mkModule {
+      class = "home";
+      systemClass = "linux";
+    }
+  );
+  systemWithHomeSystemClass = builtins.tryEval (
+    registry.mkModule {
+      class = "nixos";
+      systemClass = "nixos";
+    }
+  );
 
   invalidDependencyRegistry = import ../libs/registry.nix {
     inherit inputs lib;
@@ -73,7 +89,10 @@ let
   };
   invalidFragmentEvaluation = lib.evalModules {
     modules = [
-      (invalidFragmentRegistry.mkModule { class = "home"; })
+      (invalidFragmentRegistry.mkModule {
+        class = "home";
+        systemClass = "nixos";
+      })
       (invalidFragmentRegistry.mkSelectionModule [ "applications.broken" ])
     ];
   };
@@ -84,6 +103,7 @@ let
       registry.unitIds == [
         "applications.alpha"
         "applications.beta"
+        "applications.gamma"
         "profiles.interface.test"
         "services.nested"
         "users.test"
@@ -106,10 +126,20 @@ let
         "darwin"
       ];
     assert
-      home.config.test.homeValues == [
+      nixosHome.config.test.homeValues == [
         "home"
+        "home-common"
+        "home-nixos"
         "beta-home"
       ];
+    assert
+      darwinHome.config.test.homeValues == [
+        "home"
+        "home-common"
+        "home-darwin"
+      ];
+    assert nixosOnlyHome.config.test.homeValues == [ "gamma-home-nixos" ];
+    assert darwinWithoutNixosHome.config.test.homeValues == [ ];
     assert nixosHost.config.my.profiles.interface.test.enable;
     assert nixosHost.config.system.stateVersion == "26.05";
     assert nixosHost.config.home-manager.users.test.home.stateVersion == "26.05";
@@ -117,18 +147,28 @@ let
     assert
       nixosHost.config.home-manager.users.test.test.homeValues == [
         "home"
+        "home-common"
+        "home-nixos"
         "beta-home"
       ];
     assert darwinHost.config.my.applications.alpha.enable;
     assert darwinHost.config.home-manager.users.test.home.stateVersion == "26.05";
     assert darwinHost.config.home-manager.users.test.my.applications.alpha.enable;
-    assert darwinHost.config.home-manager.users.test.test.homeValues == [ "home" ];
+    assert
+      darwinHost.config.home-manager.users.test.test.homeValues == [
+        "home"
+        "home-common"
+        "home-darwin"
+      ];
     assert
       darwinHost.config.test.systemValues == [
         "common:host"
         "darwin"
       ];
     assert !missingUnit.success;
+    assert !homeWithoutSystemClass.success;
+    assert !homeWithInvalidSystemClass.success;
+    assert !systemWithHomeSystemClass.success;
     assert !missingDependency.success;
     assert !invalidFragment.success;
     true;

@@ -4,13 +4,21 @@
   modulesRoot,
 }:
 let
-  reservedFiles = {
+  rootFragmentFiles = {
     common = "common.nix";
     nixos = "nixos.nix";
     darwin = "darwin.nix";
     home = "home.nix";
     meta = "meta.nix";
   };
+
+  homeFragmentFiles = {
+    homeCommon = "common.nix";
+    homeNixos = "nixos.nix";
+    homeDarwin = "darwin.nix";
+  };
+
+  fragmentFileNames = rootFragmentFiles // lib.mapAttrs (_: name: "home/${name}") homeFragmentFiles;
 
   isFile = kind: kind == "regular" || kind == "symlink";
 
@@ -103,13 +111,17 @@ let
       );
 
   makeUnit =
-    relativePath: entries:
+    relativePath: entries: homeEntries:
     let
       directory = pathFor relativePath;
       id = lib.concatStringsSep "." relativePath;
-      fragments = lib.mapAttrs (
+      rootFragments = lib.mapAttrs (
         _class: fileName: if entryIsFile entries fileName then directory + "/${fileName}" else null
-      ) reservedFiles;
+      ) rootFragmentFiles;
+      homeFragments = lib.mapAttrs (
+        _class: fileName: if entryIsFile homeEntries fileName then directory + "/home/${fileName}" else null
+      ) homeFragmentFiles;
+      fragments = rootFragments // homeFragments;
       baseUnit = {
         inherit
           id
@@ -138,11 +150,22 @@ let
     let
       directory = pathFor relativePath;
       entries = builtins.readDir directory;
-      hasReservedFile = lib.any (fileName: entryIsFile entries fileName) (
-        builtins.attrValues reservedFiles
+      homeEntries =
+        if relativePath != [ ] && (entries.home or null) == "directory" then
+          builtins.readDir (directory + "/home")
+        else
+          { };
+      hasRootFragment = lib.any (fileName: entryIsFile entries fileName) (
+        builtins.attrValues rootFragmentFiles
       );
-      childDirectories = lib.filter (name: entries.${name} == "directory") (builtins.attrNames entries);
-      current = lib.optional hasReservedFile (makeUnit relativePath entries);
+      hasHomeFragment = lib.any (fileName: entryIsFile homeEntries fileName) (
+        builtins.attrValues homeFragmentFiles
+      );
+      hasFragment = hasRootFragment || hasHomeFragment;
+      childDirectories = lib.filter (
+        name: entries.${name} == "directory" && !(name == "home" && hasHomeFragment)
+      ) (builtins.attrNames entries);
+      current = lib.optional hasFragment (makeUnit relativePath entries homeEntries);
       children = lib.concatMap (name: walk (relativePath ++ [ name ])) childDirectories;
     in
     current ++ children;
@@ -208,12 +231,44 @@ let
       "common"
       "darwin"
     ];
-    home = [ "home" ];
+    home = {
+      nixos = [
+        "home"
+        "homeCommon"
+        "homeNixos"
+      ];
+      darwin = [
+        "home"
+        "homeCommon"
+        "homeDarwin"
+      ];
+    };
   };
+
+  fragmentClassesFor =
+    {
+      class,
+      systemClass,
+    }:
+    ensure (builtins.hasAttr class fragmentClasses) "unsupported module class '${class}'" (
+      if class == "home" then
+        ensure
+          (builtins.elem systemClass [
+            "nixos"
+            "darwin"
+          ])
+          "the home module class requires systemClass to be 'nixos' or 'darwin'"
+          fragmentClasses.home.${systemClass}
+      else
+        ensure (
+          systemClass == null
+        ) "systemClass is only supported for the home module class" fragmentClasses.${class}
+    );
 
   applyFragment =
     {
       config,
+      fragmentName,
       fragmentPath,
       options,
       specialArgs,
@@ -244,8 +299,7 @@ let
       );
       resultValue = if builtins.isFunction fragment then fragment fragmentArgs else fragment;
       result =
-        ensure (builtins.isAttrs resultValue)
-          "${unit.id}: ${builtins.baseNameOf fragmentPath} must return an attribute set"
+        ensure (builtins.isAttrs resultValue) "${unit.id}: ${fragmentName} must return an attribute set"
           resultValue;
       forbiddenKeys = lib.filter (name: builtins.hasAttr name result) [
         "imports"
@@ -254,14 +308,20 @@ let
       ];
     in
     ensure (forbiddenKeys == [ ])
-      "${unit.id}: ${builtins.baseNameOf fragmentPath} is a configuration fragment and cannot define top-level ${lib.concatStringsSep ", " forbiddenKeys}"
+      "${unit.id}: ${fragmentName} is a configuration fragment and cannot define top-level ${lib.concatStringsSep ", " forbiddenKeys}"
       result;
 
   externalImports = class: lib.concatMap (unit: unit.meta.imports.${class}) discoveredUnits;
 
   mkModule =
-    { class }:
-    ensure (builtins.hasAttr class fragmentClasses) "unsupported module class '${class}'" (
+    {
+      class,
+      systemClass ? null,
+    }:
+    let
+      selectedFragmentClasses = fragmentClassesFor { inherit class systemClass; };
+    in
+    builtins.seq selectedFragmentClasses (
       builtins.seq dependencyValidation (
         {
           config,
@@ -277,6 +337,7 @@ let
               map (
                 fragmentClass:
                 let
+                  fragmentName = fragmentFileNames.${fragmentClass};
                   fragmentPath = unit.fragments.${fragmentClass};
                 in
                 if fragmentPath == null then
@@ -285,13 +346,14 @@ let
                   lib.mkIf (enabled config unit) (applyFragment {
                     inherit
                       config
+                      fragmentName
                       fragmentPath
                       options
                       specialArgs
                       unit
                       ;
                   })
-              ) fragmentClasses.${class}
+              ) selectedFragmentClasses
             )
           ) discoveredUnits;
         in

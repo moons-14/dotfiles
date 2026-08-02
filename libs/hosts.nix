@@ -74,7 +74,10 @@ let
     let
       homePath = hostFile spec "home.nix";
       homeModules = [
-        (registry.mkModule { class = "home"; })
+        (registry.mkModule {
+          class = "home";
+          systemClass = "nixos";
+        })
         (registry.mkSelectionModule selected)
         { home.stateVersion = spec.stateVersion; }
       ]
@@ -96,7 +99,10 @@ let
     let
       homePath = hostFile spec "home.nix";
       homeModules = [
-        (registry.mkModule { class = "home"; })
+        (registry.mkModule {
+          class = "home";
+          systemClass = "darwin";
+        })
         (registry.mkSelectionModule selected)
         { home.stateVersion = spec.stateVersion; }
       ]

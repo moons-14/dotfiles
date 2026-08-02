@@ -65,23 +65,30 @@ Prefer the following placements:
 
 ## Unit Discovery and Identity
 
-A directory below `modules/` is a unit if, and only if, it directly contains at
-least one reserved file. Directories used only for classification, such as
-`modules/applications/` or `modules/profiles/interface/`, are namespaces rather
-than units when they have no reserved file of their own.
+A directory below `modules/` is a unit if, and only if, it contains at least one
+reserved root file or reserved Home Manager fragment. Directories used only for
+classification, such as `modules/applications/` or
+`modules/profiles/interface/`, are namespaces rather than units when they have
+no reserved fragment of their own.
 
-The Registry recognizes exactly these five reserved filenames:
+The Registry recognizes exactly these eight reserved paths relative to a unit:
 
-| File         | Target and responsibility                                                        |
-| ------------ | -------------------------------------------------------------------------------- |
-| `common.nix` | System-side configuration fragment shared by NixOS and nix-darwin                |
-| `nixos.nix`  | NixOS-only configuration fragment                                                |
-| `darwin.nix` | nix-darwin-only configuration fragment                                           |
-| `home.nix`   | Home Manager configuration fragment                                              |
-| `meta.nix`   | Registry descriptor for dependencies, external modules, and descriptive metadata |
+| File              | Target and responsibility                                                        |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `common.nix`      | System-side configuration fragment shared by NixOS and nix-darwin                |
+| `nixos.nix`       | NixOS-only system configuration fragment                                         |
+| `darwin.nix`      | nix-darwin-only system configuration fragment                                    |
+| `home.nix`        | Home Manager fragment shared by NixOS and nix-darwin                             |
+| `home/common.nix` | Home Manager fragment shared by NixOS and nix-darwin                             |
+| `home/nixos.nix`  | Home Manager fragment loaded only on NixOS                                       |
+| `home/darwin.nix` | Home Manager fragment loaded only on nix-darwin                                  |
+| `meta.nix`        | Registry descriptor for dependencies, external modules, and descriptive metadata |
 
-`common.nix` is never applied to Home Manager. OS-independent Home Manager
-configuration still belongs in `home.nix`.
+Root `common.nix` is never applied to Home Manager. `home.nix` and
+`home/common.nix` have identical dispatch semantics; use either or both when a
+useful file split exists. The `home/` directory is a reserved fragment directory
+of its parent unit when it contains `common.nix`, `nixos.nix`, or `darwin.nix`;
+it is not discovered as a child unit in that case.
 
 The Registry derives a unit ID from the path relative to `modules/`, joining
 path components with dots. Category names remain plural. It also derives the
@@ -137,6 +144,9 @@ of the following are valid units:
 # Home Manager only
 modules/applications/ghostty/
 ├── home.nix
+├── home/
+│   ├── nixos.nix
+│   └── darwin.nix
 └── settings.nix
 
 # NixOS only
@@ -164,16 +174,16 @@ modules/systems/nix/
 └── common.nix
 ```
 
-If a unit has no `home.nix`, do not generate or apply a Home Manager module for
-it. The same rule applies independently to `common.nix`, `nixos.nix`, and
-`darwin.nix`.
+Each fragment is optional and registered independently. A unit may therefore
+contain only `home/nixos.nix` or `home/darwin.nix`; it does not need a
+placeholder `home.nix` or `home/common.nix`.
 
 ### Configuration fragments
 
-`common.nix`, `nixos.nix`, `darwin.nix`, and `home.nix` are configuration
-fragments to which the Registry adds the enable condition. They return the
-configuration for their class directly and must not define top-level `imports`,
-`options`, or `config` attributes:
+Every reserved path except `meta.nix` is a configuration fragment to which the
+Registry adds the enable condition. These fragments return the configuration
+for their class directly and must not define top-level `imports`, `options`, or
+`config` attributes:
 
 ```nix
 # modules/services/docker/nixos.nix
@@ -208,9 +218,9 @@ fragment.
 
 ### Helper files and directories
 
-Every filename other than the five reserved names is an ordinary helper,
-regardless of its extension. The Registry neither discovers nor automatically
-imports helper files such as `settings.nix`, `keybindings.nix`, `packages.nix`,
+Every path other than the eight reserved paths is an ordinary helper, regardless
+of its extension. The Registry neither discovers nor automatically imports
+helper files such as `settings.nix`, `keybindings.nix`, `packages.nix`,
 `colors.nix`, `rules.nix`, or `helpers.nix`. Import a helper explicitly from the
 reserved fragment that uses it:
 
@@ -253,9 +263,10 @@ modules/applications/niri/
 ```
 
 Here `parts/` is not a unit because it directly contains no reserved file. A
-helper directory that directly contains `home.nix` or another reserved file is
-itself discovered as a unit, so never use reserved filenames inside a directory
-that is intended to contain helpers only.
+helper directory that directly contains a root reserved file is itself
+discovered as a unit, so never use reserved filenames inside a directory that
+is intended to contain helpers only. The reserved `home/` fragment directory is
+the sole exception to ordinary recursive child-unit discovery.
 
 ### Registry metadata
 
@@ -436,8 +447,10 @@ mechanism, and do not design the repository around `import-tree`. Registry logic
 has these responsibilities:
 
 1. Recursively visit directories below `modules/`.
-2. Check only the five reserved filenames directly within each directory.
-3. Register a directory as a unit when at least one reserved file exists there.
+2. Check the five reserved root filenames and the three reserved filenames
+   directly inside the unit's `home/` fragment directory.
+3. Register a directory as a unit when at least one reserved fragment exists
+   there, including a unit that has only a reserved `home/` fragment.
 4. Derive the unit ID from the path relative to `modules/`.
 5. Record only class fragments that exist.
 6. Evaluate `meta.nix` as a descriptor only when it exists.
@@ -446,7 +459,8 @@ has these responsibilities:
 9. Enable included units from `meta.includes`.
 10. Raise a clear evaluation error for a reference to a missing unit ID.
 11. Apply only the fragments appropriate to the current host class.
-12. Pass `home.nix` to Home Manager only for hosts that enable Home Manager.
+12. Pass `home.nix`, `home/common.nix`, and the matching OS-specific Home
+    Manager fragment only for hosts that enable Home Manager.
 
 A unit record may conceptually look like this; the implementation need not use
 this exact representation:
@@ -461,6 +475,9 @@ this exact representation:
     nixos = null;
     darwin = null;
     home = ./applications/ghostty/home.nix;
+    homeCommon = null;
+    homeNixos = ./applications/ghostty/home/nixos.nix;
+    homeDarwin = ./applications/ghostty/home/darwin.nix;
   };
 
   meta = { };
@@ -706,7 +723,10 @@ Derive the system class from the host's `system`:
 
 - A Linux NixOS host receives `common.nix` and `nixos.nix`.
 - A nix-darwin host receives `common.nix` and `darwin.nix`.
-- A host with integrated Home Manager additionally receives `home.nix`.
+- A NixOS host with integrated Home Manager additionally receives `home.nix`,
+  `home/common.nix`, and `home/nixos.nix`.
+- A nix-darwin host with integrated Home Manager additionally receives
+  `home.nix`, `home/common.nix`, and `home/darwin.nix`.
 
 Home Manager is additive, not a system class mutually exclusive with NixOS or
 nix-darwin. Normal machine configurations combine NixOS or nix-darwin with Home
@@ -735,8 +755,8 @@ When implementing or modifying modules:
   unit's enable option from a class fragment.
 - Do not assume any non-reserved file is discovered or loaded automatically.
 - Do not require an `_` prefix for helper or private files.
-- Do not create unused `common.nix`, `nixos.nix`, `darwin.nix`, `home.nix`, or
-  `meta.nix` files.
+- Do not create unused reserved fragments, including placeholder files under the
+  reserved `home/` fragment directory.
 - Do not override a path-derived unit ID from `meta.nix`.
 - Keep technical application dependencies separate from the applications a
   personal environment chooses to combine in a profile.
