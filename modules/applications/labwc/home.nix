@@ -1,5 +1,6 @@
 { lib, pkgs, ... }:
 let
+  systemctl = lib.getExe' pkgs.systemd "systemctl";
   action = key: name: {
     "@key" = key;
     action = {
@@ -74,7 +75,7 @@ in
       };
 
       desktops = {
-        "@number" = 9;
+        "@number" = 1;
         "@popupTime" = 500;
         "@prefix" = "Workspace";
       };
@@ -85,19 +86,43 @@ in
         keybind = [
           (action "W-q" "Close")
           (action "W-f" "ToggleMaximize")
+          (action "W-c" "Iconify")
           (action "W-Tab" "NextWindow")
           (action "W-S-Tab" "PreviousWindow")
-          (action "W-j" "NextWindow")
-          (action "W-k" "PreviousWindow")
+          (action "W-Up" "Lower")
+          (action "W-Down" "Raise")
+          (action "W-Left" "NextWindow")
+          (action "W-Right" "PreviousWindow")
           {
-            "@key" = "W-a";
+            "@key" = "W-C-Left";
             action = {
-              "@name" = "ShowMenu";
-              "@menu" = "client-list-combined-menu";
+              "@name" = "SnapToEdge";
+              "@direction" = "left";
+              "@combine" = "yes";
             };
-            position = {
-              x = "center";
-              y = "center";
+          }
+          {
+            "@key" = "W-C-Right";
+            action = {
+              "@name" = "SnapToEdge";
+              "@direction" = "right";
+              "@combine" = "yes";
+            };
+          }
+          {
+            "@key" = "W-C-Up";
+            action = {
+              "@name" = "SnapToEdge";
+              "@direction" = "up";
+              "@combine" = "yes";
+            };
+          }
+          {
+            "@key" = "W-C-Down";
+            action = {
+              "@name" = "SnapToEdge";
+              "@direction" = "down";
+              "@combine" = "yes";
             };
           }
           (execute "W-t" "ghostty")
@@ -147,21 +172,13 @@ in
       "XKB_DEFAULT_LAYOUT=jp"
       "XKB_DEFAULT_OPTIONS=ctrl:nocaps"
     ];
-
-    # Pull in graphical-session.target so Home Manager services such as
-    # portals, Vicinae, and the idle manager follow the labwc session.
-    systemd.extraCommands = [
-      # The wlroots portal is conditionally started with WAYLAND_DISPLAY. It
-      # can otherwise be skipped before labwc imports its session environment,
-      # leaving the desktop portal without the ScreenCast interface.
-      "${lib.getExe' pkgs.systemd "systemctl"} --user restart xdg-desktop-portal-wlr.service"
-      "${lib.getExe' pkgs.systemd "systemctl"} --user restart xdg-desktop-portal.service"
-
-      # Clear the previous session's target first. Otherwise services such as
-      # kanshi that lose their Wayland connection on logout remain in a
-      # failed/start-limit-hit state and are not started for the next login.
-      "${lib.getExe' pkgs.systemd "systemctl"} --user stop labwc-session.target"
-      "${lib.getExe' pkgs.systemd "systemctl"} --user --no-block start labwc-session.target"
-    ];
   };
+
+  xdg.configFile."labwc/autostart".text = lib.mkAfter ''
+    ${systemctl} --user --no-block start labwc-session.target
+  '';
+
+  xdg.configFile."labwc/shutdown".text = lib.mkAfter ''
+    ${systemctl} --user stop graphical-session.target
+  '';
 }

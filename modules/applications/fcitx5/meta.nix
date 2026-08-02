@@ -2,5 +2,5 @@
 {
   description = "Fcitx 5 input method framework with Hazkey Japanese input";
 
-  imports.nixos = [ inputs.nix-hazkey.nixosModules.hazkey ];
+  imports.home = [ inputs.nix-hazkey.homeModules.hazkey ];
 }

@@ -32,5 +32,7 @@
   environment.systemPackages = [
     pkgs.xwayland-satellite
     pkgs.uwsm
+    pkgs.wlr-randr
+    pkgs.wdisplays
   ];
 }

@@ -7,14 +7,4 @@ in
     enable = true;
     package = unstable.labwc;
   };
-
-  xdg.portal.config.labwc.default = [
-    "wlr"
-    "gtk"
-  ];
-
-  environment.systemPackages = [
-    pkgs.wdisplays
-    pkgs.wlr-randr
-  ];
 }
