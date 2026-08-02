@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+{ pkgs, ... }:
+{
   home.packages = [ pkgs.drawio ];
 }
