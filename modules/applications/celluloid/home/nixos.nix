@@ -1,5 +1,5 @@
-{ pkgs, lib, ... }:
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+{ pkgs, ... }:
+{
   home.packages = [ pkgs.celluloid ];
 
   xdg.mimeApps = {
