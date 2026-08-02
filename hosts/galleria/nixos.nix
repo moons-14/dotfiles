@@ -1,7 +1,4 @@
 { inputs, pkgs, ... }:
-let
-  diskIdentifiers = import ./disk-identifiers.nix;
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -9,7 +6,7 @@ in
   ];
 
   boot.initrd.luks.devices.cryptroot.device =
-    "/dev/disk/by-partuuid/${diskIdentifiers.nixosPartUuid}";
+    "/dev/disk/by-partuuid/04295552-cbb8-4511-ac1e-1171ec20f8d1";
 
   environment.systemPackages = with inputs.browser-previews.packages.${pkgs.system}; [
     google-chrome-beta
