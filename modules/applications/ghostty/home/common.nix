@@ -1,23 +1,6 @@
-{
-  inputs,
-  lib,
-  pkgs,
-  ...
-}:
-let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-  isLinux = pkgs.stdenv.hostPlatform.isLinux;
-  package =
-    if isLinux then
-      inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.ghostty-releasefast
-    else
-      null;
-in
-{
+_: {
   programs.ghostty = {
     enable = true;
-    inherit package;
-    systemd.enable = isLinux;
 
     settings = {
       theme = "dracula";
@@ -47,20 +30,6 @@ in
       gtk-quick-terminal-layer = "top";
       quit-after-last-window-closed = false;
       shell-integration-features = "no-ssh-env,no-ssh-terminfo";
-    };
-  };
-
-  # Global Ghostty keybindings are handled by the running app. Start it hidden
-  # at login so Option+T and Option+Space work before opening a terminal.
-  launchd.agents.ghostty-global-keybindings = lib.mkIf isDarwin {
-    enable = true;
-    config = {
-      ProgramArguments = [
-        "/usr/bin/open"
-        "-gja"
-        "Ghostty"
-      ];
-      RunAtLoad = true;
     };
   };
 
