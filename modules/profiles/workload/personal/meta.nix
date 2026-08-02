@@ -8,7 +8,6 @@
     "applications.gnome-text-editor"
     "applications.kde"
     "applications.moonlight"
-    "applications.pear-desktop"
     "applications.slack"
     "applications.zoom"
   ];
