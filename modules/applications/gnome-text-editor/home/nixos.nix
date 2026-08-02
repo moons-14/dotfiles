@@ -1,5 +1,5 @@
-{ pkgs, lib, ... }:
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+{ pkgs, ... }:
+{
   home.packages = [ pkgs.gnome-text-editor ];
 
   dconf.settings."org/gnome/TextEditor" = {
