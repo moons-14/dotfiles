@@ -38,7 +38,6 @@
         globalOptions = {
           Hotkey = {
             EnumerateWithTriggerKeys = false;
-            AltTriggerKeys = "";
             EnumerateSkipFirst = false;
             ModifierOnlyKeyTimeout = 250;
           };
