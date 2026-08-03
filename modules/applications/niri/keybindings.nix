@@ -1,44 +1,90 @@
 {
   "Mod+Shift+Slash".action.show-hotkey-overlay = { };
 
+  "Mod+T" = {
+    hotkey-overlay.title = "Open a Terminal: alacritty";
+    action.spawn = "alacritty";
+  };
+  "Mod+D" = {
+    hotkey-overlay.title = "Run an Application: fuzzel";
+    action.spawn = "fuzzel";
+  };
+  "Super+Alt+L" = {
+    hotkey-overlay.title = "Lock the Screen: swaylock";
+    action.spawn = "swaylock";
+  };
+  "Super+Alt+S" = {
+    allow-when-locked = true;
+    hotkey-overlay.hidden = true;
+    action.spawn-sh = "pkill orca || exec orca";
+  };
+
   "XF86AudioRaiseVolume" = {
     allow-when-locked = true;
-    action.spawn = [
-      "wpctl"
-      "set-volume"
-      "@DEFAULT_AUDIO_SINK@"
-      "0.1+"
-    ];
+    action.spawn-sh = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0";
   };
   "XF86AudioLowerVolume" = {
     allow-when-locked = true;
-    action.spawn = [
-      "wpctl"
-      "set-volume"
-      "@DEFAULT_AUDIO_SINK@"
-      "0.1-"
-    ];
+    action.spawn-sh = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
   };
   "XF86AudioMute" = {
     allow-when-locked = true;
-    action.spawn = [
-      "wpctl"
-      "set-mute"
-      "@DEFAULT_AUDIO_SINK@"
-      "toggle"
-    ];
+    action.spawn-sh = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
   };
   "XF86AudioMicMute" = {
     allow-when-locked = true;
+    action.spawn-sh = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+  };
+
+  "XF86AudioPlay" = {
+    allow-when-locked = true;
+    action.spawn-sh = "playerctl play-pause";
+  };
+  "XF86AudioPause" = {
+    allow-when-locked = true;
+    action.spawn-sh = "playerctl play-pause";
+  };
+  "XF86AudioStop" = {
+    allow-when-locked = true;
+    action.spawn-sh = "playerctl stop";
+  };
+  "XF86AudioPrev" = {
+    allow-when-locked = true;
+    action.spawn-sh = "playerctl previous";
+  };
+  "XF86AudioNext" = {
+    allow-when-locked = true;
+    action.spawn-sh = "playerctl next";
+  };
+
+  "XF86MonBrightnessUp" = {
+    allow-when-locked = true;
     action.spawn = [
-      "wpctl"
-      "set-mute"
-      "@DEFAULT_AUDIO_SOURCE@"
-      "toggle"
+      "brightnessctl"
+      "--class=backlight"
+      "set"
+      "+10%"
+    ];
+  };
+  "XF86MonBrightnessDown" = {
+    allow-when-locked = true;
+    action.spawn = [
+      "brightnessctl"
+      "--class=backlight"
+      "set"
+      "10%-"
     ];
   };
 
-  "Mod+Q".action.close-window = { };
+  "Mod+O" = {
+    repeat = false;
+    action.toggle-overview = { };
+  };
+
+  "Mod+Q" = {
+    repeat = false;
+    action.close-window = { };
+  };
 
   "Mod+Left".action.focus-column-left = { };
   "Mod+Down".action.focus-window-down = { };
@@ -130,6 +176,7 @@
   "Mod+7".action.focus-workspace = 7;
   "Mod+8".action.focus-workspace = 8;
   "Mod+9".action.focus-workspace = 9;
+
   "Mod+Ctrl+1".action.move-column-to-workspace = 1;
   "Mod+Ctrl+2".action.move-column-to-workspace = 2;
   "Mod+Ctrl+3".action.move-column-to-workspace = 3;
@@ -140,21 +187,46 @@
   "Mod+Ctrl+8".action.move-column-to-workspace = 8;
   "Mod+Ctrl+9".action.move-column-to-workspace = 9;
 
+  "Mod+BracketLeft".action.consume-or-expel-window-left = { };
+  "Mod+BracketRight".action.consume-or-expel-window-right = { };
+
   "Mod+Comma".action.consume-window-into-column = { };
   "Mod+Period".action.expel-window-from-column = { };
+
   "Mod+R".action.switch-preset-column-width = { };
-  "Mod+Shift+R".action.reset-window-height = { };
+  "Mod+Shift+R".action.switch-preset-column-width-back = { };
+  "Mod+Ctrl+Shift+R".action.switch-preset-window-height = { };
+  "Mod+Ctrl+R".action.reset-window-height = { };
+
   "Mod+F".action.maximize-column = { };
   "Mod+Shift+F".action.fullscreen-window = { };
+  "Mod+M".action.maximize-window-to-edges = { };
+  "Mod+Ctrl+F".action.expand-column-to-available-width = { };
+
   "Mod+C".action.center-column = { };
+  "Mod+Ctrl+C".action.center-visible-columns = { };
+
   "Mod+Minus".action.set-column-width = "-10%";
   "Mod+Equal".action.set-column-width = "+10%";
   "Mod+Shift+Minus".action.set-window-height = "-10%";
   "Mod+Shift+Equal".action.set-window-height = "+10%";
 
+  "Mod+V".action.toggle-window-floating = { };
+  "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = { };
+
+  "Mod+W".action.toggle-column-tabbed-display = { };
+
   "Print".action.screenshot = { };
   "Ctrl+Print".action.screenshot-screen = { };
   "Alt+Print".action.screenshot-window = { };
+
+  "Mod+Escape" = {
+    allow-inhibiting = false;
+    action.toggle-keyboard-shortcuts-inhibit = { };
+  };
+
   "Mod+Shift+E".action.quit = { };
+  "Ctrl+Alt+Delete".action.quit = { };
+
   "Mod+Shift+P".action.power-off-monitors = { };
 }

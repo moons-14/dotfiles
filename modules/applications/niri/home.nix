@@ -4,48 +4,6 @@ let
 in
 {
   programs.niri.settings = {
-    input = {
-      touchpad = {
-        natural-scroll = true;
-        scroll-factor = 4.0;
-        scroll-method = "two-finger";
-        click-method = "clickfinger";
-        drag = true;
-        drag-lock = true;
-      };
-
-      keyboard.xkb = {
-        layout = "jp";
-        options = "ctrl:nocaps";
-      };
-
-      mouse = {
-        accel-profile = "flat";
-        accel-speed = -0.1;
-      };
-
-      warp-mouse-to-focus.enable = true;
-      focus-follows-mouse = {
-        enable = true;
-        max-scroll-amount = "0%";
-      };
-    };
-
-    cursor.size = 16;
-
-    layout = {
-      focus-ring = {
-        active.color = "#bd93f9";
-        inactive.color = "#6272a4";
-      };
-      border = {
-        active.color = "#ffc87f";
-        inactive.color = "#505050";
-        urgent.color = "#9b0000";
-      };
-      shadow.color = "#0007";
-      background-color = "transparent";
-    };
 
     binds = keybindings // {
       "Mod+T" = {
@@ -168,13 +126,59 @@ in
       ];
     };
 
+    input = {
+      touchpad = {
+        natural-scroll = true;
+        scroll-factor = 4.0;
+        scroll-method = "two-finger";
+        click-method = "clickfinger";
+        drag = true;
+        drag-lock = true;
+        dwt = true;
+      };
+
+      keyboard = {
+        numlock = true;
+
+        xkb = {
+          layout = "jp";
+          options = "ctrl:nocaps";
+        };
+      };
+
+      mouse = {
+        accel-profile = "flat";
+        accel-speed = -0.1;
+      };
+      trackpoint = {
+        accel-profile = "flat";
+        accel-speed = -0.1;
+      };
+
+      warp-mouse-to-focus.enable = true;
+      focus-follows-mouse = {
+        enable = true;
+        max-scroll-amount = "0%";
+      };
+    };
+
+    cursor.size = 16;
+
+    layout = {
+      focus-ring = {
+        active.color = "#bd93f9";
+        inactive.color = "#6272a4";
+      };
+      background-color = "transparent";
+    };
+
     window-rules = [
       {
         geometry-corner-radius = {
-          top-left = 20.0;
-          top-right = 20.0;
-          bottom-left = 20.0;
-          bottom-right = 20.0;
+          top-left = 8.0;
+          top-right = 8.0;
+          bottom-left = 8.0;
+          bottom-right = 8.0;
         };
         clip-to-geometry = true;
       }
