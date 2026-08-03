@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 let
   systemctl = lib.getExe' pkgs.systemd "systemctl";
+
   action = key: name: {
     "@key" = key;
     action = {
@@ -15,29 +16,6 @@ let
       "@command" = command;
     };
   };
-
-  desktopKeybinds = lib.concatMap (
-    desktop:
-    let
-      number = toString desktop;
-    in
-    [
-      {
-        "@key" = "W-${number}";
-        action = {
-          "@name" = "GoToDesktop";
-          "@to" = number;
-        };
-      }
-      {
-        "@key" = "W-C-${number}";
-        action = {
-          "@name" = "SendToDesktop";
-          "@to" = number;
-        };
-      }
-    ]
-  ) (lib.range 1 9);
 in
 {
   wayland.windowManager.labwc = {
@@ -45,40 +23,18 @@ in
     # NixOS owns the package so Home Manager only generates the user config.
     package = null;
 
+    systemd = {
+      enable = true;
+
+      variables = [
+        "DISPLAY"
+        "WAYLAND_DISPLAY"
+        "XDG_CURRENT_DESKTOP"
+        "XDG_SESSION_TYPE"
+      ];
+    };
+
     rc = {
-      core = {
-        decoration = "client";
-        gap = 10;
-        autoEnableOutputs = "yes";
-        reuseOutputMode = "yes";
-      };
-
-      theme = {
-        name = "Dracula";
-        cornerRadius = 8;
-        dropShadows = "yes";
-        dropShadowsOnTiled = "yes";
-      };
-
-      windowSwitcher = {
-        "@preview" = "yes";
-        "@outlines" = "yes";
-        osd = {
-          "@style" = "thumbnail";
-        };
-      };
-
-      focus = {
-        followMouse = "yes";
-        followMouseRequiresMovement = "yes";
-        raiseOnFocus = "no";
-      };
-
-      desktops = {
-        "@number" = 1;
-        "@popupTime" = 500;
-        "@prefix" = "Workspace";
-      };
 
       keyboard = {
         default = true;
@@ -136,7 +92,6 @@ in
           (execute "W-comma" "noctalia msg settings-toggle")
           (action "W-S-e" "Exit")
         ]
-        ++ desktopKeybinds
         ++ [
           (execute "XF86AudioRaiseVolume" "noctalia msg volume-up")
           (execute "XF86AudioLowerVolume" "noctalia msg volume-down")
@@ -145,6 +100,40 @@ in
           (execute "XF86MonBrightnessUp" "noctalia msg brightness-up")
           (execute "XF86MonBrightnessDown" "noctalia msg brightness-down")
         ];
+      };
+
+      core = {
+        decoration = "client";
+        gap = 10;
+        autoEnableOutputs = "yes";
+        reuseOutputMode = "yes";
+      };
+
+      theme = {
+        name = "Dracula";
+        cornerRadius = 8;
+        dropShadows = "yes";
+        dropShadowsOnTiled = "yes";
+      };
+
+      windowSwitcher = {
+        "@preview" = "yes";
+        "@outlines" = "yes";
+        osd = {
+          "@style" = "thumbnail";
+        };
+      };
+
+      focus = {
+        followMouse = "yes";
+        followMouseRequiresMovement = "yes";
+        raiseOnFocus = "no";
+      };
+
+      desktops = {
+        "@number" = 1;
+        "@popupTime" = 500;
+        "@prefix" = "Workspace";
       };
 
       mouse.default = true;
@@ -159,6 +148,7 @@ in
           clickMethod = "clickfinger";
           scrollMethod = "twoFinger";
           scrollFactor = "4.0";
+          disableWhileTyping = "yes";
         }
         {
           "@category" = "non-touch";
@@ -173,10 +163,6 @@ in
       "XKB_DEFAULT_OPTIONS=ctrl:nocaps"
     ];
   };
-
-  xdg.configFile."labwc/autostart".text = lib.mkAfter ''
-    ${systemctl} --user --no-block start labwc-session.target
-  '';
 
   xdg.configFile."labwc/shutdown".text = lib.mkAfter ''
     ${systemctl} --user stop graphical-session.target
