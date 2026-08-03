@@ -1,4 +1,6 @@
-_: {
+{ pkgs, ... }: {
+  home.packages = [ pkgs.packwiz ];
+
   programs.prismlauncher = {
     enable = true;
 
