@@ -1,4 +1,9 @@
 {
+  lib,
+  config,
+  ...
+}:
+{
   services.kanshi = {
     enable = true;
 
@@ -29,5 +34,13 @@
         };
       }
     ];
+  };
+
+  home.file.".wallpapers" = {
+    source = lib.mkForce (
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Pictures/wallpapers"
+    );
+
+    recursive = lib.mkForce false;
   };
 }
