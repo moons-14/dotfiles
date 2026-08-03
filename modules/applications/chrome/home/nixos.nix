@@ -1,6 +1,11 @@
-{ pkgs, ... }:
-{
-  home.packages = [ pkgs.google-chrome ];
+_: {
+  programs.google-chrome = {
+    enable = true;
+
+    commandLineArgs = [
+      "--enable-features=MiddleClickAutoscroll"
+    ];
+  };
 
   xdg.mimeApps = {
     enable = true;
