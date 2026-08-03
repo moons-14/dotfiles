@@ -83,13 +83,8 @@ local function showUsage(item, refreshError)
     barWidget.setText(
         "5h:"
             .. percent(primary.usedPercent)
-            .. "("
-            .. primaryReset
-            .. ") - 7d:"
+            .. " - 7d:"
             .. percent(secondary.usedPercent)
-            .. "("
-            .. secondaryReset
-            .. ")"
     )
     local tooltip = {
         { "5-hour usage", percent(primary.usedPercent) .. " · resets in " .. primaryReset },
