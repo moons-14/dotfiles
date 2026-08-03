@@ -1,26 +1,15 @@
 {
   inputs,
-  lib,
   pkgs,
   ...
 }:
 let
-  isLinux = pkgs.stdenv.hostPlatform.isLinux;
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   extensions = inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   programs.vicinae = {
     enable = true;
-    systemd = lib.mkIf isLinux {
-      enable = true;
-      autoStart = true;
-      environment.USE_LAYER_SHELL = 1;
-    };
-    launchd = lib.mkIf isDarwin {
-      enable = true;
-      autoStart = true;
-    };
+
     settings = {
       font.size = 11;
       close_on_focus_loss = true;
@@ -46,18 +35,11 @@ in
         rounding = 10;
       };
     };
-    extensions =
-      with extensions;
-      [
-        nix
-        zoxide-recent-directories
-        ssh
-        port-killer
-      ]
-      ++ lib.optionals isLinux [
-        power-profile
-        niri
-        noctalia-shell-wallpaper-selector
-      ];
+    extensions = with extensions; [
+      nix
+      zoxide-recent-directories
+      ssh
+      port-killer
+    ];
   };
 }
