@@ -8,6 +8,9 @@ let
 in
 {
   programs.vicinae = {
+
+    package = pkgs.vicinae;
+
     systemd = {
       enable = true;
       autoStart = true;

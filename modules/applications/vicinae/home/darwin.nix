@@ -1,5 +1,7 @@
 _: {
   programs.vicinae = {
+    package = null;
+
     launchd = {
       enable = true;
       autoStart = true;

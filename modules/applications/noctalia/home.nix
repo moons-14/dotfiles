@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -18,115 +17,6 @@ let
     repo = "wallpapers";
     rev = "cc3256f4aaf2c8e7d16fb000b1ee251af54085db";
     hash = "sha256-emQ/FqKqMq3YI5bLx8gBZg/ZE72OG9Ilh71ggq78WdQ=";
-  };
-
-  systemWidgets = [
-    "network"
-    "bluetooth"
-    "network-connection"
-    "spacer"
-    "cpu"
-    "cpu-graph"
-    "ram"
-  ];
-  labwcSystemWidgets = [
-    "network"
-    "bluetooth"
-    "network-connection"
-    "spacer"
-    "cpu"
-    "ram"
-  ];
-  centerWidgets = [
-    "app-launcher"
-    "workspaces"
-  ];
-  endWidgets = [
-    "notifications"
-    "tray"
-    "spacer"
-    "battery"
-    "input-volume"
-    "output-volume"
-    "privacy"
-    "brightness"
-    "clock"
-    "control-center"
-  ];
-
-  labwcSettings = lib.recursiveUpdate config.programs.noctalia.settings {
-    bar.main = {
-      position = "bottom";
-      thickness = 51;
-      margin_ends = 0;
-      start = [ "taskbar" ];
-      center = centerWidgets;
-      end =
-        labwcSystemWidgets
-        ++ [
-          "moons/codexbar-usage:usage"
-          "spacer"
-        ]
-        ++ endWidgets;
-    };
-
-    dock = {
-      enabled = false;
-    };
-
-    widget = {
-      network.show_label = false;
-      taskbar = {
-        type = "taskbar";
-        scale = 1.5;
-        pinned = [
-          "org.gnome.Nautilus"
-          "org.gnome.TextEditor"
-          "com.mitchellh.ghostty"
-          "google-chrome"
-          "code"
-          "dev.zed.Zed"
-          "codex"
-          "vesktop"
-        ];
-        show_all_outputs = true;
-        group_by_workspace = false;
-        show_window_title = false;
-        pinned_opacity = 0.60;
-        inactive_opacity = 1.0;
-      };
-      input-volume.show_label = false;
-    };
-  };
-
-  labwcRawConfig = (pkgs.formats.toml { }).generate "noctalia-labwc-config.toml" labwcSettings;
-  labwcConfig = pkgs.runCommand "noctalia-labwc-config" { } ''
-    ${lib.getExe config.programs.noctalia.package} config validate ${labwcRawConfig}
-    cp ${labwcRawConfig} $out
-  '';
-
-  mkSessionService = target: environment: {
-    Unit = {
-      Description = "Noctalia Wayland desktop shell";
-      Documentation = [ "https://docs.noctalia.dev/" ];
-      PartOf = [ target ];
-      After = [ target ];
-    };
-
-    Service = {
-      ExecStart = lib.getExe config.programs.noctalia.package;
-      Restart = "on-failure";
-      # A compositor restart closes Noctalia's Wayland connection.  Back off
-      # long enough for labwc's session target to be stopped and recreated,
-      # instead of exhausting systemd's start limit before the new Wayland
-      # socket is available.
-      RestartSec = 5;
-    }
-    // lib.optionalAttrs (environment != [ ]) {
-      Environment = environment;
-    };
-
-    Install.WantedBy = [ target ];
   };
 in
 {
@@ -151,8 +41,7 @@ in
   programs.noctalia = {
     enable = true;
 
-    # Session-specific services below let labwc select its own config home.
-    systemd.enable = false;
+    systemd.enable = true;
 
     settings = {
       theme = {
@@ -178,14 +67,35 @@ in
       bar.main = {
         margin_ends = 15;
         position = "top";
-        start = systemWidgets;
-        center = centerWidgets;
+        start = [
+          "network"
+          "bluetooth"
+          "network-connection"
+          "spacer"
+          "cpu"
+          "cpu-graph"
+          "ram"
+          "spacer"
+          "taskbar"
+        ];
+        center = [
+          "app-launcher"
+          "workspaces"
+        ];
         end = [
-          "media"
           "moons/codexbar-usage:usage"
           "spacer"
-        ]
-        ++ endWidgets;
+          "notifications"
+          "tray"
+          "spacer"
+          "battery"
+          "input-volume"
+          "output-volume"
+          "privacy"
+          "brightness"
+          "clock"
+          "control-center"
+        ];
       };
 
       plugins = {
@@ -196,7 +106,7 @@ in
         app-launcher = {
           type = "custom_button";
           glyph = "apps";
-          command = "vicinae toggle";
+          actions.left = "vicinae toggle";
           tooltip = "Applications";
         };
         cpu = {
@@ -229,6 +139,7 @@ in
         input-volume = {
           type = "volume";
           device = "input";
+          show_label = false;
         };
         output-volume = {
           type = "volume";
@@ -243,7 +154,7 @@ in
         network-connection = {
           type = "custom_button";
           glyph = "access-point";
-          command = "nm-connection-editor";
+          actions.left = "nm-connection-editor";
         };
         tray = {
           type = "tray";
@@ -252,6 +163,25 @@ in
         workspaces = {
           type = "workspaces";
           hide_when_empty = true;
+        };
+        taskbar = {
+          type = "taskbar";
+          scale = 1;
+          pinned = [
+            "org.gnome.Nautilus"
+            "org.gnome.TextEditor"
+            "com.mitchellh.ghostty"
+            "google-chrome"
+            "code"
+            "dev.zed.Zed"
+            "codex-desktop.desktop"
+            "vesktop"
+          ];
+          show_all_outputs = true;
+          group_by_workspace = false;
+          show_window_title = false;
+          pinned_opacity = 0.60;
+          inactive_opacity = 1.0;
         };
       };
 
@@ -299,16 +229,4 @@ in
       ];
     };
   };
-
-  systemd.user.services =
-    lib.optionalAttrs config.my.applications.niri.enable {
-      noctalia-niri = mkSessionService "niri.service" [ ];
-    }
-    // lib.optionalAttrs config.my.applications.labwc.enable {
-      noctalia-labwc = mkSessionService "labwc-session.target" [
-        "NOCTALIA_CONFIG_HOME=%h/.config/noctalia-labwc"
-      ];
-    };
-
-  xdg.configFile."noctalia-labwc/noctalia/config.toml".source = labwcConfig;
 }
