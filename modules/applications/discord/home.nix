@@ -86,8 +86,8 @@ _: {
           WebScreenShareFixes.enabled = true;
 
           # Message history
-          MessageLogger.enable = true;
-          ShowHiddenChannels.enable = true;
+          MessageLogger.enabled = true;
+          ShowHiddenChannels.enabled = true;
         };
       };
     };
