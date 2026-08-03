@@ -1,5 +1,7 @@
 { lib, pkgs, ... }:
 let
+  screenshot = import ./screenshot.nix { inherit pkgs; };
+
   systemctl = lib.getExe' pkgs.systemd "systemctl";
 
   keybind = key: actionAttrs: {
@@ -38,6 +40,8 @@ let
   };
 in
 {
+  home.packages = [ screenshot ];
+
   wayland.windowManager.labwc = {
     enable = true;
     # NixOS owns the package so Home Manager only generates the user config.
@@ -75,6 +79,9 @@ in
           (snapToEdge "W-C-Up" "up")
           (snapToEdge "W-C-Down" "down")
           (confirmAction "W-S-e" "Exit labwc?" "Exit")
+          (execute "Print" "labwc-screenshot region")
+          (execute "C-Print" "labwc-screenshot output")
+          (execute "A-Print" "labwc-screenshot all")
 
           # spawn applications (sync with niri modules/applications/niri/home.nix)
           (execute "W-t" "ghostty")
