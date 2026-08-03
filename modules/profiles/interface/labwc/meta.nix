@@ -7,6 +7,5 @@
     "applications.noctalia"
     "services.ly"
     "services.swayidle"
-    "services.swaylock"
   ];
 }

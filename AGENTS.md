@@ -313,7 +313,6 @@ use fully qualified unit IDs:
     "applications.noctalia"
     "services.ly"
     "services.swayidle"
-    "services.swaylock"
   ];
 }
 ```

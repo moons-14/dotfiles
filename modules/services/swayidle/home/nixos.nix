@@ -53,7 +53,7 @@ let
     ${wlopm} --on '*'
   '';
 in
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+{
   services.swayidle = {
     enable = true;
     systemdTargets = [ "graphical-session.target" ];
@@ -75,7 +75,11 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         resumeCommand = "${turnOnDisplays}";
       }
     ];
-    events.after-resume = "${afterResume}";
+    events = {
+      after-resume = "${afterResume}";
+      lock = "loginctl lock-session";
+      before-sleep = "loginctl lock-session";
+    };
   };
 
   systemd.user.services.swayidle.Service.PassEnvironment = [

@@ -166,8 +166,8 @@ in
 
       desktop_widgets.enabled = false;
       lockscreen = {
-        enabled = false;
-        fingerprint = false;
+        enabled = true;
+        fingerprint = true;
       };
 
       osd.kinds = {
