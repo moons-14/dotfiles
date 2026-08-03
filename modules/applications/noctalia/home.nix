@@ -205,18 +205,7 @@ in
       };
 
       dock = {
-        enabled = true;
-        position = "left";
-        auto_hide = true;
-        show_dots = true;
-        background_opacity = 0.8;
-        active_monitor_only = true;
-        reserve_space = false;
-        pinned = [
-          "com.mitchellh.ghostty"
-          "google-chrome"
-          "code"
-        ];
+        enabled = false;
       };
 
       control_center.shortcuts = [
