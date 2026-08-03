@@ -1,16 +1,10 @@
 {
-  inputs,
-  pkgs,
   lib,
   ...
 }:
-let
-  unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
 {
   programs.labwc = {
     enable = true;
-    package = unstable.labwc;
   };
 
   # NixOS decides whether a graphical session manages graphical-session.target

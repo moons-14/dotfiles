@@ -3,9 +3,15 @@
 
   hardware.nvidia = {
     modesetting.enable = true;
-    nvidiaSettings = true;
-
-    # RTX 3060 Ti (Ampere) supports NVIDIA's open kernel modules.
     open = true;
+
+    powerManagement = {
+      enable = true;
+      kernelSuspendNotifier = true;
+    };
+
+    moduleParams.nvidia.NVreg_TemporaryFilePath = "/var/tmp";
+
+    nvidiaSettings = true;
   };
 }

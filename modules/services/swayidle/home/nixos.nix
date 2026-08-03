@@ -2,90 +2,75 @@
 let
   brightnessctl = lib.getExe pkgs.brightnessctl;
   loginctl = lib.getExe' pkgs.systemd "loginctl";
-  rm = "${pkgs.coreutils}/bin/rm";
+  rm = lib.getExe' pkgs.coreutils "rm";
   systemctl = lib.getExe' pkgs.systemd "systemctl";
   wlopm = lib.getExe pkgs.wlopm;
+  noctalia = lib.getExe pkgs.noctalia-shell;
+
   brightnessState = "$XDG_RUNTIME_DIR/swayidle-brightness";
 
-  skipIfOnAC = ''
+  onBattery = pkgs.writeShellScript "swayidle-on-battery" ''
     for supply in /sys/class/power_supply/*; do
-      if [ -f "$supply/type" ] \
-        && [ "$(< "$supply/type")" = "Mains" ] \
-        && [ -f "$supply/online" ] \
-        && [ "$(< "$supply/online")" = "1" ]; then
-        exit 0
-      fi
+      [ -f "$supply/type" ] || continue
+      [ "$(< "$supply/type")" = "Battery" ] || continue
+      [ -f "$supply/status" ] || continue
+      [ "$(< "$supply/status")" = "Discharging" ] && exit 0
     done
+
+    exit 1
+  '';
+
+  isLocked = pkgs.writeShellScript "swayidle-is-locked" ''
+    [ -n "$XDG_SESSION_ID" ] \
+      && [ "$(${loginctl} show-session "$XDG_SESSION_ID" \
+        --property=LockedHint --value)" = "yes" ]
   '';
 
   dimScreen = pkgs.writeShellScript "swayidle-dim-screen" ''
-    ${skipIfOnAC}
-    ${brightnessctl} get > "${brightnessState}" 2>/dev/null || exit 0
-    ${brightnessctl} set 10% >/dev/null 2>&1 || true
-  '';
-
-  restoreBrightness = pkgs.writeShellScript "swayidle-restore-brightness" ''
-    if [ -f "${brightnessState}" ]; then
-      saved=$(< "${brightnessState}")
-      ${brightnessctl} set "$saved" >/dev/null 2>&1 || true
-      ${rm} -f "${brightnessState}"
-    fi
-  '';
-
-  suspendOnBattery = pkgs.writeShellScript "swayidle-suspend-on-battery" ''
-    ${skipIfOnAC}
-    exec ${systemctl} suspend
-  '';
-
-  afterResume = pkgs.writeShellScript "swayidle-after-resume" ''
-    ${wlopm} --on '*'
-    ${restoreBrightness}
-  '';
-
-  turnOffLockedDisplays = pkgs.writeShellScript "swayidle-turn-off-locked-displays" ''
-    if [ -n "$XDG_SESSION_ID" ] \
-      && [ "$(${loginctl} show-session "$XDG_SESSION_ID" --property=LockedHint --value)" = "yes" ]; then
+    if ${onBattery}; then
+      ${brightnessctl} get > "${brightnessState}" 2>/dev/null || exit 0
+      ${brightnessctl} set 10% >/dev/null 2>&1 || true
+    elif ${isLocked}; then
       ${wlopm} --off '*'
     fi
   '';
 
-  turnOnDisplays = pkgs.writeShellScript "swayidle-turn-on-displays" ''
-    ${wlopm} --on '*'
+  restoreScreen = pkgs.writeShellScript "swayidle-restore-screen" ''
+    ${wlopm} --on '*' >/dev/null 2>&1 || true
+
+    if [ -f "${brightnessState}" ]; then
+      ${brightnessctl} set "$(< "${brightnessState}")" >/dev/null 2>&1 || true
+      ${rm} -f "${brightnessState}"
+    fi
+  '';
+
+  suspend = pkgs.writeShellScript "swayidle-suspend" ''
+    if ${onBattery} || ${isLocked}; then
+      exec ${systemctl} suspend
+    fi
   '';
 in
 {
   services.swayidle = {
     enable = true;
     systemdTargets = [ "graphical-session.target" ];
+
     timeouts = [
       {
         timeout = 300;
         command = "${dimScreen}";
-        resumeCommand = "${restoreBrightness}";
+        resumeCommand = "${restoreScreen}";
       }
       {
         timeout = 360;
-        command = "${suspendOnBattery}";
-      }
-      {
-        # Do not blank an unlocked desktop.  Once the logind session is locked,
-        # blank its outputs after ten minutes and restore them on input.
-        timeout = 600;
-        command = "${turnOffLockedDisplays}";
-        resumeCommand = "${turnOnDisplays}";
+        command = "${suspend}";
       }
     ];
+
     events = {
-      after-resume = "${afterResume}";
-      lock = "loginctl lock-session";
-      before-sleep = "loginctl lock-session";
+      lock = "${noctalia} msg session lock";
+      before-sleep = "${noctalia} msg session lock";
+      after-resume = "${restoreScreen}";
     };
   };
-
-  systemd.user.services.swayidle.Service.PassEnvironment = [
-    "WAYLAND_DISPLAY"
-    "XDG_RUNTIME_DIR"
-    "DBUS_SESSION_BUS_ADDRESS"
-    "XDG_SESSION_ID"
-  ];
 }

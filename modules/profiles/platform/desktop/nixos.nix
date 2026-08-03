@@ -3,7 +3,6 @@
   # every system sleep path; screen blanking while locked is handled by
   # services.swayidle in the graphical session.
   systemd.sleep.settings.Sleep = {
-    AllowSuspend = false;
     AllowHibernation = false;
     AllowHybridSleep = false;
     AllowSuspendThenHibernate = false;
