@@ -1,5 +1,4 @@
 {
-  lib,
   primaryUser,
   ...
 }:
@@ -22,10 +21,4 @@
     expose-group-apps = false;
     show-recents = false;
   };
-
-  # Homebrew installs casks after defaults are written. Refresh the Dock only
-  # after both Homebrew and Home Manager have finished activating.
-  system.activationScripts.postActivation.text = lib.mkAfter ''
-    run sudo --user=${lib.escapeShellArg primaryUser} /usr/bin/killall Dock >/dev/null 2>&1 || true
-  '';
 }
