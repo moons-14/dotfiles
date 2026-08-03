@@ -38,6 +38,28 @@ let
       "then".action."@name" = name;
     };
   };
+
+  menuExecute = label: command: {
+    inherit label;
+    action = {
+      name = "Execute";
+      inherit command;
+    };
+  };
+
+  showMenu = button: menu: {
+    "@button" = button;
+    "@action" = "Press";
+    action = {
+      "@name" = "ShowMenu";
+      "@menu" = menu;
+    };
+  };
+
+  menuAction = label: name: {
+    inherit label;
+    action.name = name;
+  };
 in
 {
   home.packages = [ screenshot ];
@@ -57,6 +79,22 @@ in
         "XDG_SESSION_TYPE"
       ];
     };
+
+    menu = [
+      {
+        menuId = "root-menu";
+        items = [
+          (menuExecute "ターミナル" "ghostty")
+          (menuExecute "Vicinae" "vicinae toggle")
+          (menuExecute "ファイル" "nautilus --new-window")
+
+          { separator = true; }
+
+          (menuAction "Reconfigure" "Reconfigure")
+          (menuAction "Exit" "Exit")
+        ];
+      }
+    ];
 
     rc = {
 
@@ -144,7 +182,18 @@ in
         "@prefix" = "Workspace";
       };
 
-      mouse.default = true;
+      mouse = {
+        default = true;
+
+        context = {
+          "@name" = "Desktop";
+
+          mousebind = [
+            (showMenu "Right" "root-menu")
+            (showMenu "Middle" "client-list-combined-menu")
+          ];
+        };
+      };
 
       libinput.device = [
         {
