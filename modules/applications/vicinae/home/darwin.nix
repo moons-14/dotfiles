@@ -4,5 +4,6 @@ _: {
       enable = true;
       autoStart = true;
     };
+    settings.global_shortcuts.toggle = "alt+d";
   };
 }

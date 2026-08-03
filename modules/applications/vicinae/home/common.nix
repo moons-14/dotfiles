@@ -17,7 +17,6 @@ in
       pop_to_root_on_close = true;
       favicon_service = "twenty";
       search_files_in_root = true;
-      global_shortcuts.toggle = "alt+d";
       providers.clipboard.entrypoints.history.shortcut = "alt+v";
       theme = {
         light = {
