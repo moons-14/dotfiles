@@ -2,18 +2,38 @@
 let
   systemctl = lib.getExe' pkgs.systemd "systemctl";
 
-  action = key: name: {
+  keybind = key: actionAttrs: {
     "@key" = key;
-    action = {
-      "@name" = name;
-    };
+    action = actionAttrs;
   };
 
-  execute = key: command: {
-    "@key" = key;
-    action = {
+  action =
+    key: name:
+    keybind key {
+      "@name" = name;
+    };
+
+  execute =
+    key: command:
+    keybind key {
       "@name" = "Execute";
       "@command" = command;
+    };
+
+  snapToEdge =
+    key: direction:
+    keybind key {
+      "@name" = "SnapToEdge";
+      "@direction" = direction;
+      "@combine" = "yes";
+    };
+
+  confirmAction = key: message: name: {
+    "@key" = key;
+    action = {
+      "@name" = "If";
+      prompt."@message" = message;
+      "then".action."@name" = name;
     };
   };
 in
@@ -40,6 +60,7 @@ in
         default = true;
         numlock = "on";
         keybind = [
+          # labwc window management
           (action "W-q" "Close")
           (action "W-f" "ToggleMaximize")
           (action "W-c" "Iconify")
@@ -49,56 +70,36 @@ in
           (action "W-Down" "Raise")
           (action "W-Left" "NextWindow")
           (action "W-Right" "PreviousWindow")
-          {
-            "@key" = "W-C-Left";
-            action = {
-              "@name" = "SnapToEdge";
-              "@direction" = "left";
-              "@combine" = "yes";
-            };
-          }
-          {
-            "@key" = "W-C-Right";
-            action = {
-              "@name" = "SnapToEdge";
-              "@direction" = "right";
-              "@combine" = "yes";
-            };
-          }
-          {
-            "@key" = "W-C-Up";
-            action = {
-              "@name" = "SnapToEdge";
-              "@direction" = "up";
-              "@combine" = "yes";
-            };
-          }
-          {
-            "@key" = "W-C-Down";
-            action = {
-              "@name" = "SnapToEdge";
-              "@direction" = "down";
-              "@combine" = "yes";
-            };
-          }
+          (snapToEdge "W-C-Left" "left")
+          (snapToEdge "W-C-Right" "right")
+          (snapToEdge "W-C-Up" "up")
+          (snapToEdge "W-C-Down" "down")
+          (confirmAction "W-S-e" "Exit labwc?" "Exit")
+
+          # spawn applications (sync with niri modules/applications/niri/home.nix)
           (execute "W-t" "ghostty")
           (execute "W-d" "vicinae toggle")
+          (execute "W-s" "noctalia msg panel-toggle launcher")
           (execute "W-e" "nautilus --new-window")
           (execute "W-l" "loginctl lock-session")
           (execute "W-v" "vicinae vicinae://launch/clipboard/history?toggle=true")
           (execute "W-space" "ghostty +toggle-quick-terminal")
           (execute "W-p" "wdisplays")
-          (execute "W-s" "noctalia msg panel-toggle launcher")
-          (execute "W-comma" "noctalia msg settings-toggle")
-          (action "W-S-e" "Exit")
-        ]
-        ++ [
+
+          # Function keys (sync with niri modules/applications/niri/home.nix)
           (execute "XF86AudioRaiseVolume" "noctalia msg volume-up")
           (execute "XF86AudioLowerVolume" "noctalia msg volume-down")
           (execute "XF86AudioMute" "noctalia msg volume-mute")
           (execute "XF86AudioMicMute" "noctalia msg mic-mute")
           (execute "XF86MonBrightnessUp" "noctalia msg brightness-up")
           (execute "XF86MonBrightnessDown" "noctalia msg brightness-down")
+          (execute "XF86Favorites" "noctalia msg caffeine-toggle")
+          (execute "XF86AudioPlay" "playerctl play-pause")
+          (execute "XF86AudioPause" "playerctl play-pause")
+          (execute "XF86AudioStop" "playerctl stop")
+          (execute "XF86AudioPrev" "playerctl previous")
+          (execute "XF86AudioNext" "playerctl next")
+          (execute "XF86Display" "wdisplays")
         ];
       };
 

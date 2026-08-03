@@ -6,6 +6,42 @@ in
   programs.niri.settings = {
 
     binds = keybindings // {
+      # niri window or focus move
+      "Mod+Shift+Left" = {
+        action.focus-monitor-left = [ ];
+        hotkey-overlay.title = "Focus Monitor Left";
+      };
+      "Mod+Shift+Right" = {
+        action.focus-monitor-right = [ ];
+        hotkey-overlay.title = "Focus Monitor Right";
+      };
+      "Mod+Shift+Up" = {
+        action.focus-monitor-up = [ ];
+        hotkey-overlay.title = "Focus Monitor Up";
+      };
+      "Mod+Shift+Down" = {
+        action.focus-monitor-down = [ ];
+        hotkey-overlay.title = "Focus Monitor Down";
+      };
+
+      "Mod+Shift+Ctrl+Left" = {
+        action.move-window-to-monitor-left = [ ];
+        hotkey-overlay.title = "Move Window to Monitor Left";
+      };
+      "Mod+Shift+Ctrl+Right" = {
+        action.move-window-to-monitor-right = [ ];
+        hotkey-overlay.title = "Move Window to Monitor Right";
+      };
+      "Mod+Shift+Ctrl+Up" = {
+        action.move-window-to-monitor-up = [ ];
+        hotkey-overlay.title = "Move Window to Monitor Up";
+      };
+      "Mod+Shift+Ctrl+Down" = {
+        action.move-window-to-monitor-down = [ ];
+        hotkey-overlay.title = "Move Window to Monitor Down";
+      };
+
+      # spawn applications (sync with labwc modules/applications/labwc/home.nix)
       "Mod+T" = {
         action.spawn = "ghostty";
         hotkey-overlay.title = "Open a Terminal: ghostty";
@@ -54,41 +90,12 @@ in
         ];
         hotkey-overlay.title = "Toggle Quick Terminal: ghostty";
       };
-
-      "Mod+Shift+Left" = {
-        action.focus-monitor-left = [ ];
-        hotkey-overlay.title = "Focus Monitor Left";
-      };
-      "Mod+Shift+Right" = {
-        action.focus-monitor-right = [ ];
-        hotkey-overlay.title = "Focus Monitor Right";
-      };
-      "Mod+Shift+Up" = {
-        action.focus-monitor-up = [ ];
-        hotkey-overlay.title = "Focus Monitor Up";
-      };
-      "Mod+Shift+Down" = {
-        action.focus-monitor-down = [ ];
-        hotkey-overlay.title = "Focus Monitor Down";
+      "Mod+P" = {
+        action.spawn = "wdisplays";
+        hotkey-overlay.title = "Display Settings: wdisplays";
       };
 
-      "Mod+Shift+Ctrl+Left" = {
-        action.move-window-to-monitor-left = [ ];
-        hotkey-overlay.title = "Move Window to Monitor Left";
-      };
-      "Mod+Shift+Ctrl+Right" = {
-        action.move-window-to-monitor-right = [ ];
-        hotkey-overlay.title = "Move Window to Monitor Right";
-      };
-      "Mod+Shift+Ctrl+Up" = {
-        action.move-window-to-monitor-up = [ ];
-        hotkey-overlay.title = "Move Window to Monitor Up";
-      };
-      "Mod+Shift+Ctrl+Down" = {
-        action.move-window-to-monitor-down = [ ];
-        hotkey-overlay.title = "Move Window to Monitor Down";
-      };
-
+      # Function keys (sync with labwc modules/applications/labwc/home.nix)
       "XF86AudioRaiseVolume".action.spawn = [
         "noctalia"
         "msg"
@@ -123,6 +130,29 @@ in
         "noctalia"
         "msg"
         "caffeine-toggle"
+      ];
+      "XF86AudioPlay".action.spawn = [
+        "playerctl"
+        "play-pause"
+      ];
+      "XF86AudioPause".action.spawn = [
+        "playerctl"
+        "play-pause"
+      ];
+      "XF86AudioStop".action.spawn = [
+        "playerctl"
+        "stop"
+      ];
+      "XF86AudioPrev".action.spawn = [
+        "playerctl"
+        "previous"
+      ];
+      "XF86AudioNext".action.spawn = [
+        "playerctl"
+        "next"
+      ];
+      "XF86Display".action.spawn = [
+        "wdisplays"
       ];
     };
 
