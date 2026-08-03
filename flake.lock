@@ -419,15 +419,15 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1785080636,
-        "narHash": "sha256-ACiF5qaL4yiLSMesIPi4+4Aftw5QiMSR2qzp+5hlMvo=",
-        "owner": "moons-14",
+        "lastModified": 1785726460,
+        "narHash": "sha256-pvbS2/rhIJbkq0QqyVwRertdPp2JIu44IRF5C71Iea8=",
+        "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "f11e5199a6bd2a2e1a536d3c225a7d9a39827ea4",
+        "rev": "b4592eefd27290457852ad7d4f16799ecc00b983",
         "type": "github"
       },
       "original": {
-        "owner": "moons-14",
+        "owner": "ghostty-org",
         "repo": "ghostty",
         "type": "github"
       }

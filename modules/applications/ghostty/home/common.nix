@@ -23,6 +23,7 @@ _: {
         "ctrl+shift+minus=decrease_font_size:1"
       ];
 
+      quick-terminal-screen = "mouse";
       quick-terminal-position = "top";
       quick-terminal-size = "98%,100%";
       quick-terminal-autohide = false;

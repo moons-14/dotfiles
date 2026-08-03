@@ -35,7 +35,7 @@
 
     # Terminal
     ghostty = {
-      url = "github:moons-14/ghostty";
+      url = "github:ghostty-org/ghostty";
     };
 
     # Shell / Launcher

@@ -1,6 +1,6 @@
-{ inputs, pkgs, ... }: {
+{ inputs, system, ... }: {
   programs.ghostty = {
     systemd.enable = true;
-    package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.ghostty-releasefast;
+    package = inputs.ghostty.packages.${system}.default;
   };
 }
