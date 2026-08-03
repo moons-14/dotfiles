@@ -29,9 +29,4 @@ lib.mkMerge [
       '';
     };
   }
-
-  (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-    systemd.user.sockets.gcr-ssh-agent.Install.WantedBy = lib.mkForce [ ];
-    services.ssh-agent.enable = lib.mkForce false;
-  })
 ]
