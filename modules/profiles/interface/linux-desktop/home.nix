@@ -1,4 +1,7 @@
-{
+{ pkgs, ... }: {
+  home.packages = [
+    pkgs.playerctl
+  ];
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
