@@ -10,5 +10,6 @@
     "applications.moonlight"
     "applications.slack"
     "applications.zoom"
+    "applications.obs"
   ];
 }
