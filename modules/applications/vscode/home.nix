@@ -2,27 +2,8 @@
 let
   vsc = pkgs.vscode-extensions;
   inherit (lib) recursiveUpdate;
-  localePath =
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      "Library/Application Support/Code/User/locale.json"
-    else
-      ".config/Code/User/locale.json";
 
-  rustEnvironment = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-    "rust-analyzer.cargo.extraEnv" = {
-      LIBCLANG_PATH = pkgs.lib.makeLibraryPath [ pkgs.llvmPackages_latest.libclang.lib ];
-      BINDGEN_EXTRA_CLANG_ARGS = lib.concatStringsSep " " (
-        (map (path: ''-I"${path}/include"'') [ pkgs.glibc.dev ])
-        ++ [
-          ''-I"${pkgs.llvmPackages_latest.libclang.lib}/lib/clang/${pkgs.llvmPackages_latest.libclang.version}/include"''
-          ''-I"${pkgs.glib.dev}/include/glib-2.0"''
-          "-I${pkgs.glib.out}/lib/glib-2.0/include/"
-        ]
-      );
-    };
-  };
-
-  layers = rec {
+  layers = {
     common = {
       extensions =
         (with vsc; [
@@ -48,8 +29,8 @@ let
           {
             name = "chatgpt";
             publisher = "openai";
-            version = "0.4.71";
-            hash = "sha256-Q0le5rhVRgTDQXjIlhbzJOv/7+xC6JXwTp6fxZCP4ak=";
+            version = "26.5727.51351";
+            hash = "sha256-4X4MItkV3+oM1x2gA5D6yFnl1E9+EE6vowJ3WxUrpR8=";
           }
         ];
       userSettings = {
@@ -103,19 +84,14 @@ let
           prisma.prisma
           hashicorp.terraform
           yoavbls.pretty-ts-errors
+          vitest.explorer
         ])
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "pnpm-catalog-lens";
             publisher = "antfu";
-            version = "1.0.0";
-            hash = "sha256-mCMBVxZRIb3Jao1XSS7EQRQX3Y2vrkpAmy6ldSqZa9c=";
-          }
-          {
-            name = "explorer";
-            publisher = "vitest";
-            version = "1.32.1";
-            hash = "sha256-MAfjS/oFfFuiE+Q2w6leSlao436QSw2fKjd7/BE/Q8Y=";
+            version = "1.0.2";
+            hash = "sha256-zPbmPm1hcUab4v54TzYdYhQ71BRvnJHBkkZ9JFR6zS4=";
           }
         ];
       userSettings = { };
@@ -131,13 +107,8 @@ let
     };
 
     web-oxc = {
-      extensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "oxc-vscode";
-          publisher = "oxc";
-          version = "1.48.0";
-          hash = "sha256-RZ7mLcLJyn7lR6w6Au6fZeguB3wtk8sIXb67lPnPnrc=";
-        }
+      extensions = with vsc; [
+        oxc.oxc-vscode
       ];
       userSettings = {
         "editor.defaultFormatter" = "oxc.oxc-vscode";
@@ -211,7 +182,7 @@ let
         serayuzgur.crates
         tamasfe.even-better-toml
       ];
-      userSettings = recursiveUpdate {
+      userSettings = {
         "[rust]" = {
           "editor.defaultFormatter" = "rust-lang.rust-analyzer";
           "editor.formatOnSave" = true;
@@ -237,7 +208,7 @@ let
         "search.exclude" = {
           "**/target/**" = true;
         };
-      } rustEnvironment;
+      };
     };
   };
 
@@ -259,6 +230,11 @@ in
 {
   programs.vscode = {
     enable = true;
+    argvSettings = {
+      locale = "ja";
+      "enable-crash-reporter" = false;
+    };
+
     profiles = {
       default = mkProfile [ layers.common ];
       nix = mkProfile [
@@ -289,10 +265,4 @@ in
       ];
     };
   };
-
-  home.file.${localePath}.text = ''
-    {
-      "locale": "ja"
-    }
-  '';
 }
