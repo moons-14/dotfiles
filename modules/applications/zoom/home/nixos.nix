@@ -1,5 +1,5 @@
-{ lib, pkgs, ... }:
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+{ pkgs, ... }:
+{
   home.packages = [
     (pkgs.zoom-us.override {
       # Zoom runs in an FHS environment. Include the portals there so its
