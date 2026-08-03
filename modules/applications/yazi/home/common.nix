@@ -1,7 +1,4 @@
-{ pkgs, lib, ... }:
-let
-  isLinux = pkgs.stdenv.hostPlatform.isLinux;
-in
+{ pkgs, ... }:
 {
   programs.yazi = {
     enable = true;
@@ -10,25 +7,19 @@ in
     package = pkgs.yazi.override {
       _7zz = pkgs._7zz-rar;
     };
-    extraPackages =
-      with pkgs;
-      [
-        file
-        ffmpeg
-        _7zz-rar
-        jq
-        poppler
-        fd
-        ripgrep
-        fzf
-        zoxide
-        resvg
-        imagemagick
-      ]
-      ++ lib.optionals isLinux [
-        wl-clipboard
-        xdg-utils
-      ];
+    extraPackages = with pkgs; [
+      file
+      ffmpeg
+      _7zz-rar
+      jq
+      poppler
+      fd
+      ripgrep
+      fzf
+      zoxide
+      resvg
+      imagemagick
+    ];
     plugins = {
       "full-border" = {
         package = pkgs.yaziPlugins.full-border;
