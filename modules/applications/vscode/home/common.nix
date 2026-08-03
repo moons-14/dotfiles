@@ -30,7 +30,7 @@ let
             name = "chatgpt";
             publisher = "openai";
             version = "26.5727.51351";
-            hash = "sha256-4X4MItkV3+oM1x2gA5D6yFnl1E9+EE6vowJ3WxUrpR8=";
+            hash = "sha256-i0jUjKVjNHDTlo8rpNLN6+pMMcTBydwmlkdZwbEeyb0=";
           }
         ];
       userSettings = {
