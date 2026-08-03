@@ -26,12 +26,6 @@ let
             version = "1.1.2";
             hash = "sha256-6GO1f8SP4CE8yYl87/tm60FdGHqHsJA4c2B6UKVdpgM=";
           }
-          {
-            name = "chatgpt";
-            publisher = "openai";
-            version = "26.5727.51351";
-            hash = "sha256-i0jUjKVjNHDTlo8rpNLN6+pMMcTBydwmlkdZwbEeyb0=";
-          }
         ];
       userSettings = {
         "workbench.colorTheme" = "Dracula";
