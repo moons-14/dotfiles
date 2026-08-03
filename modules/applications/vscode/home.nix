@@ -26,8 +26,6 @@ let
     common = {
       extensions =
         (with vsc; [
-          github.copilot
-          github.copilot-chat
           dracula-theme.theme-dracula
           ms-vscode-remote.vscode-remote-extensionpack
           dbaeumer.vscode-eslint
@@ -35,9 +33,10 @@ let
           ms-vscode-remote.remote-ssh
           github.vscode-github-actions
           github.vscode-pull-request-github
-          eamodio.gitlens
           streetsidesoftware.code-spell-checker
           ms-ceintl.vscode-language-pack-ja
+          mkhl.direnv
+          usernamehw.errorlens
         ])
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
@@ -72,6 +71,11 @@ let
           "https://developer.microsoft.com/json-schemas/" = true;
           "https://biomejs.dev" = true;
         };
+        "github.copilot.enable" = {
+          "*" = true;
+        };
+        "editor.inlineSuggest.enabled" = true;
+        "github.copilot.nextEditSuggestions.fixes" = true;
         "editor.suggestOnTriggerCharacters" = true;
         "editor.quickSuggestions" = {
           other = true;
@@ -150,8 +154,15 @@ let
       userSettings = {
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "nil";
+        "nix.serverSettings" = {
+          nixd = {
+            formatting.command = [ "nixfmt" ];
+          };
+        };
+
         "[nix]" = {
           "editor.defaultFormatter" = "jnoortheen.nix-ide";
+          "editor.formatOnSave" = true;
         };
       };
     };
