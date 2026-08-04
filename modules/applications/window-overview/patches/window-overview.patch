@@ -1,12 +1,40 @@
 --- a/src/chooser_cli.rs
 +++ b/src/chooser_cli.rs
-@@ -79,0 +80,3 @@
+@@ -79,0 +80,4 @@
 +        app_id_filter: None,
 +        initial_cycle: None,
 +        snapshot: false,
++        cycle_socket: None,
 --- a/src/lib.rs
 +++ b/src/lib.rs
-@@ -56 +56,2 @@
+@@ -33,3 +33,3 @@
+-/// Returns the held lock file (keep it alive), or `None` if another instance owns
+-/// it — sway processes its own keybinding even over our exclusive keyboard grab,
+-/// so re-pressing the bind would otherwise stack overlays.
++/// Returns the held lock and command socket for the first instance. Later
++/// invocations forward their requested cycle direction through the socket and
++/// return `None`, which also supports compositors that keep handling the binding.
+@@ -36 +36,3 @@
+-pub fn acquire_switch_lock() -> Option<std::fs::File> {
++pub fn acquire_switch_lock(
++    forward: bool,
++) -> Option<(std::fs::File, std::os::unix::net::UnixDatagram)> {
+@@ -38,0 +41 @@
++    let socket_path = dir.join("wlr-switcher.sock");
+@@ -45,2 +49,10 @@
+-    flock(&f, FlockOperation::NonBlockingLockExclusive).ok()?;
+-    Some(f)
++    if flock(&f, FlockOperation::NonBlockingLockExclusive).is_err() {
++        let socket = std::os::unix::net::UnixDatagram::unbound().ok()?;
++        let command = if forward { b"next" } else { b"prev" };
++        let _ = socket.send_to(command, socket_path);
++        return None;
++    }
++    let _ = std::fs::remove_file(&socket_path);
++    let socket = std::os::unix::net::UnixDatagram::bind(socket_path).ok()?;
++    socket.set_nonblocking(true).ok()?;
++    Some((f, socket))
+@@ -56 +68,2 @@
 -    std::thread::spawn(move || ui::capture_thread(tx));
 +    let snapshot = opts.snapshot;
 +    std::thread::spawn(move || ui::capture_thread(tx, snapshot));
@@ -25,10 +53,16 @@
 +    /// Select the previous window when the overview first opens.
 +    #[arg(long)]
 +    reverse: bool,
-@@ -121,0 +128,3 @@
+@@ -96,2 +102,2 @@
+-    let _lock = match acquire_switch_lock() {
+-        Some(lock) => lock,
++    let (_lock, cycle_socket) = match acquire_switch_lock(!cli.reverse) {
++        Some(instance) => instance,
+@@ -121,0 +128,4 @@
 +        app_id_filter: cli.app_id,
 +        initial_cycle: Some(!cli.reverse),
 +        snapshot: true,
++        cycle_socket: Some(cycle_socket),
 --- a/src/ui.rs
 +++ b/src/ui.rs
 @@ -8,0 +9 @@
@@ -88,58 +122,114 @@
 +                by_id.remove(&id);
 +                client.close_session(&id);
 +            }
-@@ -508,0 +552,6 @@
+@@ -508,0 +552,8 @@
 +    /// Exact Wayland app-id filter, used by taskbar launches.
 +    pub app_id_filter: Option<String>,
 +    /// Initial cycle direction. `None` leaves the first item selected.
 +    pub initial_cycle: Option<bool>,
 +    /// Capture each window once instead of continuously refreshing previews.
 +    pub snapshot: bool,
-@@ -533,0 +583,3 @@
++    /// Receives next/previous commands from repeated compositor keybind launches.
++    pub cycle_socket: Option<std::os::unix::net::UnixDatagram>,
+@@ -533,0 +585,5 @@
 +    app_id_filter: Option<String>,
 +    initial_forward: bool,
 +    overview_scale: f32,
-@@ -567 +619 @@
++    cycle_socket: Option<std::os::unix::net::UnixDatagram>,
++    queued_cycles: isize,
+@@ -567 +623 @@
 -            pending_initial_select: false,
 +            pending_initial_select: opts.initial_cycle.is_some(),
-@@ -571,0 +624,3 @@
+@@ -571,0 +628,5 @@
 +            app_id_filter: opts.app_id_filter,
 +            initial_forward: opts.initial_cycle.unwrap_or(true),
 +            overview_scale: load_overview_scale(),
-@@ -698,0 +754,5 @@
++            cycle_socket: opts.cycle_socket,
++            queued_cycles: 0,
+@@ -604 +665,4 @@
+-            return; // nothing to cycle yet; keep the pending initial jump
++            self.queued_cycles = self
++                .queued_cycles
++                .saturating_add(if forward { 1 } else { -1 });
++            return;
+@@ -639,0 +704,12 @@
++        loop {
++            let command = self.cycle_socket.as_ref().and_then(|socket| {
++                let mut buf = [0_u8; 8];
++                socket.recv(&mut buf).ok().map(|len| (buf, len))
++            });
++            match command {
++                Some((buf, len)) if &buf[..len] == b"next" => self.cycle(true),
++                Some((buf, len)) if &buf[..len] == b"prev" => self.cycle(false),
++                Some(_) => {}
++                None => break,
++            }
++        }
+@@ -698,0 +775,5 @@
 +            .filter(|s| {
 +                self.app_id_filter
 +                    .as_ref()
 +                    .is_none_or(|app_id| s.app_id.eq_ignore_ascii_case(app_id))
 +            })
-@@ -734 +794,5 @@
+@@ -713,2 +793,0 @@
+-        // Exposé covers the whole screen: dim almost to opaque so the real windows
+-        // behind are hidden (a client can't move them; this hides them instead).
+@@ -716 +795 @@
+-            c[3] = c[3].max(0.96);
++            c[3] = 0.5;
+@@ -734 +813,5 @@
 -                self.selected = if n > 1 { 1 } else { 0 };
 +                self.selected = if n > 1 {
 +                    if self.initial_forward { 1 } else { n - 1 }
 +                } else {
 +                    0
 +                };
-@@ -745 +809 @@
+@@ -737,0 +821,8 @@
++        if self.queued_cycles != 0 {
++            let n = self.visible().len();
++            if n > 0 {
++                self.selected = (self.selected as isize + self.queued_cycles)
++                    .rem_euclid(n as isize) as usize;
++                self.queued_cycles = 0;
++            }
++        }
+@@ -745 +836 @@
 -        let (esc, next, prev, enter) = ctx.input(|i| {
-+        let (esc, next, prev, enter, zoom_in, zoom_out) = ctx.input(|i| {
-@@ -755,0 +820,2 @@
++        let (esc, next, prev, enter, zoom_in, zoom_out, wheel_zoom) = ctx.input(|i| {
+@@ -746,0 +838,8 @@
++            let wheel_zoom = i
++                .events
++                .iter()
++                .filter_map(|event| match event {
++                    egui::Event::MouseWheel { delta, .. } => Some(delta.y),
++                    _ => None,
++                })
++                .sum::<f32>();
+@@ -755,0 +855,3 @@
 +                i.key_pressed(egui::Key::Plus) || i.key_pressed(egui::Key::Equals),
 +                i.key_pressed(egui::Key::Minus),
-@@ -771,0 +838,6 @@
-+        if self.view == View::Grid && (zoom_in || zoom_out) {
-+            let delta = if zoom_in { 0.05 } else { -0.05 };
++                wheel_zoom,
+@@ -771,0 +874,12 @@
++        if self.view == View::Grid && (zoom_in || zoom_out || wheel_zoom != 0.0) {
++            let delta = if zoom_in {
++                0.05
++            } else if zoom_out {
++                -0.05
++            } else {
++                wheel_zoom.signum() * 0.05
++            };
 +            self.overview_scale =
 +                (self.overview_scale + delta).clamp(MIN_OVERVIEW_SCALE, MAX_OVERVIEW_SCALE);
 +            save_overview_scale(self.overview_scale);
 +        }
-@@ -1020 +1092,5 @@
+@@ -1020 +1134,5 @@
 -        let area = ctx.content_rect().shrink(24.0);
 +        let full_area = ctx.content_rect().shrink(24.0);
 +        let area = egui::Rect::from_center_size(
 +            full_area.center(),
 +            full_area.size() * self.overview_scale,
 +        );
-@@ -1076,0 +1153,8 @@
+@@ -1076,0 +1195,8 @@
 +
 +        ui.painter().text(
 +            egui::pos2(full_area.right(), full_area.top()),

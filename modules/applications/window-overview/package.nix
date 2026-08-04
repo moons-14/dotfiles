@@ -45,7 +45,7 @@ rustPlatform.buildRustPackage rec {
   postInstall = ''
     mv "$out/bin/wlr-switcher" "$out/bin/.window-overview-wrapped"
     makeWrapper "$out/bin/.window-overview-wrapped" "$out/bin/window-overview" \
-      --add-flags "--layout grid --no-hold" \
+      --add-flags "--layout grid" \
       --prefix LD_LIBRARY_PATH : "${
         lib.makeLibraryPath [
           libgbm
