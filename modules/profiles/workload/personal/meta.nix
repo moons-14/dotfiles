@@ -12,5 +12,6 @@
     "applications.slack"
     "applications.zoom"
     "applications.obs"
+    "applications.nani"
   ];
 }

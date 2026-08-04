@@ -110,6 +110,9 @@
       url = "github:nix-community/browser-previews";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nani-translate-linux.url = "git+https://git.yutakobayashi.com/yuta/nani-translate-linux";
+
   };
 
   outputs =
