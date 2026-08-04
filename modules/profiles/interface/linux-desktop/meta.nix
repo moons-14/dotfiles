@@ -11,6 +11,7 @@
     "applications.ghostty"
     "applications.gtk"
     "applications.loupe"
+    "applications.linux-wallpaperengine"
     "applications.nautilus"
     "applications.papers"
     "applications.qalculate-gtk"

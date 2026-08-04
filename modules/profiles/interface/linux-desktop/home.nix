@@ -1,7 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = [
     pkgs.playerctl
   ];
+
+  programs.noctalia.settings.wallpaper.enabled = false;
+
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
