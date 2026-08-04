@@ -70,6 +70,10 @@ Handy's own shortcut bindings are disabled on NixOS so it does not monitor
 keyboard events under Wayland. Handy uses the Homebrew cask and starts at login
 on macOS.
 
+`workload.personal` provides ActivityWatch for local activity tracking. On
+NixOS, its server and Wayland-compatible watcher run as Home Manager user
+services. On macOS, the Homebrew cask starts at login.
+
 On NixOS, `workload.game` provides Steam with Valve Proton and Proton-GE,
 Protontricks, Wayland-compatible Steam Input, GameMode, Gamescope, and MangoHud.
 Enabling Steam also activates the 32-bit graphics and PipeWire support required

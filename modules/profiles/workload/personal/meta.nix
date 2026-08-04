@@ -3,6 +3,7 @@
 
   includes = [
     "applications.1password"
+    "applications.activitywatch"
     "applications.chrome"
     "applications.discord"
     "applications.gnome-text-editor"
