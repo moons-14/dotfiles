@@ -171,6 +171,7 @@ in
             "org.gnome.Nautilus"
             "org.gnome.TextEditor"
             "com.mitchellh.ghostty"
+            "thunderbird.desktop"
             "google-chrome"
             "code"
             "dev.zed.Zed"
