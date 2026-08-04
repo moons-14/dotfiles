@@ -25,6 +25,7 @@ in
   systemd.user.sessionVariables.NAUTILUS_4_EXTENSION_DIR = nautilusExtensionDir;
 
   xdg.dataFile."nautilus-python/extensions/open-in-editor.py".text = ''
+    import os
     import subprocess
 
     from gi.repository import GObject, Nautilus
@@ -76,6 +77,12 @@ in
             return paths
 
         @staticmethod
+        def get_working_directory(paths):
+            path = paths[0]
+
+            return path if os.path.isdir(path) else os.path.dirname(path)
+
+        @staticmethod
         def launch(_item, command):
             subprocess.Popen(
                 command,
@@ -100,6 +107,22 @@ in
                 )
 
                 items.append(item)
+
+            item = Nautilus.MenuItem(
+                name=f"OpenInEditor::{context}::ghostty",
+                label="Ghostty で開く",
+            )
+
+            item.connect(
+                "activate",
+                self.launch,
+                [
+                    "${lib.getExe pkgs.ghostty}",
+                    f"--working-directory={self.get_working_directory(paths)}",
+                ],
+            )
+
+            items.append(item)
 
             return items
 

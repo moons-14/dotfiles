@@ -193,7 +193,7 @@ in
       };
 
       wallpaper = {
-        enabled = true;
+        enabled = lib.mkDefault true;
         directory = "~/.wallpapers";
         fill_mode = "crop";
         automation = {
