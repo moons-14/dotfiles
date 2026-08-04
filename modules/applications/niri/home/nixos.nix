@@ -1,8 +1,24 @@
 { lib, pkgs, ... }:
 let
   keybindings = import ./keybindings.nix;
+  naniTranslatePrimary = pkgs.writeShellApplication {
+    name = "nani-translate-primary";
+    runtimeInputs = with pkgs; [
+      jq
+      wl-clipboard
+      xdg-utils
+    ];
+    text = ''
+      selected_text="$(wl-paste --primary --no-newline)" || exit 0
+      [ -n "$selected_text" ] || exit 0
+      encoded_text="$(printf '%s' "$selected_text" | jq -sRr @uri)"
+      exec xdg-open "naniapp://translate?source=$encoded_text"
+    '';
+  };
 in
 {
+  home.packages = [ naniTranslatePrimary ];
+
   programs.niri.settings = {
 
     binds = keybindings // {
@@ -95,6 +111,19 @@ in
           "vicinae://launch/clipboard/history?toggle=true"
         ];
         hotkey-overlay.title = "Clipboard History";
+      };
+      "Mod+J" = {
+        repeat = false;
+        action.spawn = [ "nani-translate-primary" ];
+        hotkey-overlay.title = "Translate Primary Selection";
+      };
+      "Mod+Ctrl+J" = {
+        repeat = false;
+        action.spawn = [
+          (lib.getExe' pkgs.xdg-utils "xdg-open")
+          "naniapp://translate"
+        ];
+        hotkey-overlay.title = "Open Nani Translate";
       };
       "Mod+Space" = {
         action.spawn = [
