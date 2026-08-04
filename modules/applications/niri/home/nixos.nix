@@ -117,6 +117,11 @@ in
         action.spawn = [ "nani-translate-primary" ];
         hotkey-overlay.title = "Translate Primary Selection";
       };
+      "Mod+Shift+J" = {
+        repeat = false;
+        action.spawn = [ "normcap-translate" ];
+        hotkey-overlay.title = "OCR and Translate with Nani";
+      };
       "Mod+Ctrl+J" = {
         repeat = false;
         action.spawn = [

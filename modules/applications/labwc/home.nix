@@ -125,6 +125,7 @@ in
           (execute "W-l" "loginctl lock-session")
           (execute "W-v" "vicinae vicinae://launch/clipboard/history?toggle=true")
           (execute "W-j" "nani-translate-primary")
+          (execute "W-S-j" "normcap-translate")
           (execute "W-C-j" "${lib.getExe' pkgs.xdg-utils "xdg-open"} naniapp://translate")
           (execute "W-space" "ghostty +toggle-quick-terminal")
           (execute "W-p" "wdisplays")

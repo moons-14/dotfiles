@@ -663,17 +663,17 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1785856454,
-        "narHash": "sha256-7f2AfONkRN5XpCUjN0TAO1Qlk/YImDCM28vDcC1mppI=",
+        "lastModified": 1785857772,
+        "narHash": "sha256-JMEQH9x8Pb9cHW4JbWfFBcqxsh4JkPDR5k8dCnphUTU=",
         "ref": "refs/heads/main",
-        "rev": "e0e919b6cc4eab40afe02f4ed72b93ed383674db",
-        "revCount": 6,
+        "rev": "9d6fec627a620841c27c7e67e8e7b5719ce9b465",
+        "revCount": 8,
         "type": "git",
-        "url": "https://github.com/zunoser/nani-translate-linux-mirror.git"
+        "url": "https://github.com/zunoser/nani-translate-linux.git"
       },
       "original": {
         "type": "git",
-        "url": "https://github.com/zunoser/nani-translate-linux-mirror.git"
+        "url": "https://github.com/zunoser/nani-translate-linux.git"
       }
     },
     "niri-flake": {
