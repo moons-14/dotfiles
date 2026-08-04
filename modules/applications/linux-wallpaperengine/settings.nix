@@ -30,7 +30,7 @@
   # null selects the first ID above.
   selectedWallpaperId = null;
   # Set a number such as 300 to rotate through multiple IDs.
-  switchIntervalSeconds = null;
+  switchIntervalSeconds = 120;
 
   fps = 30;
   mute = true;
