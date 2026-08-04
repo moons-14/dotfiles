@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -11,6 +12,14 @@ let
     substitute ${./plugins/codexbar-usage/usage.luau} "$out/usage.luau" \
       --replace-fail "@codexbarPath@" "${lib.getExe codexbar}"
   '';
+
+  noctaliaPatched =
+    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
+      (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [
+          ./patches/window-switcher-labwc.patch
+        ];
+      });
 
   wallpapers = pkgs.fetchFromGitHub {
     owner = "moons-14";
@@ -40,6 +49,8 @@ in
 
   programs.noctalia = {
     enable = true;
+
+    package = noctaliaPatched;
 
     systemd.enable = true;
 

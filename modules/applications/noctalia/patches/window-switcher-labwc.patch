@@ -1,0 +1,26 @@
+diff --git a/src/shell/switcher/window_switcher.cpp b/src/shell/switcher/window_switcher.cpp
+--- a/src/shell/switcher/window_switcher.cpp
++++ b/src/shell/switcher/window_switcher.cpp
+@@ -286,12 +286,19 @@ indexLiveToplevelsByWindowId(const CompositorPlatform& platform, std::unordered_
+           continue;
+         }
+ 
+-        const auto mappedId = platform.compositorWindowIdForToplevelInfo(info);
+-        if (!mappedId.has_value() || mappedId->empty()) {
+-          continue;
++        std::string key;
++        if (const auto mappedId = platform.compositorWindowIdForToplevelInfo(info);
++            mappedId.has_value() && !mappedId->empty()) {
++          key = canonicalWindowId(*mappedId);
+         }
+-        const std::string key = canonicalWindowId(*mappedId);
++
++        // Generic wlroots compositors such as labwc do not provide a
++        // compositor-specific window ID. The wlr toplevel handle is stable
++        // for the lifetime of the window and is sufficient for switcher identity.
++        if (key.empty() && wlrHandle != 0) {
++          key = "toplevel:" + std::to_string(wlrHandle);
++        }
+         if (key.empty()) {
+           continue;
+         }
