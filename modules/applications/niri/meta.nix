@@ -2,7 +2,10 @@
 {
   description = "niri Wayland compositor";
 
-  includes = [ "systems.wayland" ];
+  includes = [
+    "systems.wayland"
+    "applications.screenshot"
+  ];
 
   imports = {
     nixos = [

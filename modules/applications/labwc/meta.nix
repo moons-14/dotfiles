@@ -1,5 +1,8 @@
 {
   description = "labwc Wayland stacking compositor";
 
-  includes = [ "systems.wayland" ];
+  includes = [
+    "systems.wayland"
+    "applications.screenshot"
+  ];
 }

@@ -41,6 +41,19 @@ in
         hotkey-overlay.title = "Move Window to Monitor Down";
       };
 
+      "Print".action.spawn = [
+        "screenshot"
+        "region"
+      ];
+      "Ctrl+Print".action.spawn = [
+        "screenshot"
+        "output"
+      ];
+      "Alt+Print".action.spawn = [
+        "screenshot"
+        "all"
+      ];
+
       # spawn applications (sync with labwc modules/applications/labwc/home.nix)
       "Mod+T" = {
         action.spawn = "ghostty";

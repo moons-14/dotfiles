@@ -1,3 +1,4 @@
+# niri のデフォルトキーバインド。編集しないこと。
 {
   "Mod+Shift+Slash".action.show-hotkey-overlay = { };
 
