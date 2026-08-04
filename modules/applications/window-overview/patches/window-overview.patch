@@ -1,0 +1,150 @@
+--- a/src/chooser_cli.rs
++++ b/src/chooser_cli.rs
+@@ -79,0 +80,3 @@
++        app_id_filter: None,
++        initial_cycle: None,
++        snapshot: false,
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -56 +56,2 @@
+-    std::thread::spawn(move || ui::capture_thread(tx));
++    let snapshot = opts.snapshot;
++    std::thread::spawn(move || ui::capture_thread(tx, snapshot));
+--- a/src/shell.rs
++++ b/src/shell.rs
+@@ -617,0 +618,3 @@
++        Keysym::plus | Keysym::KP_Add => Key::Plus,
++        Keysym::equal => Key::Equals,
++        Keysym::minus | Keysym::KP_Subtract => Key::Minus,
+--- a/src/switcher_cli.rs
++++ b/src/switcher_cli.rs
+@@ -75,0 +76,6 @@
++    /// Show only windows whose Wayland app-id exactly matches this value.
++    #[arg(long)]
++    app_id: Option<String>,
++    /// Select the previous window when the overview first opens.
++    #[arg(long)]
++    reverse: bool,
+@@ -121,0 +128,3 @@
++        app_id_filter: cli.app_id,
++        initial_cycle: Some(!cli.reverse),
++        snapshot: true,
+--- a/src/ui.rs
++++ b/src/ui.rs
+@@ -8,0 +9 @@
++use std::path::PathBuf;
+@@ -41,0 +43,32 @@
++const DEFAULT_OVERVIEW_SCALE: f32 = 0.85;
++const MIN_OVERVIEW_SCALE: f32 = 0.55;
++const MAX_OVERVIEW_SCALE: f32 = 1.0;
++
++fn overview_scale_path() -> Option<PathBuf> {
++    if let Some(path) = std::env::var_os("XDG_STATE_HOME") {
++        return Some(PathBuf::from(path).join("window-overview/scale"));
++    }
++    std::env::var_os("HOME")
++        .map(PathBuf::from)
++        .map(|path| path.join(".local/state/window-overview/scale"))
++}
++
++fn load_overview_scale() -> f32 {
++    overview_scale_path()
++        .and_then(|path| std::fs::read_to_string(path).ok())
++        .and_then(|value| value.trim().parse::<f32>().ok())
++        .unwrap_or(DEFAULT_OVERVIEW_SCALE)
++        .clamp(MIN_OVERVIEW_SCALE, MAX_OVERVIEW_SCALE)
++}
++
++fn save_overview_scale(scale: f32) {
++    let Some(path) = overview_scale_path() else {
++        return;
++    };
++    let Some(parent) = path.parent() else {
++        return;
++    };
++    if std::fs::create_dir_all(parent).is_ok() {
++        let _ = std::fs::write(path, format!("{scale:.2}\n"));
++    }
++}
+@@ -177 +210 @@
+-pub fn capture_thread(tx: Sender<Msg>) {
++pub fn capture_thread(tx: Sender<Msg>, snapshot: bool) {
+@@ -189,0 +223 @@
++    let mut captured: HashSet<String> = HashSet::new();
+@@ -236,0 +271 @@
++        captured.retain(|key| present.contains(key.as_str()));
+@@ -255 +290 @@
+-            if sessions.contains_key(&s.key) {
++            if sessions.contains_key(&s.key) || (snapshot && captured.contains(&s.key)) {
+@@ -295 +330,3 @@
+-            let Some(key) = by_id.get(&id) else { continue };
++            let Some(key) = by_id.get(&id).cloned() else {
++                continue;
++            };
+@@ -313,0 +351,6 @@
++            if snapshot {
++                captured.insert(key.clone());
++                sessions.remove(&key);
++                by_id.remove(&id);
++                client.close_session(&id);
++            }
+@@ -508,0 +552,6 @@
++    /// Exact Wayland app-id filter, used by taskbar launches.
++    pub app_id_filter: Option<String>,
++    /// Initial cycle direction. `None` leaves the first item selected.
++    pub initial_cycle: Option<bool>,
++    /// Capture each window once instead of continuously refreshing previews.
++    pub snapshot: bool,
+@@ -533,0 +583,3 @@
++    app_id_filter: Option<String>,
++    initial_forward: bool,
++    overview_scale: f32,
+@@ -567 +619 @@
+-            pending_initial_select: false,
++            pending_initial_select: opts.initial_cycle.is_some(),
+@@ -571,0 +624,3 @@
++            app_id_filter: opts.app_id_filter,
++            initial_forward: opts.initial_cycle.unwrap_or(true),
++            overview_scale: load_overview_scale(),
+@@ -698,0 +754,5 @@
++            .filter(|s| {
++                self.app_id_filter
++                    .as_ref()
++                    .is_none_or(|app_id| s.app_id.eq_ignore_ascii_case(app_id))
++            })
+@@ -734 +794,5 @@
+-                self.selected = if n > 1 { 1 } else { 0 };
++                self.selected = if n > 1 {
++                    if self.initial_forward { 1 } else { n - 1 }
++                } else {
++                    0
++                };
+@@ -745 +809 @@
+-        let (esc, next, prev, enter) = ctx.input(|i| {
++        let (esc, next, prev, enter, zoom_in, zoom_out) = ctx.input(|i| {
+@@ -755,0 +820,2 @@
++                i.key_pressed(egui::Key::Plus) || i.key_pressed(egui::Key::Equals),
++                i.key_pressed(egui::Key::Minus),
+@@ -771,0 +838,6 @@
++        if self.view == View::Grid && (zoom_in || zoom_out) {
++            let delta = if zoom_in { 0.05 } else { -0.05 };
++            self.overview_scale =
++                (self.overview_scale + delta).clamp(MIN_OVERVIEW_SCALE, MAX_OVERVIEW_SCALE);
++            save_overview_scale(self.overview_scale);
++        }
+@@ -1020 +1092,5 @@
+-        let area = ctx.content_rect().shrink(24.0);
++        let full_area = ctx.content_rect().shrink(24.0);
++        let area = egui::Rect::from_center_size(
++            full_area.center(),
++            full_area.size() * self.overview_scale,
++        );
+@@ -1076,0 +1153,8 @@
++
++        ui.painter().text(
++            egui::pos2(full_area.right(), full_area.top()),
++            egui::Align2::RIGHT_TOP,
++            format!("−  {:.0}%  +", self.overview_scale * 100.0),
++            egui::FontId::proportional(14.0),
++            self.theme.text_dim,
++        );

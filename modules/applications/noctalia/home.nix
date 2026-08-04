@@ -18,6 +18,7 @@ let
       (oldAttrs: {
         patches = (oldAttrs.patches or [ ]) ++ [
           ./patches/window-switcher-labwc.patch
+          ./patches/taskbar-overview-hook.patch
         ];
       });
 
