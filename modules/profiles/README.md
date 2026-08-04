@@ -63,6 +63,13 @@ enables performance improvements, synced lyrics, tracker blocking, the album
 color theme, and custom output-device selection while preserving user-owned
 settings such as the selected device.
 
+`workload.personal` also provides Handy for offline speech-to-text. It starts
+hidden when the graphical session begins. On niri and labwc, `Ctrl+Space` is
+owned by the compositor and invokes Handy's `--toggle-transcription` command;
+Handy's own shortcut bindings are disabled on NixOS so it does not monitor
+keyboard events under Wayland. Handy uses the Homebrew cask and starts at login
+on macOS.
+
 On NixOS, `workload.game` provides Steam with Valve Proton and Proton-GE,
 Protontricks, Wayland-compatible Steam Input, GameMode, Gamescope, and MangoHud.
 Enabling Steam also activates the 32-bit graphics and PipeWire support required

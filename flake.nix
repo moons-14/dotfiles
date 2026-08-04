@@ -38,6 +38,12 @@
       url = "github:ghostty-org/ghostty";
     };
 
+    # Speech to text
+    handy = {
+      url = "github:cjpais/Handy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Shell / Launcher
     vicinae.url = "github:vicinaehq/vicinae";
 
