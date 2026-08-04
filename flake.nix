@@ -111,7 +111,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nani-translate-linux.url = "git+https://git.yutakobayashi.com/yuta/nani-translate-linux";
+    nani-translate-linux.url = "git+https://github.com/zunoser/nani-translate-linux-mirror.git";
 
   };
 
