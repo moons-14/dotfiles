@@ -1,10 +1,36 @@
 {
+  inputs,
   lib,
+  pkgs,
   ...
 }:
+let
+  unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  labwc = unstable.labwc.overrideAttrs (oldAttrs: {
+    patches = (oldAttrs.patches or [ ]) ++ [
+      ./patches/remove-ext-workspace-output-on-destroy.patch
+    ];
+  });
+in
 {
   programs.labwc = {
     enable = true;
+    package = labwc;
+  };
+
+  xdg.portal.config.labwc.default = [
+    "wlr"
+    "gtk"
+  ];
+
+  # xdg-desktop-portal-wlr implements screencasting for wlroots compositors.
+  # Keep it with Labwc: Niri uses xdg-desktop-portal-gnome instead.
+  xdg.portal.wlr = {
+    enable = true;
+    settings.screencast = {
+      chooser_type = "dmenu";
+      chooser_cmd = "${pkgs.fuzzel}/bin/fuzzel --dmenu";
+    };
   };
 
   # NixOS decides whether a graphical session manages graphical-session.target
