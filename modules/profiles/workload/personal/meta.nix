@@ -13,5 +13,6 @@
     "applications.zoom"
     "applications.obs"
     "applications.nani"
+    "applications.thunderbird"
   ];
 }
