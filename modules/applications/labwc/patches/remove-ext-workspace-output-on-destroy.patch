@@ -1,0 +1,28 @@
+From: Codex <codex@openai.com>
+Subject: [PATCH] output: remove destroyed output from ext-workspace group
+
+The DRM backend destroys and recreates outputs when a session is paused and
+resumed. Remove the output from the ext-workspace group before wlroots
+finishes it, otherwise the group's output_bind listener remains attached and
+wlr_output_finish() aborts.
+
+---
+ src/output.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/output.c b/src/output.c
+index 2eab8ec..f19c3ff 100644
+--- a/src/output.c
++++ b/src/output.c
+@@ -277,6 +277,9 @@ handle_output_destroy(struct wl_listener *listener, void *data)
+ 	struct seat *seat = &server.seat;
+ 	regions_evacuate_output(output);
+ 	regions_destroy(seat, &output->regions);
++	wlr_ext_workspace_group_handle_v1_output_leave(
++		server.workspaces.ext_group, output->wlr_output);
++
+ 	if (seat->overlay.active.output == output) {
+ 		overlay_finish(seat);
+ 	}
+-- 
+2.51.0
