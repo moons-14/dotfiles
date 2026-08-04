@@ -13,7 +13,7 @@
     "applications.loupe"
     "applications.linux-wallpaperengine"
     "applications.nautilus"
-    "applications.normcap"
+    "applications.nani"
     "applications.papers"
     "applications.qalculate-gtk"
     "applications.resources"

@@ -1,24 +1,8 @@
 { lib, pkgs, ... }:
 let
   keybindings = import ./keybindings.nix;
-  naniTranslatePrimary = pkgs.writeShellApplication {
-    name = "nani-translate-primary";
-    runtimeInputs = with pkgs; [
-      jq
-      wl-clipboard
-      xdg-utils
-    ];
-    text = ''
-      selected_text="$(wl-paste --primary --no-newline)" || exit 0
-      [ -n "$selected_text" ] || exit 0
-      encoded_text="$(printf '%s' "$selected_text" | jq -sRr @uri)"
-      exec xdg-open "naniapp://translate?source=$encoded_text"
-    '';
-  };
 in
 {
-  home.packages = [ naniTranslatePrimary ];
-
   programs.niri.settings = {
 
     binds = keybindings // {
@@ -119,7 +103,7 @@ in
       };
       "Mod+Shift+J" = {
         repeat = false;
-        action.spawn = [ "normcap-translate" ];
+        action.spawn = [ "nani-translate-ocr" ];
         hotkey-overlay.title = "OCR and Translate with Nani";
       };
       "Mod+Ctrl+J" = {
