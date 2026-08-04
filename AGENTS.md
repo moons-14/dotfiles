@@ -24,6 +24,11 @@ makes any statement here stale, update `AGENTS.md` in the same change.
 | `overlays/`             | Package replacements and additions                                                                                |
 | `shells/`               | Development shells                                                                                                |
 | `flake/`                | Supporting flake outputs such as formatters, checks, and Git hooks                                                |
+| `skills/`               | Repository-specific Codex workflows that enforce this contract for recurring changes                              |
+
+Before adding or materially extending an application or service, read and
+follow `skills/add-application-or-service/SKILL.md`. `AGENTS.md` remains the
+authoritative contract when the skill and repository ever disagree.
 
 Use **unit** as the generic internal term for a Registry-managed component and
 **profile** for a unit that composes multiple units. Do not introduce a

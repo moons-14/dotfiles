@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Application or Service"
+  short_description: "Add clean, validated Registry units"
+  default_prompt: "Use $add-application-or-service to add an application or service cleanly and verify every affected host class."
