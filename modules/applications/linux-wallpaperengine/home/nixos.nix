@@ -61,6 +61,33 @@ let
     '';
   };
 
+  mkVicinaeScript =
+    {
+      name,
+      title,
+      description,
+      command,
+      mode ? "compact",
+      message ? null,
+    }:
+    {
+      name = "vicinae/scripts/wallpaper-engine/${name}";
+      value = {
+        executable = true;
+        text = ''
+          #!${lib.getExe pkgs.bash}
+          # @vicinae.schemaVersion 1
+          # @vicinae.title ${title}
+          # @vicinae.description ${description}
+          # @vicinae.mode ${mode}
+          # @vicinae.icon 🖼️
+
+          ${lib.getExe controller} ${lib.escapeShellArg command}
+          ${lib.optionalString (message != null) "printf '%s\\n' ${lib.escapeShellArg message}"}
+        '';
+      };
+    };
+
   launcher = pkgs.writeShellApplication {
     name = "linux-wallpaperengine-launcher";
     runtimeInputs = [
@@ -113,6 +140,50 @@ assert lib.assertMsg (builtins.elem scaling [
   home.packages = [
     controller
     pkgs.linux-wallpaperengine
+  ];
+
+  xdg.dataFile = builtins.listToAttrs [
+    (mkVicinaeScript {
+      name = "reload";
+      title = "Reload Wallpaper Engine";
+      description = "Restart the active Wallpaper Engine background";
+      command = "restart";
+      message = "Wallpaper Engine reloaded";
+    })
+    (mkVicinaeScript {
+      name = "next";
+      title = "Next Wallpaper Engine Wallpaper";
+      description = "Switch to the next configured Wallpaper Engine background";
+      command = "next";
+      message = "Switched to the next Wallpaper Engine wallpaper";
+    })
+    (mkVicinaeScript {
+      name = "previous";
+      title = "Previous Wallpaper Engine Wallpaper";
+      description = "Switch to the previous configured Wallpaper Engine background";
+      command = "previous";
+      message = "Switched to the previous Wallpaper Engine wallpaper";
+    })
+    (mkVicinaeScript {
+      name = "list";
+      title = "List Wallpaper Engine Wallpapers";
+      description = "Show the configured Wallpaper Engine backgrounds";
+      command = "list";
+      mode = "fullOutput";
+    })
+    (mkVicinaeScript {
+      name = "current";
+      title = "Current Wallpaper Engine Wallpaper";
+      description = "Show the active Wallpaper Engine background";
+      command = "current";
+    })
+    (mkVicinaeScript {
+      name = "stop";
+      title = "Stop Wallpaper Engine";
+      description = "Stop Wallpaper Engine for this session";
+      command = "stop";
+      message = "Wallpaper Engine stopped";
+    })
   ];
 
   systemd.user.services = lib.optionalAttrs hasWallpapers {
