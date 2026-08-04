@@ -43,13 +43,17 @@ in
 
       "Mod+Tab" = {
         repeat = false;
-        action.spawn = [ "window-overview" ];
+        action.spawn = [
+          "window-overview"
+          "--hold"
+        ];
         hotkey-overlay.title = "Window Overview: Next";
       };
       "Mod+Shift+Tab" = {
         repeat = false;
         action.spawn = [
           "window-overview"
+          "--hold"
           "--reverse"
         ];
         hotkey-overlay.title = "Window Overview: Previous";

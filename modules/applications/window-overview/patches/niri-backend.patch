@@ -1,0 +1,431 @@
+--- a/src/chooser_cli.rs
++++ b/src/chooser_cli.rs
+@@ -81,6 +81,7 @@
+         initial_cycle: None,
+         snapshot: false,
+         cycle_socket: None,
++        niri_backend: false,
+     };
+ 
+     match run_overlay(opts, t0) {
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -65,7 +65,14 @@
+     // must connect, enumerate, and open sessions before any thumbnail appears.
+     let (tx, rx) = mpsc::channel();
+     let snapshot = opts.snapshot;
+-    std::thread::spawn(move || ui::capture_thread(tx, snapshot));
++    let niri_backend = opts.niri_backend;
++    std::thread::spawn(move || {
++        if niri_backend {
++            ui::niri_capture_thread(tx);
++        } else {
++            ui::capture_thread(tx, snapshot);
++        }
++    });
+     shell::tlog(t0, "capture-thread spawned");
+ 
+     let out: ui::Outcome = Arc::new(Mutex::new(None));
+--- a/src/switcher_cli.rs
++++ b/src/switcher_cli.rs
+@@ -88,6 +88,7 @@
+     let t0 = Instant::now();
+     let cli = Cli::parse();
+     i18n::init();
++    let niri_backend = std::env::var_os("NIRI_SOCKET").is_some();
+ 
+     if cli.doctor {
+         if let Err(e) = wlr_capture::doctor::report("wlr-switcher", env!("CARGO_PKG_VERSION")) {
+@@ -129,32 +130,50 @@
+         initial_cycle: Some(!cli.reverse),
+         snapshot: true,
+         cycle_socket: Some(cycle_socket),
++        niri_backend,
+     };
+ 
+     // Pre-flight: wlr-switcher switches *windows*, which need the foreign-toplevel
+     // capture source (wlroots >= 0.20 / Sway >= 1.12). On older compositors connect()
+     // now succeeds for screen-only capture, but there are no windows to offer — so say
+     // so clearly and exit, instead of showing an empty dimmed overlay (issue #1).
+-    match wl::Client::connect() {
+-        Ok(client) if !client.can_capture_windows() => {
+-            eprintln!("{}", tr!("capture-no-window"));
+-            std::process::exit(2);
+-        }
+-        Ok(_) => {}
+-        Err(e) => {
+-            eprintln!("{}", tr!("error", error = format!("{e:#}")));
+-            std::process::exit(2);
++    if !niri_backend {
++        match wl::Client::connect() {
++            Ok(client) if !client.can_capture_windows() => {
++                eprintln!("{}", tr!("capture-no-window"));
++                std::process::exit(2);
++            }
++            Ok(_) => {}
++            Err(e) => {
++                eprintln!("{}", tr!("error", error = format!("{e:#}")));
++                std::process::exit(2);
++            }
+         }
+     }
+ 
+     match run_overlay(opts, t0) {
+         Ok(Some(sel)) => {
+             // Focus the picked window (outputs aren't focusable, so ignore them).
+-            if sel.is_window
+-                && let Err(e) = wl::activate_window(&sel.app_id, &sel.title, sel.dup_index)
+-            {
+-                eprintln!("{}", tr!("error", error = format!("{e:#}")));
+-                std::process::exit(2);
++            if sel.is_window {
++                let result: anyhow::Result<()> = if niri_backend {
++                    let output = std::process::Command::new("niri")
++                        .args(["msg", "action", "focus-window", "--id", &sel.identifier])
++                        .output();
++                    match output {
++                        Ok(output) if output.status.success() => Ok(()),
++                        Ok(output) => Err(anyhow::anyhow!(
++                            "{}",
++                            String::from_utf8_lossy(&output.stderr).trim()
++                        )),
++                        Err(e) => Err(e.into()),
++                    }
++                } else {
++                    wl::activate_window(&sel.app_id, &sel.title, sel.dup_index).map_err(Into::into)
++                };
++                if let Err(e) = result {
++                    eprintln!("{}", tr!("error", error = format!("{e:#}")));
++                    std::process::exit(2);
++                }
+             }
+         }
+         Ok(None) => std::process::exit(1), // cancelled
+--- a/src/ui.rs
++++ b/src/ui.rs
+@@ -6,7 +6,9 @@
+ 
+ use crate::tr;
+ use std::collections::{HashMap, HashSet};
++use std::io::Write;
+ use std::path::PathBuf;
++use std::process::{Command, Stdio};
+ use std::sync::mpsc::{Receiver, Sender};
+ use std::sync::{Arc, Mutex};
+ use std::time::{Duration, Instant};
+@@ -366,6 +368,288 @@
+     }
+ }
+ 
++#[derive(Clone)]
++struct NiriWindow {
++    id: String,
++    app_id: String,
++    title: String,
++}
++
++enum ClipboardSnapshot {
++    Empty,
++    Content { mime: String, data: Vec<u8> },
++    Unavailable,
++}
++
++fn save_clipboard() -> ClipboardSnapshot {
++    let Ok(types) = Command::new("wl-paste").arg("--list-types").output() else {
++        return ClipboardSnapshot::Unavailable;
++    };
++    if !types.status.success() {
++        return ClipboardSnapshot::Empty;
++    }
++    let types = String::from_utf8_lossy(&types.stdout);
++    let offered: Vec<&str> = types.lines().filter(|line| !line.is_empty()).collect();
++    let Some(mime) = offered
++        .iter()
++        .copied()
++        .find(|mime| *mime == "text/plain;charset=utf-8")
++        .or_else(|| offered.first().copied())
++    else {
++        return ClipboardSnapshot::Empty;
++    };
++    let Ok(data) = Command::new("wl-paste")
++        .args(["--type", mime])
++        .output()
++    else {
++        return ClipboardSnapshot::Unavailable;
++    };
++    if !data.status.success() {
++        return ClipboardSnapshot::Unavailable;
++    }
++    ClipboardSnapshot::Content {
++        mime: mime.to_owned(),
++        data: data.stdout,
++    }
++}
++
++fn restore_clipboard(snapshot: ClipboardSnapshot) {
++    match snapshot {
++        ClipboardSnapshot::Empty => {
++            let _ = Command::new("wl-copy").arg("--clear").status();
++        }
++        ClipboardSnapshot::Content { mime, data } => {
++            let Ok(mut copy) = Command::new("wl-copy")
++                .args(["--type", &mime])
++                .stdin(Stdio::piped())
++                .spawn()
++            else {
++                return;
++            };
++            if let Some(mut stdin) = copy.stdin.take() {
++                let _ = stdin.write_all(&data);
++            }
++            let _ = copy.wait();
++        }
++        ClipboardSnapshot::Unavailable => {}
++    }
++}
++
++/// Decode one field emitted by jq's `@tsv` formatter. It escapes the only
++/// characters that would otherwise make the line-oriented transport ambiguous.
++fn unescape_tsv(value: &str) -> String {
++    let mut decoded = String::with_capacity(value.len());
++    let mut chars = value.chars();
++    while let Some(ch) = chars.next() {
++        if ch != '\\' {
++            decoded.push(ch);
++            continue;
++        }
++        match chars.next() {
++            Some('t') => decoded.push('\t'),
++            Some('r') => decoded.push('\r'),
++            Some('n') => decoded.push('\n'),
++            Some('\\') => decoded.push('\\'),
++            Some(other) => {
++                decoded.push('\\');
++                decoded.push(other);
++            }
++            None => decoded.push('\\'),
++        }
++    }
++    decoded
++}
++
++/// Ask niri for its toplevel list. niri does not implement the
++/// ext-image-copy-capture window protocol, so its IPC is the source of both the
++/// stable window id and the metadata used by this backend.
++fn niri_windows() -> Result<Vec<NiriWindow>, String> {
++    let response = Command::new("niri")
++        .args(["msg", "-j", "windows"])
++        .output()
++        .map_err(|e| format!("could not run niri msg: {e}"))?;
++    if !response.status.success() {
++        return Err(String::from_utf8_lossy(&response.stderr).trim().to_owned());
++    }
++
++    let mut jq = Command::new("jq")
++        .args([
++            "-r",
++            ".[] | [(.id | tostring), (.app_id // \"\"), (.title // \"\")] | @tsv",
++        ])
++        .stdin(Stdio::piped())
++        .stdout(Stdio::piped())
++        .stderr(Stdio::piped())
++        .spawn()
++        .map_err(|e| format!("could not run jq: {e}"))?;
++    jq.stdin
++        .take()
++        .ok_or_else(|| String::from("jq stdin was unavailable"))?
++        .write_all(&response.stdout)
++        .map_err(|e| format!("could not pass niri window list to jq: {e}"))?;
++    let output = jq
++        .wait_with_output()
++        .map_err(|e| format!("could not read jq output: {e}"))?;
++    if !output.status.success() {
++        return Err(String::from_utf8_lossy(&output.stderr).trim().to_owned());
++    }
++
++    let text = String::from_utf8(output.stdout)
++        .map_err(|e| format!("niri window list was not UTF-8: {e}"))?;
++    let mut windows = Vec::new();
++    for line in text.lines() {
++        let mut fields = line.splitn(3, '\t');
++        let Some(id) = fields.next() else { continue };
++        let Some(app_id) = fields.next() else { continue };
++        let Some(title) = fields.next() else { continue };
++        windows.push(NiriWindow {
++            id: id.to_owned(),
++            app_id: unescape_tsv(app_id),
++            title: unescape_tsv(title),
++        });
++    }
++    windows.sort_by(|a, b| {
++        a.app_id
++            .to_lowercase()
++            .cmp(&b.app_id.to_lowercase())
++            .then_with(|| a.title.to_lowercase().cmp(&b.title.to_lowercase()))
++    });
++    Ok(windows)
++}
++
++fn niri_window_source(w: &NiriWindow, dup_index: usize) -> Source {
++    let is_system = w.app_id.is_empty();
++    let (title, subtitle) = if is_system {
++        (w.title.clone(), String::new())
++    } else {
++        (w.app_id.clone(), w.title.clone())
++    };
++    Source {
++        key: w.id.clone(),
++        token: format!("Window: {}", w.id),
++        filter: format!("{} {}", w.app_id, w.title).to_lowercase(),
++        title,
++        subtitle,
++        is_window: true,
++        is_system,
++        app_id: w.app_id.clone(),
++        win_title: w.title.clone(),
++        dup_index,
++    }
++}
++
++/// Capture a static overview through niri's IPC. This is deliberately separate
++/// from the generic Wayland backend: niri can render any toplevel by id (even an
++/// occluded one), but does not advertise ext-image-copy-capture.
++pub fn niri_capture_thread(tx: Sender<Msg>) {
++    let windows = match niri_windows() {
++        Ok(windows) => windows,
++        Err(e) => {
++            eprintln!("niri overview backend: {e}");
++            return;
++        }
++    };
++
++    let mut dup: HashMap<(String, String), usize> = HashMap::new();
++    let mut current = Vec::with_capacity(windows.len());
++    for window in windows {
++        let e = dup
++            .entry((window.app_id.clone(), window.title.clone()))
++            .or_insert(0);
++        let source = niri_window_source(&window, *e);
++        *e += 1;
++        current.push((source, window));
++    }
++    if tx
++        .send(Msg::Sources(
++            current.iter().map(|(source, _)| source.clone()).collect(),
++        ))
++        .is_err()
++    {
++        return;
++    }
++
++    let capture_dir = wlr_capture::paths::runtime_dir().join(format!(
++        "window-overview-niri-{}",
++        std::process::id()
++    ));
++    if let Err(e) = std::fs::create_dir_all(&capture_dir) {
++        eprintln!("niri overview backend: could not create capture directory: {e}");
++        return;
++    }
++    // niri's screenshot action also sets the clipboard. Preserve the existing
++    // selection so opening the overview does not unexpectedly replace it.
++    let clipboard = save_clipboard();
++
++    for (source, window) in current {
++        if let Some(path) = icons::resolve(&window.app_id)
++            && let Some((w, h, rgba)) = icons::load(&path, 128)
++            && tx
++                .send(Msg::Icon {
++                    key: source.key.clone(),
++                    w: w as usize,
++                    h: h as usize,
++                    rgba,
++                })
++                .is_err()
++        {
++            break;
++        }
++
++        let path = capture_dir.join(format!("{}.png", window.id));
++        let command = Command::new("niri")
++            .args(["msg", "action", "screenshot-window", "--id"])
++            .arg(&window.id)
++            .args(["--write-to-disk", "true", "--show-pointer", "false", "--path"])
++            .arg(&path)
++            .output();
++        let Ok(output) = command else {
++            continue;
++        };
++        if !output.status.success() {
++            eprintln!(
++                "niri overview backend: could not capture window {}: {}",
++                window.id,
++                String::from_utf8_lossy(&output.stderr).trim()
++            );
++            continue;
++        }
++
++        // niri encodes PNGs off the compositor thread, after acknowledging the
++        // IPC action. Wait briefly for that completion without delaying the UI.
++        let mut bytes = None;
++        for _ in 0..200 {
++            match std::fs::read(&path) {
++                Ok(data) => {
++                    bytes = Some(data);
++                    break;
++                }
++                Err(_) => std::thread::sleep(Duration::from_millis(10)),
++            }
++        }
++        let Some(bytes) = bytes else { continue };
++        let Ok(image) = image::load_from_memory_with_format(&bytes, image::ImageFormat::Png) else {
++            continue;
++        };
++        let image = image.into_rgba8();
++        let (w, h, rgba) = thumbnail_rgba(image.width(), image.height(), image.into_raw());
++        if tx
++            .send(Msg::Thumb {
++                key: source.key,
++                w,
++                h,
++                rgba,
++            })
++            .is_err()
++        {
++            break;
++        }
++        let _ = std::fs::remove_file(path);
++    }
++    let _ = std::fs::remove_dir(capture_dir);
++    restore_clipboard(clipboard);
++}
++
+ /// Cheap content fingerprint of a frame (subsampled FNV-1a), to tell whether a
+ /// capture actually changed between rounds — used by the headless bench.
+ fn quick_hash(rgba: &[u8]) -> u64 {
+@@ -515,11 +799,14 @@
+ 
+ /// Downscale a capture to a thumbnail (max side `THUMB_MAX`), never upscaling.
+ fn thumbnail(img: wl::CapturedImage) -> (usize, usize, Vec<u8>) {
+-    let (w, h) = (img.width, img.height);
++    thumbnail_rgba(img.width, img.height, img.rgba)
++}
++
++fn thumbnail_rgba(w: u32, h: u32, rgba: Vec<u8>) -> (usize, usize, Vec<u8>) {
+     let scale = (THUMB_MAX as f32 / w as f32)
+         .min(THUMB_MAX as f32 / h as f32)
+         .min(1.0);
+-    let src = match image::RgbaImage::from_raw(w, h, img.rgba) {
++    let src = match image::RgbaImage::from_raw(w, h, rgba) {
+         Some(s) => s,
+         None => return (0, 0, Vec::new()),
+     };
+@@ -557,6 +844,9 @@
+     pub snapshot: bool,
+     /// Receives next/previous commands from repeated compositor keybind launches.
+     pub cycle_socket: Option<std::os::unix::net::UnixDatagram>,
++    /// Use niri's IPC for window enumeration and snapshots instead of the
++    /// ext-image-copy-capture protocol that niri does not implement.
++    pub niri_backend: bool,
+ }
+ 
+ pub struct App {

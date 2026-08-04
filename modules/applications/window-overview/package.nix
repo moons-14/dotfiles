@@ -4,10 +4,12 @@
   libgbm,
   libglvnd,
   libxkbcommon,
+  jq,
   makeWrapper,
   pkg-config,
   rustPlatform,
   wayland,
+  wl-clipboard,
 }:
 rustPlatform.buildRustPackage rec {
   pname = "window-overview";
@@ -21,6 +23,7 @@ rustPlatform.buildRustPackage rec {
 
   patches = [
     ./patches/window-overview.patch
+    ./patches/niri-backend.patch
   ];
 
   cargoHash = "sha256-KBLgtS8ULrmsOf6BN5SlkVQyXB12utvr/KonnKnCTCM=";
@@ -46,6 +49,12 @@ rustPlatform.buildRustPackage rec {
     mv "$out/bin/wlr-switcher" "$out/bin/.window-overview-wrapped"
     makeWrapper "$out/bin/.window-overview-wrapped" "$out/bin/window-overview" \
       --add-flags "--layout grid" \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          jq
+          wl-clipboard
+        ]
+      }" \
       --prefix LD_LIBRARY_PATH : "${
         lib.makeLibraryPath [
           libgbm
