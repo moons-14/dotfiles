@@ -182,11 +182,11 @@ in
             "org.gnome.Nautilus"
             "org.gnome.TextEditor"
             "com.mitchellh.ghostty"
-            "thunderbird.desktop"
+            "thunderbird"
             "google-chrome"
             "code"
             "dev.zed.Zed"
-            "codex-desktop.desktop"
+            "codex-desktop"
             "vesktop"
           ];
           show_all_outputs = true;
