@@ -107,6 +107,18 @@ in
         action.spawn = "wdisplays";
         hotkey-overlay.title = "Display Settings: wdisplays";
       };
+      "Mod+Z" = {
+        action.spawn = [
+          "wl-find-cursor"
+          "-c"
+          "0xCCFF453A"
+          "-s"
+          "160"
+          "-d"
+          "1200"
+        ];
+        hotkey-overlay.title = "Find Cursor";
+      };
 
       # Function keys (sync with labwc modules/applications/labwc/home.nix)
       "XF86AudioRaiseVolume".action.spawn = [

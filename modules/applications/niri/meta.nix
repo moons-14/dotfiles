@@ -5,6 +5,7 @@
   includes = [
     "systems.wayland"
     "applications.screenshot"
+    "applications.wl-find-cursor"
   ];
 
   imports = {
