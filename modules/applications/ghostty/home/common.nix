@@ -6,6 +6,7 @@ _: {
       theme = "dracula";
       background-blur-radius = 20;
       background-opacity = 0.9;
+      background-opacity-cells = true;
       font-family = "BlexMono Nerd Font Mono";
       mouse-hide-while-typing = true;
       window-decoration = "auto";
