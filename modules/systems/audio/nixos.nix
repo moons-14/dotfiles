@@ -21,5 +21,29 @@ in
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
+
+    extraConfig.pipewire."90-echo-cancel.conf" = {
+      "context.modules" = [
+        {
+          name = "libpipewire-module-echo-cancel";
+
+          args = {
+            "library.name" = "aec/libspa-aec-webrtc";
+
+            "monitor.mode" = true;
+
+            "capture.props" = {
+              "node.name" = "echo_cancel_capture";
+              "node.description" = "Echo Cancel Capture";
+            };
+
+            "source.props" = {
+              "node.name" = "echo_cancel_source";
+              "node.description" = "Echo Cancelled Microphone";
+            };
+          };
+        }
+      ];
+    };
   };
 }
