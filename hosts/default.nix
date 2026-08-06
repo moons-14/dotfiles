@@ -104,6 +104,7 @@
       "interface.cli"
       "interface.labwc"
       "interface.niri"
+      "interface.wallpaperengine"
       "platform.intel-nvidia-desktop"
       "security.secrets"
       "security.secure-boot"

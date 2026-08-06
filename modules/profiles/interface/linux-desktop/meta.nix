@@ -11,7 +11,6 @@
     "applications.ghostty"
     "applications.gtk"
     "applications.loupe"
-    "applications.linux-wallpaperengine"
     "applications.nautilus"
     "applications.nani"
     "applications.papers"

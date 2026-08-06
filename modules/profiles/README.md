@@ -30,6 +30,7 @@ required on every supported host.
 | `interface.linux-desktop`            | NixOS with Home Manager                       |
 | `interface.labwc`                    | NixOS with Home Manager                       |
 | `interface.niri`                     | NixOS with Home Manager                       |
+| `interface.wallpaperengine`          | NixOS with Home Manager                       |
 | `platform.nixos`                     | NixOS                                         |
 | `platform.desktop`                   | Physical NixOS desktop                        |
 | `platform.intel-nvidia-desktop`      | Intel/NVIDIA physical NixOS desktop           |
@@ -57,6 +58,10 @@ platform selects niri as Ly's default session, while the desktop platform
 selects labwc. A daily-use macOS development machine can combine
 `interface.macos`, `workload.development`, and `workload.personal`. Hardware
 support does not implicitly select an interface or workload.
+
+`interface.wallpaperengine` is an opt-in Linux desktop appearance profile. It
+enables Wallpaper Engine and disables Noctalia's wallpaper surface, so hosts
+without this profile retain Noctalia's configured wallpaper.
 
 `workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
 enables performance improvements, synced lyrics, tracker blocking, the album
