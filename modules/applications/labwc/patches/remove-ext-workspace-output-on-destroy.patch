@@ -1,28 +1,103 @@
 From: Codex <codex@openai.com>
-Subject: [PATCH] output: remove destroyed output from ext-workspace group
+Subject: [PATCH] output: detach destroyed outputs from protocol handles
 
 The DRM backend destroys and recreates outputs when a session is paused and
-resumed. Remove the output from the ext-workspace group before wlroots
-finishes it, otherwise the group's output_bind listener remains attached and
-wlr_output_finish() aborts.
+resumed. Remove the output from the ext-workspace group and the foreign
+toplevel handles before wlroots finishes it. Both protocols attach bind
+listeners to the output; leaving either listener behind makes
+wlr_output_finish() abort.
 
 ---
- src/output.c | 3 +++
- 1 file changed, 3 insertions(+)
+ src/foreign-toplevel/foreign.c     | 14 ++++++++++++++
+ src/output.c                        |  6 ++++++
+ include/foreign-toplevel/foreign.h  |  2 ++
+ 3 files changed, 22 insertions(+)
 
 diff --git a/src/output.c b/src/output.c
-index 2eab8ec..f19c3ff 100644
+index 2eab8ec..6f6e7ef 100644
 --- a/src/output.c
 +++ b/src/output.c
-@@ -277,6 +277,9 @@ handle_output_destroy(struct wl_listener *listener, void *data)
+@@ -27,8 +27,9 @@
+ #include "common/macros.h"
+ #include "common/mem.h"
+ #include "common/scene-helpers.h"
+ #include "common/string-helpers.h"
+ #include "config/rcxml.h"
++#include "foreign-toplevel/foreign.h"
+ #include "labwc.h"
+ #include "layers.h"
+ #include "node.h"
+@@ -276,7 +277,15 @@ handle_output_destroy(struct wl_listener *listener, void *data)
+ 	struct output *output = wl_container_of(listener, output, destroy);
  	struct seat *seat = &server.seat;
  	regions_evacuate_output(output);
  	regions_destroy(seat, &output->regions);
 +	wlr_ext_workspace_group_handle_v1_output_leave(
 +		server.workspaces.ext_group, output->wlr_output);
 +
++	struct view *view;
++	wl_list_for_each(view, &server.views, link) {
++		foreign_toplevel_remove_output(view->foreign_toplevel, output->wlr_output);
++	}
++
  	if (seat->overlay.active.output == output) {
  		overlay_finish(seat);
  	}
+@@ -297,7 +305,6 @@ handle_output_destroy(struct wl_listener *listener, void *data)
+ 		output->workspace_osd = NULL;
+ 	}
+ 
+-	struct view *view;
+ 	wl_list_for_each(view, &server.views, link) {
+ 		if (view->output == output) {
+ 			view_on_output_destroy(view);
+diff --git a/include/foreign-toplevel/foreign.h b/include/foreign-toplevel/foreign.h
+index 69a340a..d8ec9b4 100644
+--- a/include/foreign-toplevel/foreign.h
++++ b/include/foreign-toplevel/foreign.h
+@@ -3,11 +3,14 @@
+ #define LABWC_FOREIGN_TOPLEVEL_H
+ 
+ struct view;
++struct wlr_output;
+ struct foreign_toplevel;
+ 
+ struct foreign_toplevel *foreign_toplevel_create(struct view *view);
+ void foreign_toplevel_set_parent(struct foreign_toplevel *toplevel,
+ 	struct foreign_toplevel *parent);
++void foreign_toplevel_remove_output(struct foreign_toplevel *toplevel,
++	struct wlr_output *output);
+ void foreign_toplevel_destroy(struct foreign_toplevel *toplevel);
+ 
+ #endif /* LABWC_FOREIGN_TOPLEVEL_H */
+diff --git a/src/foreign-toplevel/foreign.c b/src/foreign-toplevel/foreign.c
+index 7f1ec8d..0f628a3 100644
+--- a/src/foreign-toplevel/foreign.c
++++ b/src/foreign-toplevel/foreign.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include "foreign-toplevel/foreign.h"
++#include <wlr/types/wlr_foreign_toplevel_management_v1.h>
+ #include <assert.h>
+ #include "common/mem.h"
+@@ -34,6 +34,18 @@ foreign_toplevel_set_parent(struct foreign_toplevel *toplevel, struct foreign_to
+ 		parent ? &parent->wlr_toplevel : NULL);
+ }
+ 
++void
++foreign_toplevel_remove_output(struct foreign_toplevel *toplevel,
++	struct wlr_output *output)
++{
++	if (!toplevel || !toplevel->wlr_toplevel.handle) {
++		return;
++	}
++
++	wlr_foreign_toplevel_handle_v1_output_leave(
++		toplevel->wlr_toplevel.handle, output);
++}
++
+ void
+ foreign_toplevel_destroy(struct foreign_toplevel *toplevel)
+ {
 -- 
 2.51.0
