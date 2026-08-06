@@ -1,27 +1,15 @@
 # Reference: https://github.com/ryoppippi/dotfiles/blob/main/.github/workflows/nix-build.yaml
-name: Check NixOS configurations
-description: Build every NixOS configuration and the Registry tests
+name: Build Linux checks
+description: Build every x86_64-linux flake check in parallel
 runs:
   using: composite
   steps:
-    - name: Build every NixOS configuration
+    - name: Build all Linux checks
       shell: bash
       run: |
         set -euo pipefail
-
-        mapfile -t hosts < <(
-          nix eval --raw .#nixosConfigurations \
-            --apply 'configs: builtins.concatStringsSep "\n" (builtins.attrNames configs)'
-        )
-
-        installables=(.#checks.x86_64-linux.registry)
-        for host in "${hosts[@]}"; do
-          installables+=(".#nixosConfigurations.${host}.config.system.build.toplevel")
-        done
-
-        nix build \
-          --keep-going \
-          --no-link \
-          --print-build-logs \
-          --show-trace \
-          "${installables[@]}"
+        nix run .#nix-fast-build -- \
+          --flake .#checks.x86_64-linux \
+          --skip-cached \
+          --no-nom \
+          --no-link

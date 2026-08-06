@@ -1,4 +1,6 @@
 /*
+**/__pycache__/
+*.py[cod]
 
 !.gitignore
 !README.md
@@ -6,8 +8,10 @@
 !AGENTS.md
 !/docs/
 
-!.github/
+!/.codex/
+!/.github/
 !.gitea/
+!/.vscode/
 
 !.envrc
 
@@ -15,7 +19,9 @@
 
 !/flake.nix
 !/flake.lock
+!/opencode.json
 
+!/scripts/
 !/shells/
 !/flake/
 !/overlays/

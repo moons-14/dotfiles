@@ -34,7 +34,9 @@
             ];
           };
 
+          actionlint.enable = true;
           deadnix.enable = true;
+          ruff.enable = true;
           statix.enable = true;
           shellcheck.enable = true;
         };

@@ -1,36 +1,50 @@
 # Reference: https://github.com/ryoppippi/dotfiles/blob/main/.github/workflows/nix-build.yaml
-name: "CI: NixOS"
+name: "CI: Nix"
 on:
   push:
     branches:
       - main
     paths:
+      - .gitignore
+      - AGENTS.md
+      - README.md
+      - "docs/**"
       - flake.nix
       - flake.lock
+      - ".codex/**"
+      - ".github/**"
+      - ".vscode/**"
       - "flake/**"
       - "hosts/**"
       - "libs/**"
       - "modules/**"
+      - "opencode.json"
       - "overlays/**"
+      - "scripts/**"
       - "shells/**"
+      - "skills/**"
       - "tests/**"
-      - ".github/actions/check-nixos/**"
-      - ".github/actions/setup-nix/**"
-      - ".github/workflows/nixos.yaml"
   pull_request:
     paths:
+      - .gitignore
+      - AGENTS.md
+      - README.md
+      - "docs/**"
       - flake.nix
       - flake.lock
+      - ".codex/**"
+      - ".github/**"
+      - ".vscode/**"
       - "flake/**"
       - "hosts/**"
       - "libs/**"
       - "modules/**"
+      - "opencode.json"
       - "overlays/**"
+      - "scripts/**"
       - "shells/**"
+      - "skills/**"
       - "tests/**"
-      - ".github/actions/check-nixos/**"
-      - ".github/actions/setup-nix/**"
-      - ".github/workflows/nixos.yaml"
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,14 +52,149 @@ concurrency:
 permissions:
   contents: read
 jobs:
-  check:
-    name: Check all NixOS configurations
+  validate:
+    name: Plan, lint, and evaluate
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    outputs:
+      build_linux: ${{ steps.plan.outputs.build_linux }}
+      build_darwin: ${{ steps.plan.outputs.build_darwin }}
+      nix_validation: ${{ steps.plan.outputs.nix_validation }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
       - name: Setup Nix
         uses: ./.github/actions/setup-nix
-      - name: Check NixOS configurations
+      - name: Plan validation
+        id: plan
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "${{ github.event_name }}" in
+            pull_request)
+              plan="$(nix run .#check -- plan --base "$PR_BASE_SHA" --json)"
+              ;;
+            push)
+              plan="$(nix run .#check -- plan --base "$PUSH_BASE_SHA" --json)"
+              ;;
+            *)
+              plan="$(nix run .#check -- plan --all-files --all-hosts --json)"
+              ;;
+          esac
+
+          printf '%s\n' "$plan"
+          nix_validation="$(jq -r '.requiresNixValidation' <<<"$plan")"
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            build_linux="$(jq -r '.nativeBuildSystems["x86_64-linux"] // false' <<<"$plan")"
+            build_darwin="$(jq -r '.nativeBuildSystems["aarch64-darwin"] // false' <<<"$plan")"
+          else
+            build_linux="$nix_validation"
+            build_darwin="$nix_validation"
+          fi
+
+          {
+            echo "nix_validation=$nix_validation"
+            echo "build_linux=$build_linux"
+            echo "build_darwin=$build_darwin"
+          } >> "$GITHUB_OUTPUT"
+      - name: Run fast checks
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${{ github.event_name }}" in
+            pull_request)
+              nix run .#check -- fast --base "$PR_BASE_SHA"
+              ;;
+            push)
+              nix run .#check -- fast --base "$PUSH_BASE_SHA"
+              ;;
+            *)
+              nix run .#check -- fast --all-files
+              ;;
+          esac
+      - name: Evaluate configurations
+        if: steps.plan.outputs.nix_validation == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${{ github.event_name }}" in
+            pull_request)
+              nix run .#check -- eval --base "$PR_BASE_SHA"
+              ;;
+            push)
+              nix run .#check -- eval --base "$PUSH_BASE_SHA" --all-systems
+              ;;
+            *)
+              nix run .#check -- eval --all-hosts --all-systems
+              ;;
+          esac
+
+  build-linux:
+    name: Build Linux checks
+    needs: validate
+    if: needs.validate.outputs.build_linux == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Build affected Linux checks
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix run .#check -- build --base "$PR_BASE_SHA"
+      - name: Build all Linux checks
+        if: github.event_name != 'pull_request'
         uses: ./.github/actions/check-nixos
+
+  build-darwin:
+    name: Build Darwin checks
+    needs: validate
+    if: needs.validate.outputs.build_darwin == 'true'
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Build affected Darwin checks
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix run .#check -- build --base "$PR_BASE_SHA"
+      - name: Build all Darwin checks
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix run .#nix-fast-build -- \
+            --flake .#checks.aarch64-darwin \
+            --skip-cached \
+            --no-nom \
+            --no-link

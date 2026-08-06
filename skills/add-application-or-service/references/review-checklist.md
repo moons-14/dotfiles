@@ -72,56 +72,47 @@ user-owned mutable state unless the requested policy explicitly owns it.
 
 ## Validation matrix
 
-Run checks from the repository root and keep the exact results for the handoff.
-Do not switch or activate a live system merely to validate a change.
+Use the `validate-nix-change` skill and run checks from the repository root.
+Keep exact results for the handoff. The validation app never switches or
+activates a live system.
 
 ### Always
 
-1. Format task-owned files. If the worktree contains unrelated user changes,
-   pass only task-owned paths to the configured formatter when supported.
-2. Run `git diff --check`.
-3. Review `git status --short`, `git diff --stat`, and the complete `git diff`.
-4. Run `nix flake check`.
-5. Run `pre-commit run --all-files`.
+1. Run `nix run .#check -- plan --paths <task-path>... --json` and inspect the
+   affected units and hosts.
+2. Run `nix run .#check -- fast --paths <task-path>...` during implementation.
+3. Review `git status --short`, `git diff --stat`, and the complete task diff.
+4. Run `nix run .#check -- all --paths <task-path>...` before handoff. It runs
+   all-system evaluation and compatible targeted builds without activation.
+5. Reserve `nix run .#check -- full` for CI, scheduled maintenance, or an
+   explicit repository-wide audit.
+
+Do not run `nh os switch`, `nixos-rebuild switch`, `darwin-rebuild switch`,
+`home-manager switch`, or an equivalent activation command.
 
 ### NixOS or Home Manager on NixOS
 
-- Evaluate each affected host's system toplevel derivation.
-- Build at least one affected NixOS configuration with `--no-link` when the
-  current system supports it.
+- Confirm that the validation plan includes each affected real NixOS host.
+- Build affected NixOS configurations with `--no-link` through the validation
+  app when the current system supports them.
 - Inspect the resulting option that proves selection: for example
   `environment.systemPackages`, the user's `home.packages`,
   `systemd.services`, `users.users.<name>.extraGroups`, or the upstream
   `programs`/`services` option.
 
-Typical build shape:
-
-```sh
-nix build .#nixosConfigurations.<host>.config.system.build.toplevel --no-link
-```
-
 ### nix-darwin or Home Manager on Darwin
 
-- Evaluate every affected Darwin host even when running on Linux.
+- Confirm that every affected Darwin host is evaluated even when running on
+  Linux.
 - Inspect `homebrew.casks` or `homebrew.brews` for Homebrew-backed additions.
 - Evaluate the relevant Home Manager program or package option.
-- Build a Darwin configuration only on a compatible Darwin builder; otherwise
-  report that build as an explicit runtime-validation gap.
-
-Typical evaluation shapes:
-
-```sh
-nix eval --raw .#darwinConfigurations.<host>.system.drvPath
-nix eval --json .#darwinConfigurations.<host>.config.homebrew.casks
-```
-
-Confirm the exact output attribute against the current flake before using a
-command; do not paste these shapes blindly.
+- Build a Darwin configuration only on a compatible Darwin runner or builder;
+  otherwise report the build as an explicit platform gap.
 
 ### Profiles and cross-platform changes
 
-- Determine transitive selection through `meta.includes`, not only direct
-  mentions.
+- Confirm transitive selection through `meta.includes`, not only direct
+  mentions. The validation plan computes reverse dependency closure.
 - Evaluate every real host selecting the changed profile.
 - Evaluate both host classes for a cross-platform profile, even if only one
   current fragment changed.
@@ -134,6 +125,8 @@ command; do not paste these shapes blindly.
 ### Runtime-dependent behavior
 
 Evaluation and builds cannot prove GUI appearance, credentials, network access,
-hardware behavior, or successful daemon interaction. State the precise manual
-post-activation check needed for those behaviors. Never describe evaluation as
+hardware behavior, successful daemon interaction, or reboot state. For
+reusable NixOS behavior, use the `test-nixos-service` skill and add a
+`pkgs.testers.runNixOSTest` check. State the precise manual post-activation check
+needed for physical hardware or external systems. Never describe evaluation as
 a runtime test.

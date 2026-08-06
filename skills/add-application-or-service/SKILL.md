@@ -95,26 +95,33 @@ points cannot express the requirement.
 
 ### 4. Prove the change
 
-Run the validation matrix in
-[references/review-checklist.md](references/review-checklist.md). At minimum:
+Invoke the `validate-nix-change` skill and use the task-owned files as its
+explicit path set. At minimum:
 
-1. Format the task-owned files with the repository formatter and run
-   `git diff --check`.
-2. Inspect the complete task diff for accidental files, duplication, leaked
+1. Inspect `nix run .#check -- plan --paths <task-path>... --json` and confirm
+   the reported units, host classes, and real hosts are correct.
+2. Run `nix run .#check -- fast --paths <task-path>...` during the edit loop.
+3. Inspect the complete task diff for accidental files, duplication, leaked
    secrets, forced values, direct enable assignments, and unrelated rewrites.
-3. Run `nix flake check`.
-4. Run `pre-commit run --all-files`.
-5. Evaluate every affected real host without switching it. For a
-   cross-platform unit or profile, evaluate both NixOS and nix-darwin even if
-   only one class changed. Build an affected configuration with `--no-link`
-   when the current platform can build it.
-6. Verify selection as well as syntax: confirm that the expected package,
+4. Run `nix run .#check -- all --paths <task-path>...` after the structure is
+   complete. This evaluates every flake system and builds affected targets for
+   the current platform without activation.
+5. Verify selection as well as syntax: confirm that the expected package,
    program, service, group, cask, or external module appears in the resulting
    configuration.
+6. Add a `pkgs.testers.runNixOSTest` check through the `test-nixos-service`
+   skill when service startup or another runtime contract cannot be proved by
+   evaluation and a system build.
+
+Use `nix run .#check -- full` only for CI, scheduled maintenance, or an explicit
+repository-wide audit. These commands never activate the live system. Do not
+run `nh os switch`, `nixos-rebuild switch`, `darwin-rebuild switch`,
+`home-manager switch`, or an equivalent activation command as validation.
 
 If a command is unavailable, blocked by the environment, or fails for a
-pre-existing reason, diagnose it and report the exact gap. Never silently skip
-a required check or weaken the implementation to make a check pass.
+pre-existing reason, invoke the `debug-nix-failure` skill, diagnose it, and
+report the exact gap. Never silently skip a required check or weaken the
+implementation to make a check pass.
 
 ### 5. Audit before completion
 

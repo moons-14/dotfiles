@@ -12,9 +12,11 @@ permissions:
   pull-requests: write
 jobs:
   update:
-    name: Update and validate flake inputs
+    name: Update and check Linux
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
+    outputs:
+      changed: ${{ steps.update.outputs.changed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -22,18 +24,78 @@ jobs:
         uses: ./.github/actions/setup-nix
       - name: Update flake inputs
         id: update
+        shell: bash
         run: |
+          set -euo pipefail
           nix flake update
           if git diff --quiet -- flake.lock; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
-      - name: Check updated NixOS configurations
+      - name: Evaluate every flake system
+        if: steps.update.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix flake check \
+            --no-build \
+            --all-systems \
+            --keep-going \
+            --show-trace
+      - name: Build Linux checks
         if: steps.update.outputs.changed == 'true'
         uses: ./.github/actions/check-nixos
-      - name: Create update pull request
+      - name: Upload updated lock file
         if: steps.update.outputs.changed == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: flake-lock
+          path: flake.lock
+          if-no-files-found: error
+
+  check-darwin:
+    name: Check Darwin
+    needs: update
+    if: needs.update.outputs.changed == 'true'
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Download updated lock file
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: flake-lock
+          path: .
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Build Darwin checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          nix run .#nix-fast-build -- \
+            --flake .#checks.aarch64-darwin \
+            --skip-cached \
+            --no-nom \
+            --no-link
+
+  pull-request:
+    name: Create update pull request
+    needs:
+      - update
+      - check-darwin
+    if: needs.update.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Download validated lock file
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: flake-lock
+          path: .
+      - name: Create update pull request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,4 +107,5 @@ jobs:
           body: |
             Automated update of `flake.lock`.
 
-            The updated inputs passed the Registry tests and a build of every NixOS configuration.
+            The updated inputs passed all-system evaluation and native builds of
+            the Linux and Darwin check sets.

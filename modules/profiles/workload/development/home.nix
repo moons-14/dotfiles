@@ -3,7 +3,10 @@
   home.packages = with pkgs; [
     bind
     bun
-    nil
+    mcp-nixos
+    nix-fast-build
+    nix-tree
+    nixd
     python312
     uv
   ];
