@@ -30,7 +30,7 @@ _: {
           pkgs.age-plugin-yubikey
           pkgs.yubikey-manager
         ]
-        ++ lib.optionals pkgs.stdenv.isLinux [
+        ++ lib.optionals (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.pcsc-tools) [
           pkgs.pcsc-tools
         ];
 
