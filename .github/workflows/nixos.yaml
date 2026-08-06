@@ -110,7 +110,7 @@ jobs:
           PUSH_BASE_SHA: ${{ github.event.before }}
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           case "${{ github.event_name }}" in
             pull_request)
               nix run .#check -- fast --base "$PR_BASE_SHA"
@@ -122,6 +122,11 @@ jobs:
               nix run .#check -- fast --all-files
               ;;
           esac
+          status=$?
+          if (( status != 0 )); then
+            git diff -- .
+            exit "$status"
+          fi
       - name: Evaluate configurations
         if: steps.plan.outputs.nix_validation == 'true' || github.event_name == 'workflow_dispatch'
         env:
