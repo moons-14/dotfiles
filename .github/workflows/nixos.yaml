@@ -110,6 +110,7 @@ jobs:
           PUSH_BASE_SHA: ${{ github.event.before }}
         shell: bash
         run: |
+          set +e
           set -uo pipefail
           case "${{ github.event_name }}" in
             pull_request)
