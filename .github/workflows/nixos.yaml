@@ -147,7 +147,6 @@ jobs:
               nix run .#check -- eval --all-hosts --all-systems
               ;;
           esac
-
   build-linux:
     name: Build Linux checks
     needs: validate
@@ -172,7 +171,6 @@ jobs:
       - name: Build all Linux checks
         if: github.event_name != 'pull_request'
         uses: ./.github/actions/check-nixos
-
   build-darwin:
     name: Build Darwin checks
     needs: validate
