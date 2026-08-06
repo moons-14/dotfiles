@@ -47,40 +47,30 @@ let
       }
     ) hostSpecs;
 
-    units = lib.mapAttrs (
-      _id: unit: {
-        inherit (unit) id relativePath;
-        directory = "modules/${lib.concatStringsSep "/" unit.relativePath}";
-        includes = unit.meta.includes;
-        fragments = builtins.attrNames (lib.filterAttrs (_: value: value != null) unit.fragments);
-      }
-    ) dotfilesLib.registry.units;
+    units = lib.mapAttrs (_id: unit: {
+      inherit (unit) id relativePath;
+      directory = "modules/${lib.concatStringsSep "/" unit.relativePath}";
+      includes = unit.meta.includes;
+      fragments = builtins.attrNames (lib.filterAttrs (_: value: value != null) unit.fragments);
+    }) dotfilesLib.registry.units;
   };
 in
 {
   flake = {
     inherit (configurations) darwinConfigurations nixosConfigurations;
-    lib = dotfilesLib // { inherit validationMetadata; };
+    lib = dotfilesLib // {
+      inherit validationMetadata;
+    };
   };
 
   perSystem =
     { pkgs, system, ... }:
     let
-      nixosChecks = lib.mapAttrs' (
-        name: nixos:
-        lib.nameValuePair "nixos-${name}" nixos.config.system.build.toplevel
-      ) (
-        lib.filterAttrs (
-          name: _: hostSpecs.${name}.system == system
-        ) configurations.nixosConfigurations
-      );
-      darwinChecks = lib.mapAttrs' (
-        name: darwin:
-        lib.nameValuePair "darwin-${name}" darwin.system
-      ) (
-        lib.filterAttrs (
-          name: _: hostSpecs.${name}.system == system
-        ) configurations.darwinConfigurations
+      nixosChecks =
+        lib.mapAttrs' (name: nixos: lib.nameValuePair "nixos-${name}" nixos.config.system.build.toplevel)
+          (lib.filterAttrs (name: _: hostSpecs.${name}.system == system) configurations.nixosConfigurations);
+      darwinChecks = lib.mapAttrs' (name: darwin: lib.nameValuePair "darwin-${name}" darwin.system) (
+        lib.filterAttrs (name: _: hostSpecs.${name}.system == system) configurations.darwinConfigurations
       );
     in
     {
