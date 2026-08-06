@@ -203,6 +203,41 @@ in
         corner_radius_scale = 0.2;
         clipboard_enabled = false;
         launch_apps_as_systemd_services = true;
+
+        session = {
+          grid = true;
+          grid_columns = 3;
+
+          actions = [
+            {
+              action = "lock";
+            }
+            {
+              action = "logout";
+            }
+            {
+              action = "lock_and_suspend";
+            }
+            {
+              action = "command";
+              label = "Display OFF";
+
+              command = "${pkgs.dpms-off}/bin/dpms-off";
+
+              variant = "secondary";
+            }
+            {
+              action = "reboot";
+              variant = "destructive";
+              countdown_seconds = 5;
+            }
+            {
+              action = "shutdown";
+              variant = "destructive";
+              countdown_seconds = 5;
+            }
+          ];
+        };
       };
 
       wallpaper = {
