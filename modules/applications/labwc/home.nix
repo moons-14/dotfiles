@@ -20,6 +20,20 @@ let
       "@command" = command;
     };
 
+  closeFocused = {
+    "@key" = "W-q";
+    "@onRelease" = "yes";
+    action = {
+      "@name" = "If";
+      query.identifier = "com.mitchellh.ghostty";
+      "then".action = {
+        "@name" = "Execute";
+        "@command" = "${lib.getExe' pkgs.wtype "wtype"} -M ctrl -M shift -P w -p w -m shift -m ctrl";
+      };
+      "else".action."@name" = "Close";
+    };
+  };
+
   snapToEdge =
     key: direction:
     keybind key {
@@ -99,7 +113,7 @@ in
         numlock = "on";
         keybind = [
           # labwc window management
-          (action "W-q" "Close")
+          closeFocused
           (action "W-f" "ToggleMaximize")
           (action "W-c" "Iconify")
           (execute "W-Tab" "window-overview")
@@ -221,6 +235,10 @@ in
       "XKB_DEFAULT_OPTIONS=ctrl:nocaps"
     ];
   };
+
+  # Labwc's Close action closes Ghostty's whole GTK window. Route Mod+Q to
+  # Ghostty's current-tab action instead while keeping normal window close elsewhere.
+  programs.ghostty.settings.keybind = [ "ctrl+shift+w=close_tab" ];
 
   xdg.configFile."labwc/shutdown".text = lib.mkAfter ''
     ${systemctl} --user stop graphical-session.target
