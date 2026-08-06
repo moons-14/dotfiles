@@ -35,12 +35,15 @@ _: {
       devShells.validation = config.pre-commit.devShell;
 
       checks = {
-        validation-tool = pkgs.runCommand "dotfiles-check-self-test" {
-          nativeBuildInputs = [ dotfilesCheck ];
-        } ''
-          dotfiles-check self-test
-          touch "$out"
-        '';
+        validation-tool =
+          pkgs.runCommand "dotfiles-check-self-test"
+            {
+              nativeBuildInputs = [ dotfilesCheck ];
+            }
+            ''
+              dotfiles-check self-test
+              touch "$out"
+            '';
 
         dotnix-shell = config.devShells.dotnix;
       };
