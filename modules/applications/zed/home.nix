@@ -38,6 +38,9 @@
         light = "Catppuccin Latte";
         dark = "Catppuccin Mocha";
       };
+      edit_predictions = {
+        provider = "copilot";
+      };
     };
   };
 }
