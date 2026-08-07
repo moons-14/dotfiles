@@ -24,6 +24,7 @@ rustPlatform.buildRustPackage rec {
   patches = [
     ./patches/window-overview.patch
     ./patches/niri-backend.patch
+    ./patches/niri-hold-release.patch
   ];
 
   cargoHash = "sha256-KBLgtS8ULrmsOf6BN5SlkVQyXB12utvr/KonnKnCTCM=";

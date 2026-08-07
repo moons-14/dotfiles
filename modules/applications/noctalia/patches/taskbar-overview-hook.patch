@@ -28,13 +28,11 @@ diff --git a/src/shell/bar/widgets/taskbar_widget.cpp b/src/shell/bar/widgets/ta
    // Integer centering; optional odd spare pixel on the end side (right/bottom).
    [[nodiscard]] float centeredOffset(float extent, float content, float inset = 0.0F, bool oddSpareOnEnd = true) {
      const float inner = std::max(0.0F, extent - inset * 2.0F);
-@@ -373,6 +386,12 @@ void TaskbarWidget::activateOrLaunchPinned(const TaskModel& task) {
+@@ -373,6 +386,10 @@ void TaskbarWidget::activateOrLaunchPinned(const TaskModel& task) {
      return;
    }
  
-+  const std::string overviewAppId =
-+      !task.appId.empty() ? task.appId : (!task.desktopEntryId.empty() ? task.desktopEntryId : task.idLower);
-+  if (launchTaskbarOverview(overviewAppId)) {
++  if (!windows[0].appId.empty() && launchTaskbarOverview(windows[0].appId)) {
 +    return;
 +  }
 +

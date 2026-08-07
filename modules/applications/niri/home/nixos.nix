@@ -110,7 +110,7 @@ in
       "Mod+V" = {
         action.spawn = [
           "vicinae"
-          "vicinae://launch/clipboard/history?toggle=true"
+          "vicinae://launch/clipboard/history"
         ];
         hotkey-overlay.title = "Clipboard History";
       };

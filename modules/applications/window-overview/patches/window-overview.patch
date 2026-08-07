@@ -176,7 +176,7 @@
 -        // behind are hidden (a client can't move them; this hides them instead).
 @@ -716 +795 @@
 -            c[3] = c[3].max(0.96);
-+            c[3] = 0.5;
++            c[3] = c[3].max(0.88);
 @@ -734 +813,5 @@
 -                self.selected = if n > 1 { 1 } else { 0 };
 +                self.selected = if n > 1 {
@@ -231,7 +231,7 @@
 +        );
 @@ -1048,0 +1167 @@
 +                    let selected = *i == self.selected;
-@@ -1062,9 +1181,3 @@
+@@ -1062,9 +1181 @@
 -                        rect.size() * (0.86 + 0.14 * ease),
 -                    );
 -                    self.paint_expose_tile(
@@ -241,96 +241,11 @@
 -                        *i == self.selected,
 -                        resp.hovered(),
 -                        ease,
-+                        rect.size()
-+                            * (0.86 + 0.14 * ease)
-+                            * if selected { 1.04 } else { 1.0 },
++                        rect.size() * (0.86 + 0.14 * ease),
 @@ -1071,0 +1185 @@
 +                    self.paint_expose_tile(ui, s, scaled, selected, resp.hovered(), ease);
-@@ -1077,0 +1192,8 @@
-+        ui.painter().text(
-+            egui::pos2(full_area.right(), full_area.top()),
-+            egui::Align2::RIGHT_TOP,
-+            format!("−  {:.0}%  +", self.overview_scale * 100.0),
-+            egui::FontId::proportional(14.0),
-+            self.theme.text_dim,
-+        );
-+
-@@ -1107 +1229,14 @@
+@@ -1107 +1229,3 @@
 -        let white = egui::Color32::WHITE.gamma_multiply(a);
-+        let accent = if s.is_window {
-+            t.window_accent
-+        } else {
-+            t.screen_accent
-+        };
-+        let content_alpha = if selected || hovered { 1.0 } else { 0.55 };
-+        let white = egui::Color32::WHITE.gamma_multiply(a * content_alpha);
-+        if selected {
-+            p.rect_filled(
-+                rect.expand(8.0),
-+                radius + 8.0,
-+                fade(accent).gamma_multiply(0.35),
-+            );
-+        }
-@@ -1127,0 +1263,7 @@
-+        if !selected && !hovered {
-+            p.rect_filled(
-+                rect,
-+                radius,
-+                egui::Color32::from_black_alpha(72).gamma_multiply(a),
-+            );
-+        }
-@@ -1136 +1278,5 @@
--            egui::Color32::from_black_alpha(160).gamma_multiply(a),
-+            if selected {
-+                fade(accent).gamma_multiply(0.9)
-+            } else {
-+                egui::Color32::from_black_alpha(160).gamma_multiply(a)
-+            },
-@@ -1175,9 +1321,22 @@
--        let accent = if s.is_window {
--            t.window_accent
--        } else {
--            t.screen_accent
--        };
--        let (sw, col) = if selected {
--            (3.0, accent)
--        } else if hovered {
--            (2.0, accent)
-+        if selected {
-+            p.rect_stroke(
-+                rect.expand(4.0),
-+                radius + 4.0,
-+                egui::Stroke::new(3.0, fade(egui::Color32::WHITE)),
-+                egui::StrokeKind::Inside,
-+            );
-+            p.rect_stroke(
-+                rect,
-+                radius,
-+                egui::Stroke::new(6.0, fade(accent)),
-+                egui::StrokeKind::Inside,
-+            );
-+            let marker = egui::pos2(rect.right() - 18.0, rect.top() + 18.0);
-+            p.circle_filled(marker, 13.0, fade(accent));
-+            p.text(
-+                marker,
-+                egui::Align2::CENTER_CENTER,
-+                "✓",
-+                egui::FontId::proportional(18.0),
-+                fade(egui::Color32::WHITE),
-+            );
-@@ -1185,8 +1344,7 @@
--            (1.0, t.thumb)
--        };
--        p.rect_stroke(
--            rect,
--            radius,
--            egui::Stroke::new(sw, fade(col)),
--            egui::StrokeKind::Inside,
--        );
-+            p.rect_stroke(
-+                rect,
-+                radius,
-+                egui::Stroke::new(if hovered { 2.0 } else { 1.0 }, fade(accent)),
-+                egui::StrokeKind::Inside,
-+            );
-+        }
++        let white = egui::Color32::WHITE.gamma_multiply(
++            a * if selected || hovered { 1.0 } else { 0.7 },
++        );

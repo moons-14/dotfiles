@@ -251,6 +251,16 @@ in
         interrupt_message = true;
       };
 
+      settings.tui.status_line = [
+        "model-with-reasoning"
+        "context-remaining"
+        "used-tokens"
+        "total-input-tokens"
+        "total-output-tokens"
+        "five-hour-limit"
+        "weekly-limit"
+      ];
+
       projects."/home/moons/dotfiles".trust_level = "trusted";
     };
 
