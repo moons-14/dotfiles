@@ -14,7 +14,7 @@ diff --git a/src/shell/bar/widgets/taskbar_widget.cpp b/src/shell/bar/widgets/ta
  namespace {
  
 +  [[nodiscard]] bool launchTaskbarOverview(const std::string& appId) {
-+    constexpr const char* command = "noctalia-taskbar-overview";
++    constexpr const char* command = "window-overview";
 +    if (appId.empty() || !process::commandExists(command)) {
 +      return false;
 +    }

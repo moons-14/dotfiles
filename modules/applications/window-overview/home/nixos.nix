@@ -1,7 +1,6 @@
-{ pkgs, ... }:
-let
-  windowOverview = pkgs.callPackage ../package.nix { };
-in
+{ inputs, pkgs, ... }:
 {
-  home.packages = [ windowOverview ];
+  home.packages = [
+    inputs.window-overview.packages.${pkgs.stdenv.hostPlatform.system}.window-overview
+  ];
 }
