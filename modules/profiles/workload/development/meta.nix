@@ -6,6 +6,7 @@
     "applications.claude"
     "applications.codex"
     "applications.codex-desktop"
+    "applications.codex-session-usage"
     "applications.docker"
     "applications.drawio"
     "applications.ghostty"
