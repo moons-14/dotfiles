@@ -123,7 +123,7 @@ in
           (execute "W-s" "noctalia msg panel-toggle launcher")
           (execute "W-e" "nautilus --new-window")
           (execute "W-l" "loginctl lock-session")
-          (execute "W-v" "vicinae vicinae://launch/clipboard/history?toggle=true")
+          (execute "W-v" "vicinae vicinae://launch/clipboard/history")
           (execute "W-j" "nani-translate-primary")
           (execute "W-S-j" "nani-translate-ocr")
           (execute "W-C-j" "${lib.getExe' pkgs.xdg-utils "xdg-open"} naniapp://translate")
