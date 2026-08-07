@@ -6,6 +6,8 @@
       "nix"
     ];
     mutableUserSettings = false;
+    mutableUserKeymaps = false;
+    userKeymaps = import ./keymaps.nix;
 
     userSettings = {
       agent = {
