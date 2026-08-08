@@ -1531,6 +1531,7 @@
         "nixvim": "nixvim",
         "noctalia": "noctalia",
         "services-flake": "services-flake",
+        "skills": "skills",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "systems": "systems_9",
@@ -1595,6 +1596,22 @@
       "original": {
         "owner": "juspay",
         "repo": "services-flake",
+        "type": "github"
+      }
+    },
+    "skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786045791,
+        "narHash": "sha256-pseSJJb5nBBGPzpxA1GzjGLB9OrT+u0At1saJ4NqZ1E=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "84fdeffd12f2ee307994d1eb6feb48173b6e0502",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
         "type": "github"
       }
     },

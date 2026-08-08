@@ -309,9 +309,9 @@ let
         Use the configured Codex sandbox and Auto-review for command permissions.
         Do not create a second command-approval workflow.
 
+        Staging and committing are reserved to the primary.
+
         Unless explicitly assigned, do not:
-        - commit;
-        - stage;
         - push;
         - rebase;
         - deploy;
@@ -966,9 +966,9 @@ in
 
       Use the configured Codex sandbox and Auto-review for command permissions. Do not create a second command-approval workflow.
 
-      When the user explicitly authorizes commits, the primary performs authorization-sensitive Git metadata operations. Workers do not repeatedly attempt commits based on relayed authorization.
+      Commits require explicit user authorization or applicable standing authorization. Once authorized, the primary performs authorization-sensitive Git metadata operations with `git commit -S` at coherent, validated checkpoints. Workers do not repeatedly attempt commits based on relayed authorization.
 
-      Keep commits logically coherent. Avoid chains of small review-fix commits while a change is still being reviewed. Never push, deploy, switch, or activate unless explicitly requested.
+      Split unrelated concerns into separate commits. Avoid noisy, broken, or premature checkpoint commits, including chains of small review-fix commits while a change is still being reviewed. Never push, deploy, switch, or activate unless explicitly requested.
 
       ## Completion gate
 
@@ -992,7 +992,13 @@ in
   #
   # Match programs.codex's XDG behavior so this also works if
   # home.preferXdgDirectories is changed later.
-  home.file = lib.mkIf (!config.home.preferXdgDirectories) (mkAgentTargets ".codex");
+  home.file = lib.mkMerge [
+    (lib.mkIf (!config.home.preferXdgDirectories) (mkAgentTargets ".codex"))
+    {
+      ".agents/skills/grill-me".source = inputs.skills + "/skills/productivity/grill-me";
+      ".agents/skills/grilling".source = inputs.skills + "/skills/productivity/grilling";
+    }
+  ];
 
   xdg.configFile = lib.mkIf config.home.preferXdgDirectories (mkAgentTargets "codex");
 }

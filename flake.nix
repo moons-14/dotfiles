@@ -104,6 +104,11 @@
 
     codex-session-usage.url = "github:moons-14/codex-session-usage";
 
+    skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+
     # Index / Search
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
