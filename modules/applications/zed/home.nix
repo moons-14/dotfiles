@@ -4,6 +4,7 @@
     extensions = [
       "catppuccin"
       "nix"
+      "dockerfile"
     ];
     mutableUserSettings = false;
     mutableUserKeymaps = false;
