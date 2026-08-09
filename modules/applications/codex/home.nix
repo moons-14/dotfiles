@@ -9,6 +9,7 @@ let
   codexPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
 
   tomlFormat = pkgs.formats.toml { };
+  jsonFormat = pkgs.formats.json { };
 
   # Current Codex docs support Luna custom agents. Some 0.144/0.145-era MultiAgentV2
   # runtimes reported Luna spawn regressions; flip this single switch to false only if your
@@ -20,6 +21,62 @@ let
     balanced = "gpt-5.6-terra";
     cheap = if lunaSubagents then "gpt-5.6-luna" else "gpt-5.6-terra";
   };
+
+  # Seed only. CODEX_HOME/config.toml itself is intentionally mutable and is not
+  # managed by Home Manager after creation, so Codex can persist model selection,
+  # hook/project trust, and other TUI/Desktop changes.
+  codexInitialConfig = tomlFormat.generate "codex-initial-config.toml" {
+    # Sol stays on the user/decision plane. Expensive raw tool output is deliberately capped;
+    # Luna/Terra leaf configs override this limit where their job needs more local evidence.
+    model = models.primary;
+    model_reasoning_effort = "medium";
+    plan_mode_reasoning_effort = "high";
+    model_reasoning_summary = "concise";
+    model_verbosity = "medium";
+    tool_output_token_limit = 2500;
+
+    sandbox_mode = "workspace-write";
+    approval_policy = "on-request";
+    approvals_reviewer = "auto_review";
+    sandbox_workspace_write.network_access = false;
+
+    web_search = "cached";
+    tools.web_search.context_size = "medium";
+
+    check_for_update_on_startup = false;
+
+    agents = {
+      enabled = true;
+
+      # Excludes the primary thread. In Standard/Assurance, one slot is the manager,
+      # leaving up to three independent leaf lanes. Do not spawn agents merely to fill slots.
+      max_concurrent_threads_per_session = 4;
+
+      # Fallback only. Named custom agents pin their own model/effort.
+      default_subagent_model = models.cheap;
+      default_subagent_reasoning_effort = "medium";
+      interrupt_message = true;
+    };
+
+    # Correct config path is tui.status_line, not settings.tui.status_line.
+    tui.status_line = [
+      "model-with-reasoning"
+      "context-remaining"
+      "used-tokens"
+      "total-input-tokens"
+      "total-output-tokens"
+      "five-hour-limit"
+      "weekly-limit"
+    ];
+
+    projects."/home/moons/dotfiles".trust_level = "trusted";
+  };
+
+  codexHome =
+    if config.home.preferXdgDirectories then
+      "${config.xdg.configHome}/codex"
+    else
+      "${config.home.homeDirectory}/.codex";
 
   mkAgent = name: settings: {
     source = tomlFormat.generate "codex-agent-${name}.toml" settings;
@@ -87,6 +144,24 @@ let
       )
       print(json.dumps({"decision": "block", "reason": reason}, ensure_ascii=False))
     '';
+  };
+
+  # Home Manager 26.05 has no programs.codex.hooks option. Manage the Codex
+  # hooks.json directly while preserving the same file format used by newer HM.
+  codexHooks = jsonFormat.generate "codex-hooks.json" {
+    hooks.PostToolUse = [
+      {
+        matcher = "^Bash$";
+        hooks = [
+          {
+            type = "command";
+            command = "${contextSpillHook}";
+            timeout = 5;
+            statusMessage = "Protecting expensive-model context";
+          }
+        ];
+      }
+    ];
   };
 
   # Shared contract for agents that reduce raw evidence before it reaches Terra/Sol.
@@ -633,78 +708,18 @@ let
   mkAgentTargets =
     prefix:
     lib.mapAttrs' (fileName: file: lib.nameValuePair "${prefix}/agents/${fileName}" file) agentFiles;
+
+  mkCodexTargets =
+    prefix:
+    (mkAgentTargets prefix)
+    // lib.optionalAttrs lunaSubagents {
+      "${prefix}/hooks.json".source = codexHooks;
+    };
 in
 {
   programs.codex = {
     enable = true;
     package = codexPackage;
-
-    settings = {
-      # Sol stays on the user/decision plane. Expensive raw tool output is deliberately capped;
-      # Luna/Terra leaf configs override this limit where their job needs more local evidence.
-      model = models.primary;
-      model_reasoning_effort = "medium";
-      plan_mode_reasoning_effort = "high";
-      model_reasoning_summary = "concise";
-      model_verbosity = "medium";
-      tool_output_token_limit = 2500;
-
-      sandbox_mode = "workspace-write";
-      approval_policy = "on-request";
-      approvals_reviewer = "auto_review";
-      sandbox_workspace_write.network_access = false;
-
-      web_search = "cached";
-      tools.web_search.context_size = "medium";
-
-      check_for_update_on_startup = false;
-
-      agents = {
-        enabled = true;
-
-        # Excludes the primary thread. In Standard/Assurance, one slot is the manager,
-        # leaving up to three independent leaf lanes. Do not spawn agents merely to fill slots.
-        max_concurrent_threads_per_session = 4;
-
-        # Fallback only. Named custom agents pin their own model/effort.
-        default_subagent_model = models.cheap;
-        default_subagent_reasoning_effort = "medium";
-        interrupt_message = true;
-      };
-
-      # Correct config path is tui.status_line, not settings.tui.status_line.
-      tui.status_line = [
-        "model-with-reasoning"
-        "context-remaining"
-        "used-tokens"
-        "total-input-tokens"
-        "total-output-tokens"
-        "five-hour-limit"
-        "weekly-limit"
-      ];
-
-      projects."/home/moons/dotfiles".trust_level = "trusted";
-    };
-
-    # Home Manager writes this to CODEX_HOME/hooks.json. Codex PostToolUse hooks receive
-    # tool_response before it reaches the model, so this can enforce the raw-output boundary
-    # even when Sol/Terra ignore the prompt-level routing rule. Hosted tools such as WebSearch
-    # do not traverse this hook path; the high-volume concern here is local Bash/exec output.
-    hooks = lib.mkIf lunaSubagents {
-      PostToolUse = [
-        {
-          matcher = "^Bash$";
-          hooks = [
-            {
-              type = "command";
-              command = "${contextSpillHook}";
-              timeout = 5;
-              statusMessage = "Protecting expensive-model context";
-            }
-          ];
-        }
-      ];
-    };
 
     # This remains deliberately shorter than the role TOMLs. State routing once and let each
     # named agent own its narrow behavior instead of repeating a second framework everywhere.
@@ -788,15 +803,41 @@ in
     '';
   };
 
-  # Current Home Manager exposes programs.codex.settings/context/profiles/skills/etc. but still
-  # has no dedicated programs.codex.agents option, so custom agents are managed as files.
+  # Keep CODEX_HOME/config.toml writable by Codex itself.
+  #
+  # - First install: seed it from codexInitialConfig.
+  # - Migration from the previous Home Manager setup: replace only a Nix-store-backed
+  #   config.toml symlink with a real writable file.
+  # - Existing real files are never overwritten, so TUI/Desktop changes persist.
+  home.activation.initializeMutableCodexConfig = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    codex_home=${lib.escapeShellArg codexHome}
+    config_file="$codex_home/config.toml"
+
+    ${pkgs.coreutils}/bin/mkdir -p "$codex_home"
+    ${pkgs.coreutils}/bin/chmod 700 "$codex_home"
+
+    if [ -L "$config_file" ]; then
+      target="$(${pkgs.coreutils}/bin/readlink -f "$config_file" || true)"
+      case "$target" in
+        /nix/store/*)
+          ${pkgs.coreutils}/bin/rm -f "$config_file"
+          ${pkgs.coreutils}/bin/install -m 0600 ${codexInitialConfig} "$config_file"
+          ;;
+      esac
+    elif [ ! -e "$config_file" ]; then
+      ${pkgs.coreutils}/bin/install -m 0600 ${codexInitialConfig} "$config_file"
+    fi
+  '';
+
+  # Home Manager 26.05 exposes programs.codex.settings/context/skills/rules, but not
+  # hooks or custom agents. Manage hooks.json and agents/*.toml as ordinary HM files.
   home.file = lib.mkMerge [
-    (lib.mkIf (!config.home.preferXdgDirectories) (mkAgentTargets ".codex"))
+    (lib.mkIf (!config.home.preferXdgDirectories) (mkCodexTargets ".codex"))
     {
       ".agents/skills/grill-me".source = inputs.skills + "/skills/productivity/grill-me";
       ".agents/skills/grilling".source = inputs.skills + "/skills/productivity/grilling";
     }
   ];
 
-  xdg.configFile = lib.mkIf config.home.preferXdgDirectories (mkAgentTargets "codex");
+  xdg.configFile = lib.mkIf config.home.preferXdgDirectories (mkCodexTargets "codex");
 }
