@@ -14,6 +14,7 @@
     "applications.java"
     "applications.opencode"
     "applications.vscode"
+    "applications.xcode"
     "applications.zed"
   ];
 }
