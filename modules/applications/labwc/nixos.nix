@@ -6,16 +6,11 @@
 }:
 let
   unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-  labwc = unstable.labwc.overrideAttrs (oldAttrs: {
-    patches = (oldAttrs.patches or [ ]) ++ [
-      ./patches/remove-ext-workspace-output-on-destroy.patch
-    ];
-  });
 in
 {
   programs.labwc = {
     enable = true;
-    package = labwc;
+    package = unstable.labwc;
   };
 
   xdg.portal.config.labwc.default = [
