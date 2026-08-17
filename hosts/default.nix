@@ -91,6 +91,9 @@
       "workload.game"
       "workload.personal"
     ];
+
+    # The VXE wireless mouse dongle is used only with this host.
+    units = [ "services.evremap" ];
   };
 
   galleria = {
