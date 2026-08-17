@@ -55,24 +55,6 @@ in
         hotkey-overlay.title = "Move Window to Monitor Down";
       };
 
-      "Mod+Tab" = {
-        repeat = false;
-        action.spawn = [
-          "window-overview"
-          "--hold"
-        ];
-        hotkey-overlay.title = "Window Overview: Next";
-      };
-      "Mod+Shift+Tab" = {
-        repeat = false;
-        action.spawn = [
-          "window-overview"
-          "--hold"
-          "--reverse"
-        ];
-        hotkey-overlay.title = "Window Overview: Previous";
-      };
-
       "Print".action.spawn = [
         "screenshot"
         "region"
