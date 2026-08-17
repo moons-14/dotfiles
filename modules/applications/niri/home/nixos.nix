@@ -151,13 +151,6 @@ in
         ];
         hotkey-overlay.title = "Find Cursor";
       };
-      "Ctrl+Space" = {
-        action.spawn = [
-          "handy"
-          "--toggle-transcription"
-        ];
-        hotkey-overlay.title = "Toggle Handy Transcription";
-      };
 
       # Function keys (sync with labwc modules/applications/labwc/home.nix)
       "XF86AudioRaiseVolume".action.spawn = [

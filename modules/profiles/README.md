@@ -63,13 +63,6 @@ enables performance improvements, synced lyrics, tracker blocking, the album
 color theme, and custom output-device selection while preserving user-owned
 settings such as the selected device.
 
-`workload.personal` also provides Handy for offline speech-to-text. It starts
-hidden when the graphical session begins. On niri and labwc, `Ctrl+Space` is
-owned by the compositor and invokes Handy's `--toggle-transcription` command;
-Handy's own shortcut bindings are disabled on NixOS so it does not monitor
-keyboard events under Wayland. Handy uses the Homebrew cask and starts at login
-on macOS.
-
 `workload.personal` provides ActivityWatch for local activity tracking. On
 NixOS, its server and Wayland-compatible watcher run as Home Manager user
 services. On macOS, the Homebrew cask starts at login.

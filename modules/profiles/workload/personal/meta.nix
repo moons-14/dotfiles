@@ -7,7 +7,6 @@
     "applications.chrome"
     "applications.discord"
     "applications.gnome-text-editor"
-    "applications.handy"
     "applications.kde"
     "applications.moonlight"
     "applications.slack"
