@@ -13,15 +13,6 @@ let
       --replace-fail "@codexbarPath@" "${lib.getExe codexbar}"
   '';
 
-  noctaliaPatched =
-    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-      (oldAttrs: {
-        patches = (oldAttrs.patches or [ ]) ++ [
-          ./patches/window-switcher-labwc.patch
-          ./patches/taskbar-overview-hook.patch
-        ];
-      });
-
   wallpapers = pkgs.fetchFromGitHub {
     owner = "moons-14";
     repo = "wallpapers";
@@ -51,7 +42,7 @@ in
   programs.noctalia = {
     enable = true;
 
-    package = noctaliaPatched;
+    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     systemd.enable = true;
 
