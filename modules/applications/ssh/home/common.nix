@@ -24,6 +24,9 @@ lib.mkMerge [
       };
 
       extraConfig = ''
+        Match exec "test -n \"$SSH_AUTH_SOCK\" && test -S \"$SSH_AUTH_SOCK\""
+          IdentityAgent $SSH_AUTH_SOCK
+
         Match exec "test -S %d/.1password/agent.sock"
           IdentityAgent %d/.1password/agent.sock
       '';
