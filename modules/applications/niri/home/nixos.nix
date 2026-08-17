@@ -24,6 +24,18 @@ in
         hotkey-overlay.title = "Focus Monitor Down";
       };
 
+      # Use the modifier combinations in the opposite direction from Niri's defaults.
+      "Mod+WheelScrollDown".action.focus-column-right = [ ];
+      "Mod+WheelScrollUp".action.focus-column-left = [ ];
+      "Mod+Shift+WheelScrollDown" = {
+        cooldown-ms = 150;
+        action.focus-workspace-down = [ ];
+      };
+      "Mod+Shift+WheelScrollUp" = {
+        cooldown-ms = 150;
+        action.focus-workspace-up = [ ];
+      };
+
       "Mod+Shift+Ctrl+Left" = {
         action.move-window-to-monitor-left = [ ];
         hotkey-overlay.title = "Move Window to Monitor Left";
