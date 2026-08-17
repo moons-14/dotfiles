@@ -10,6 +10,8 @@ in
   programs.vicinae = {
     enable = true;
 
+    enableChromeIntegration = false;
+
     settings = {
       font.size = 11;
       close_on_focus_loss = true;
