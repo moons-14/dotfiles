@@ -20,6 +20,7 @@
     "applications.dpms-off"
     "hardwares.graphics"
     "services.gvfs"
+    "services.evremap"
     "services.polkit-gnome"
     "systems.audio"
     "systems.fonts"
