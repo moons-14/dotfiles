@@ -102,8 +102,6 @@ in
           (action "W-q" "Close")
           (action "W-f" "ToggleMaximize")
           (action "W-c" "Iconify")
-          (execute "W-Tab" "window-overview")
-          (execute "W-S-Tab" "window-overview --reverse")
           (action "W-Up" "Lower")
           (action "W-Down" "Raise")
           (action "W-Left" "NextWindow")

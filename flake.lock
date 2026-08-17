@@ -1537,8 +1537,7 @@
         "systems": "systems_9",
         "treefmt-nix": "treefmt-nix_5",
         "vicinae": "vicinae",
-        "vicinae-extensions": "vicinae-extensions",
-        "window-overview": "window-overview"
+        "vicinae-extensions": "vicinae-extensions"
       }
     },
     "rust-overlay": {
@@ -2089,26 +2088,6 @@
       "original": {
         "owner": "vicinaehq",
         "repo": "vicinae",
-        "type": "github"
-      }
-    },
-    "window-overview": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786126873,
-        "narHash": "sha256-ALECKOKBXGfzfTkZuGIAKKwkFII3NWpf9mnmKIfGOG4=",
-        "owner": "moons-14",
-        "repo": "window-overview",
-        "rev": "7565da153bd7cb1bddce87c23667a41775f7ca74",
-        "type": "github"
-      },
-      "original": {
-        "owner": "moons-14",
-        "repo": "window-overview",
         "type": "github"
       }
     },

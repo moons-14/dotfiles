@@ -23,11 +23,6 @@
     # Desktop
     niri-flake.url = "github:sodiboo/niri-flake";
 
-    window-overview = {
-      url = "github:moons-14/window-overview";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-hazkey = {
       url = "github:aster-void/nix-hazkey";
       inputs.nixpkgs.follows = "nixpkgs";
