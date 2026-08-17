@@ -7,6 +7,8 @@ in
 
     binds = keybindings // {
       # niri window or focus move
+      "Mod+MouseMiddle".action.toggle-window-floating = [ ];
+
       "Mod+Shift+Left" = {
         action.focus-monitor-left = [ ];
         hotkey-overlay.title = "Focus Monitor Left";
