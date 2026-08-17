@@ -104,7 +104,6 @@
       "interface.cli"
       "interface.labwc"
       "interface.niri"
-      "interface.wallpaperengine"
       "networking.tailscale-client"
       "platform.intel-nvidia-desktop"
       "security.secrets"
