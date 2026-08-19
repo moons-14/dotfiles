@@ -4,15 +4,31 @@
   ...
 }:
 let
-  codexPackage = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
+  system = pkgs.stdenv.hostPlatform.system;
+  desktopPackage = inputs.codex-desktop-linux.packages.${system}.codex-desktop.override {
+    enableComputerUseUi = false;
+    linuxFeatureIds = [
+      "appshots"
+      "open-target-discovery"
+      "remote-mobile-control"
+    ];
+  };
+  bundledCodex = pkgs.writeShellScriptBin "codex" ''
+    exec ${desktopPackage}/opt/codex-desktop/resources/codex "$@"
+  '';
 in
 {
+  environment.systemPackages = [
+    pkgs.bubblewrap
+  ];
+
   programs.codexDesktopLinux = {
     enable = true;
-    cliPackage = codexPackage;
+    package = desktopPackage;
+    cliPackage = bundledCodex;
     remoteControl = {
       enable = true;
-      package = codexPackage;
+      package = bundledCodex;
     };
     remoteMobileControl.enable = true;
     computerUseUi.enable = false;
