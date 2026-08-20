@@ -157,7 +157,7 @@ in
         network-connection = {
           type = "custom_button";
           glyph = "access-point";
-          actions.left = "nm-connection-editor";
+          actions.left = "exec nm-connection-editor";
         };
         tray = {
           type = "tray";
