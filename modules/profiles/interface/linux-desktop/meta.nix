@@ -17,7 +17,6 @@
     "applications.qalculate-gtk"
     "applications.resources"
     "applications.vlc"
-    "applications.dpms-off"
     "hardwares.graphics"
     "services.gvfs"
     "services.evremap"

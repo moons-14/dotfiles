@@ -45,7 +45,7 @@ let
   '';
 
   suspend = pkgs.writeShellScript "swayidle-suspend" ''
-    if ${onBattery} || ${isLocked}; then
+    if ${onBattery}; then
       exec ${systemctl} suspend
     fi
   '';
