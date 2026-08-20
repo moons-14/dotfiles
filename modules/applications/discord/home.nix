@@ -1,6 +1,18 @@
-_: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   programs.vesktop = {
     enable = true;
+
+    package =
+      if pkgs.stdenv.hostPlatform.isLinux then
+        pkgs.vesktop.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ./vesktop-webrtc-ip-handling-policy.patch ];
+        })
+      else
+        pkgs.vesktop;
 
     settings = {
       discordBranch = "stable";
@@ -15,6 +27,10 @@ _: {
       arRPC = true;
 
       openLinksWithElectron = false;
+
+      # Keep WebRTC on interfaces used by the default route. Vesktop's default
+      # policy may select secondary private interfaces and stall at DTLS.
+      webRTCIPHandlingPolicy = "default_public_and_private_interfaces";
 
       spellCheckLanguages = [
         "ja-JP"
