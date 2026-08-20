@@ -15,6 +15,6 @@
     publicShare = "$HOME/Public";
     templates = "$HOME/Templates";
     videos = "$HOME/Videos";
-    projects = null;
+    projects = "$HOME/Projects";
   };
 }

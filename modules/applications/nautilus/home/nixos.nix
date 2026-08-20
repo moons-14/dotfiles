@@ -162,14 +162,6 @@ in
     "file://${config.home.homeDirectory}/Desktop Desktop"
     "file://${config.home.homeDirectory}/Pictures Pictures"
     "file://${config.home.homeDirectory}/Downloads Downloads"
-    "file://${config.home.homeDirectory}/projects projects"
+    "file://${config.home.homeDirectory}/Projects Projects"
   ];
-
-  home.activation.createProjectsDirectory = {
-    after = [ "writeBoundary" ];
-    before = [ ];
-    data = ''
-      $DRY_RUN_CMD mkdir -p "$HOME/projects"
-    '';
-  };
 }

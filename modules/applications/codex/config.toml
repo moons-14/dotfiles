@@ -8,9 +8,3 @@ web_search = "cached"
 
 [sandbox_workspace_write]
 network_access = false
-
-[projects."/home/moons/dotfiles"]
-trust_level = "trusted"
-
-[projects."/home/moons/projects/calendar"]
-trust_level = "trusted"
