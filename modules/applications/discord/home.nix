@@ -28,9 +28,9 @@
 
       openLinksWithElectron = false;
 
-      # Keep WebRTC on interfaces used by the default route. Vesktop's default
-      # policy may select secondary private interfaces and stall at DTLS.
-      webRTCIPHandlingPolicy = "default_public_and_private_interfaces";
+      # Keep WebRTC on the public interface selected by the default route.
+      # Secondary private interfaces can otherwise stall voice at DTLS.
+      webRTCIPHandlingPolicy = "default_public_interface_only";
 
       spellCheckLanguages = [
         "ja-JP"
