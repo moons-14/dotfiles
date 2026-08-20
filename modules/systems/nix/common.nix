@@ -13,6 +13,7 @@
       "https://moons-dotfiles.cachix.org"
       "https://noctalia.cachix.org"
       "https://vicinae.cachix.org"
+      "https://ghostty.cachix.org"
       "https://cache.numtide.com"
       "https://codex-desktop-linux.cachix.org"
     ];
@@ -23,6 +24,7 @@
       "moons-dotfiles.cachix.org-1:WHoroKiNScG2/dpxHHL1I0qVmvuQhJbEAP+DS2j9Rr0="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "codex-desktop-linux.cachix.org-1:nX/xy6AdK9hQE24A8ALGjkCKj2ObFmcnemiL5Cid4nk="
     ];

@@ -4,6 +4,11 @@
   ...
 }:
 {
+  # This desktop is permanently connected to AC power.
+  systemd.user.services.swayidle.Service.Environment = [
+    "SWAYIDLE_ASSUME_AC=1"
+  ];
+
   services.kanshi = {
     enable = true;
 

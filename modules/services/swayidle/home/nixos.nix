@@ -10,6 +10,8 @@ let
   brightnessState = "$XDG_RUNTIME_DIR/swayidle-brightness";
 
   onBattery = pkgs.writeShellScript "swayidle-on-battery" ''
+    [ "''${SWAYIDLE_ASSUME_AC:-0}" = 1 ] && exit 1
+
     for supply in /sys/class/power_supply/*; do
       [ -f "$supply/type" ] || continue
       [ "$(< "$supply/type")" = "Battery" ] || continue
@@ -45,7 +47,7 @@ let
   '';
 
   suspend = pkgs.writeShellScript "swayidle-suspend" ''
-    if ${onBattery}; then
+    if ${onBattery} || ${isLocked}; then
       exec ${systemctl} suspend
     fi
   '';
