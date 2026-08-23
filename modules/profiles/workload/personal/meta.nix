@@ -6,6 +6,7 @@
     "applications.activitywatch"
     "applications.chrome"
     "applications.discord"
+    "applications.ffmpeg"
     "applications.gnome-text-editor"
     "applications.kde"
     "applications.moonlight"
@@ -14,5 +15,6 @@
     "applications.obs"
     "applications.nani"
     "applications.thunderbird"
+    "applications.yt-dlp"
   ];
 }
