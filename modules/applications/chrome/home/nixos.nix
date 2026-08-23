@@ -3,8 +3,15 @@ _: {
     enable = true;
 
     commandLineArgs = [
-      "--enable-features=MiddleClickAutoscroll"
+      "--enable-features=MiddleClickAutoscroll,AcceleratedVideoDecoder,AcceleratedVideoDecodeLinuxGL,VaapiOnNvidiaGPUs,PlatformHEVCDecoderSupport"
+      "--use-gl=angle"
+      "--use-angle=gl"
     ];
+  };
+
+  home.sessionVariables = {
+    LIBVA_DRIVER_NAME = "nvidia";
+    NVD_BACKEND = "direct";
   };
 
   xdg.mimeApps = {
