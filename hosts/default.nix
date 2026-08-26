@@ -1,19 +1,4 @@
 {
-  nix-example = {
-    system = "x86_64-linux";
-    stateVersion = "26.05";
-    user = "moons";
-    path = ./nix-example;
-
-    profiles = [
-      "base"
-      "interface.cli"
-      "platform.vm"
-      "workload.development"
-      "workload.remote-access"
-    ];
-  };
-
   ops = {
     system = "x86_64-linux";
     stateVersion = "26.05";
@@ -28,17 +13,17 @@
     ];
   };
 
-  internal-app-01 = {
+  nix-builder = {
     system = "x86_64-linux";
     stateVersion = "26.05";
     user = "moons";
-    path = ./internal-app-01;
+    path = ./nix-builder;
 
     profiles = [
       "base"
       "interface.cli"
       "platform.vm"
-      "workload.server"
+      "workload.remote-access"
     ];
   };
 
