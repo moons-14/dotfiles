@@ -7,6 +7,8 @@
       "flakes"
     ];
 
+    connect-timeout = 10;
+
     extra-substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
