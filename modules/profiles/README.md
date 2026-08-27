@@ -40,6 +40,7 @@ required on every supported host.
 | `workload.game`                      | NixOS, macOS                                  |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
 | `workload.remote-access`             | NixOS, macOS                                  |
+| `workload.camera`                    | NixOS                                         |
 | `workload.server`                    | NixOS, macOS with Home Manager                |
 | `networking.tailscale-client`        | NixOS, macOS                                  |
 | `networking.tailscale-subnet-router` | NixOS                                         |

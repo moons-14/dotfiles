@@ -85,6 +85,7 @@
       "workload.development"
       "workload.game"
       "workload.personal"
+      "workload.camera"
     ];
   };
 

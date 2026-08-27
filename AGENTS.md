@@ -367,7 +367,9 @@ modules/profiles/
 │   ├── desktop/
 │   └── vm/
 ├── workload/
+│   ├── camera/
 │   ├── development/
+│   ├── game/
 │   ├── personal/
 │   ├── server/
 │   └── remote-access/
@@ -602,6 +604,7 @@ A host registry may use a specification like this:
       "security.secrets"
       "security.secure-boot"
       "security.tpm-storage"
+      "workload.camera"
       "workload.development"
       "workload.personal"
     ];
