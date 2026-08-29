@@ -1,6 +1,6 @@
 { lib, pkgs }:
 let
-  version = "0.46.0";
+  version = "0.56.0";
   architecture =
     if pkgs.stdenv.hostPlatform.isx86_64 then
       "x86_64"
@@ -10,8 +10,8 @@ let
       throw "CodexBar CLI is only packaged for x86_64-linux and aarch64-linux";
   hash =
     {
-      x86_64 = "sha256-yMrOpu1WIv2sGVgvY9qf2XCoX2AXMSqR2b8bQDRU6os=";
-      aarch64 = "sha256-pCp3NOlxFN6zeH67W04WGSPbUae+ktzR5vEunWqu00g=";
+      x86_64 = "sha256-hzCnAyiizm8ZDfE1ONEP6S2Pdnskclm+XdDBBhEYVqE=";
+      aarch64 = "sha256-vfcgDEFpORPymcRYmlqvsjhV4pU7lNC8Vd9FDPI9UjM=";
     }
     .${architecture};
 in
