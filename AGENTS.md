@@ -370,6 +370,7 @@ modules/profiles/
 │   ├── camera/
 │   ├── development/
 │   ├── game/
+│   ├── machine-learning/
 │   ├── personal/
 │   ├── server/
 │   └── remote-access/
@@ -627,6 +628,7 @@ A host registry may use a specification like this:
       "security.tpm-storage"
       "workload.development"
       "workload.game"
+      "workload.machine-learning"
       "workload.personal"
     ];
   };

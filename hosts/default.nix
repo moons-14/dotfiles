@@ -84,6 +84,7 @@
       "security.fingerprint"
       "workload.development"
       "workload.game"
+      "workload.machine-learning"
       "workload.personal"
       "workload.camera"
     ];

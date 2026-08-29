@@ -38,6 +38,7 @@ required on every supported host.
 | `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
 | `workload.development`               | NixOS, macOS with Home Manager                |
 | `workload.game`                      | NixOS, macOS                                  |
+| `workload.machine-learning`          | NixOS with Home Manager                       |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
 | `workload.remote-access`             | NixOS, macOS                                  |
 | `workload.camera`                    | NixOS                                         |
@@ -58,6 +59,9 @@ platform selects niri as Ly's default session, while the desktop platform
 selects labwc. A daily-use macOS development machine can combine
 `interface.macos`, `workload.development`, and `workload.personal`. Hardware
 support does not implicitly select an interface or workload.
+
+`workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
+to download and publish machine learning models and datasets.
 
 `workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
 enables performance improvements, synced lyrics, tracker blocking, the album
