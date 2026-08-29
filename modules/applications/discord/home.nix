@@ -1,18 +1,15 @@
 {
-  lib,
+  inputs,
   pkgs,
   ...
-}: {
+}:
+let
+  unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+{
   programs.vesktop = {
     enable = true;
-
-    package =
-      if pkgs.stdenv.hostPlatform.isLinux then
-        pkgs.vesktop.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ./vesktop-webrtc-ip-handling-policy.patch ];
-        })
-      else
-        pkgs.vesktop;
+    package = unstable.vesktop;
 
     settings = {
       discordBranch = "stable";

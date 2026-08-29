@@ -5,10 +5,7 @@
     modesetting.enable = true;
     open = true;
 
-    powerManagement = {
-      enable = true;
-      kernelSuspendNotifier = true;
-    };
+    powerManagement.enable = true;
 
     moduleParams.nvidia.NVreg_TemporaryFilePath = "/var/tmp";
 
