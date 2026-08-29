@@ -18,9 +18,7 @@ in
     enable = true;
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
 
-    # `grill-me` invokes the reusable `grilling` skill.
     skills = {
-      grill-me = inputs.skills + "/skills/productivity/grill-me";
       grilling = inputs.skills + "/skills/productivity/grilling";
     };
   };
