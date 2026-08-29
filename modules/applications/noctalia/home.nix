@@ -178,7 +178,7 @@ in
             "google-chrome"
             "code"
             "dev.zed.Zed"
-            "codex-desktop"
+            "chatgpt"
             "vesktop"
           ];
           show_all_outputs = true;
