@@ -38,8 +38,6 @@ in
 
     ignores = [
       ".direnv/"
-      ".envrc"
-      "!.envrc.example"
     ];
 
     signing = {
