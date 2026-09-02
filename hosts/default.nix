@@ -13,6 +13,20 @@
     ];
   };
 
+  ops = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./ops;
+
+    profiles = [
+      "base"
+      "interface.cli"
+      "platform.vm"
+      "workload.remote-access"
+    ];
+  };
+
   installer = {
     system = "x86_64-linux";
     stateVersion = "26.05";
