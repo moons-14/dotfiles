@@ -357,6 +357,7 @@ modules/profiles/
 │   ├── labwc/
 │   └── niri/
 ├── networking/
+│   ├── homelab-cache-client/
 │   ├── tailscale-client/
 │   └── tailscale-subnet-router/
 ├── platform/
@@ -371,6 +372,7 @@ modules/profiles/
 │   ├── development/
 │   ├── game/
 │   ├── machine-learning/
+│   ├── nix-builder/
 │   ├── personal/
 │   ├── server/
 │   └── remote-access/

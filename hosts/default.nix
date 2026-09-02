@@ -8,7 +8,9 @@
     profiles = [
       "base"
       "interface.cli"
+      "networking.tailscale-client"
       "platform.vm"
+      "workload.nix-builder"
       "workload.remote-access"
     ];
   };

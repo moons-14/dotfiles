@@ -39,10 +39,12 @@ required on every supported host.
 | `workload.development`               | NixOS, macOS with Home Manager                |
 | `workload.game`                      | NixOS, macOS                                  |
 | `workload.machine-learning`          | NixOS with Home Manager                       |
+| `workload.nix-builder`               | NixOS central build and binary-cache VM       |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
 | `workload.remote-access`             | NixOS, macOS                                  |
 | `workload.camera`                    | NixOS                                         |
 | `workload.server`                    | NixOS, macOS with Home Manager                |
+| `networking.homelab-cache-client`    | NixOS, macOS with access to nix-builder       |
 | `networking.tailscale-client`        | NixOS, macOS                                  |
 | `networking.tailscale-subnet-router` | NixOS                                         |
 | `security.fingerprint`               | NixOS, macOS                                  |
@@ -62,6 +64,14 @@ support does not implicitly select an interface or workload.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
+
+`workload.nix-builder` provides the central build policy, persistent fleet GC
+roots, deploy-rs tooling, SOPS integration, and Harmonia binary cache. Network
+reachability and remote shell access remain independent host selections.
+
+`networking.homelab-cache-client` adds the internal Harmonia substituter and
+its trusted public key. It requires the public key generated during
+`hosts/nix-builder/README.md` bootstrap.
 
 `workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
 enables performance improvements, synced lyrics, tracker blocking, the album
