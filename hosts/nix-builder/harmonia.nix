@@ -4,9 +4,6 @@
 }:
 
 {
-  sops.secrets.nix-cache-signing-key = {
-    mode = "0400";
-  };
 
   nix.settings = {
     build-dir = "/var/lib/nix-build";
