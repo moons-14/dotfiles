@@ -36,6 +36,7 @@ required on every supported host.
 | `platform.laptop`                    | Physical NixOS laptop                         |
 | `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS               |
 | `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
+| `workload.deploy-rs-target`          | NixOS                                         |
 | `workload.development`               | NixOS, macOS with Home Manager                |
 | `workload.game`                      | NixOS, macOS                                  |
 | `workload.machine-learning`          | NixOS with Home Manager                       |
@@ -62,6 +63,10 @@ support does not implicitly select an interface or workload.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
+
+`workload.deploy-rs-target` enables OpenSSH and provisions the `nixdeploy`
+service account with the narrowly scoped passwordless commands required for
+deploy-rs activation and rollback confirmation.
 
 `workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
 enables performance improvements, synced lyrics, tracker blocking, the album

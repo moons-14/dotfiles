@@ -7,6 +7,10 @@
       "flakes"
     ];
 
+    extra-allowed-users = [
+      "nixdeploy"
+    ];
+
     connect-timeout = 10;
 
     extra-substituters = [
@@ -31,6 +35,7 @@
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "codex-desktop-linux.cachix.org-1:nX/xy6AdK9hQE24A8ALGjkCKj2ObFmcnemiL5Cid4nk="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "nix-builder-1:nix-builder-1:aG/Y2Lac517isxGO+ZYdVgglj/SI54PkkWoZTQI9aOI="
     ];
   };
 }
