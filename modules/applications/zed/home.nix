@@ -5,6 +5,7 @@
       "catppuccin"
       "nix"
       "dockerfile"
+      "terraform"
     ];
     mutableUserSettings = false;
     mutableUserKeymaps = false;
