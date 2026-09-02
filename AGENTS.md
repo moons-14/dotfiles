@@ -653,7 +653,8 @@ A host registry may use a specification like this:
 
 The current role assignment is intentional: nix-example is the development VM;
 ops is the remote-access VM with host-specific static networking;
-internal-app-01 is the container server VM; and installer builds the minimal
+internal-app-01 is the container server VM; nix-builder is the remote Nix build
+VM with dedicated build and store disks; and installer builds the minimal
 installation ISO without Home Manager. x1g9 is a full NixOS desktop with niri,
 labwc, ly, the shared Linux desktop applications, and the personal workload.
 x1g13 is the secure NixOS development and personal ThinkPad, with the same
@@ -692,6 +693,10 @@ configuration fragments. For example:
 
 ```text
 hosts/
+├── nix-builder/
+│   ├── disko.nix
+│   ├── hardware-configuration.nix
+│   └── nixos.nix
 ├── installer/
 │   └── nixos.nix
 ├── internal-app-01/
@@ -721,12 +726,15 @@ hosts/
 ```
 
 `hosts/x1g9/nixos.nix` explicitly loads `hardware-configuration.nix` with the
-normal top-level Nix module `imports`. `hosts/x1g13/nixos.nix` loads its
-generated hardware configuration and host-local `disko.nix` the same way. Do
-not confuse these host imports with the prohibition on top-level `imports` in
-unit configuration fragments. `hosts/galleria/disko.nix` manages only the two
-dedicated NixOS partitions by PARTUUID and deliberately excludes the Windows
-disk, Windows partitions, and the Windows EFI System Partition.
+normal top-level Nix module `imports`. `hosts/nix-builder/nixos.nix` and
+`hosts/x1g13/nixos.nix` load their generated hardware configuration and
+host-local `disko.nix` the same way. The nix-builder Disko definition mounts its
+existing VM filesystems by stable QEMU SCSI IDs and does not take destructive
+ownership of them. Do not confuse these host imports with the prohibition on
+top-level `imports` in unit configuration fragments. `hosts/galleria/disko.nix`
+manages only the two dedicated NixOS partitions by PARTUUID and deliberately
+excludes the Windows disk, Windows partitions, and the Windows EFI System
+Partition.
 
 Derive the system class from the host's `system`:
 
