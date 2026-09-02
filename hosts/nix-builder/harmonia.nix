@@ -1,4 +1,6 @@
-_:
+{
+  lib,
+}:
 
 {
   sops.secrets.nix-cache-signing-key = {
@@ -12,7 +14,7 @@ _:
       "/var/lib/secrets/nix-cache-signing-key"
     ];
 
-    auto-optimise-store = false;
+    auto-optimise-store = lib.mkForce false;
     keep-outputs = false;
     keep-derivations = true;
   };
