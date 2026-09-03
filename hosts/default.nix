@@ -24,6 +24,7 @@
       "interface.minimal"
       "platform.vm"
       "workload.remote-access"
+      "workload.deploy-rs-target"
     ];
   };
 
