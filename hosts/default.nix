@@ -7,7 +7,7 @@
 
     profiles = [
       "base"
-      "interface.cli"
+      "interface.minimal"
       "platform.vm"
       "workload.remote-access"
     ];
@@ -21,7 +21,7 @@
 
     profiles = [
       "base"
-      "interface.cli"
+      "interface.minimal"
       "platform.vm"
       "workload.remote-access"
     ];

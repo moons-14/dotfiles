@@ -351,6 +351,7 @@ modules/profiles/
 ├── base/
 ├── interface/
 │   ├── cli/
+│   ├── minimal/
 │   ├── gui/
 │   ├── macos/
 │   ├── linux-desktop/
@@ -393,11 +394,14 @@ The profile layers have these responsibilities:
 - `base` contains only invariants required by every supported host. It includes
   `systems.nix` and the universal Atuin, tealdeer, trippy, and xh CLI tools;
   optional secrets, interface, hardware, and workloads do not belong there.
-- `interface` describes how the host is operated. `interface.cli` is shared by
-  NixOS and macOS and includes `tio`. `interface.gui` owns cross-platform
-  graphical interface applications such as Vicinae. `interface.macos` owns the
-  macOS Finder, Dock, trackpad, and shared default preferences and includes
-  `interface.gui`.
+- `interface` describes how the host is operated. `interface.minimal` is shared
+  by NixOS and macOS and provides the remote-administration CLI baseline,
+  including SSH, Nano, htop, Git, Zellij, and Zsh. `interface.cli` includes that
+  baseline and adds the full interactive command-line environment, including
+  the configured Neovim, Yazi, and `tio`. `interface.gui` owns
+  cross-platform graphical interface applications such as Vicinae.
+  `interface.macos` owns the macOS Finder, Dock, trackpad, and shared default
+  preferences and includes `interface.gui`.
   `interface.linux-desktop` owns the common labwc/niri desktop selection,
   including Ghostty and Nautilus, and also includes `interface.gui`. Labwc and
   niri remain independently selectable and do not imply CLI or personal
@@ -542,7 +546,7 @@ A host registry may use a specification like this:
 
     profiles = [
       "base"
-      "interface.cli"
+      "interface.minimal"
       "platform.vm"
       "workload.remote-access"
     ];
@@ -556,7 +560,7 @@ A host registry may use a specification like this:
 
     profiles = [
       "base"
-      "interface.cli"
+      "interface.minimal"
       "platform.vm"
       "workload.server"
     ];
@@ -653,10 +657,11 @@ A host registry may use a specification like this:
 ```
 
 The current role assignment is intentional: nix-example is the development VM;
-ops is the remote-access VM with host-specific static networking;
-internal-app-01 is the container server VM; nix-builder is the remote Nix build
-VM with dedicated build and store disks; and installer builds the minimal
-installation ISO without Home Manager. x1g9 is a full NixOS desktop with niri,
+ops is the minimal-interface remote-access VM with host-specific static
+networking; internal-app-01 is the minimal-interface container server VM;
+nix-builder is the minimal-interface remote Nix build VM with dedicated build
+and store disks; and installer builds the minimal installation ISO without Home
+Manager. x1g9 is a full NixOS desktop with niri,
 labwc, ly, the shared Linux desktop applications, and the personal workload.
 x1g13 is the secure NixOS development and personal ThinkPad, with the same
 desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk

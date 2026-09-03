@@ -24,6 +24,7 @@ required on every supported host.
 | Profile                              | Supported host class                          |
 | ------------------------------------ | --------------------------------------------- |
 | `base`                               | NixOS, macOS                                  |
+| `interface.minimal`                  | NixOS, macOS with Home Manager                |
 | `interface.cli`                      | NixOS, macOS with Home Manager                |
 | `interface.gui`                      | NixOS, macOS with Home Manager                |
 | `interface.macos`                    | macOS                                         |
@@ -60,6 +61,11 @@ platform selects niri as Ly's default session, while the desktop platform
 selects labwc. A daily-use macOS development machine can combine
 `interface.macos`, `workload.development`, and `workload.personal`. Hardware
 support does not implicitly select an interface or workload.
+
+`interface.minimal` provides SSH client access and key generation, Nano, htop,
+btop, fastfetch, unzip, wget, Direnv, Git, GnuPG, nh, Zellij, and Zsh for remote
+administration. `interface.cli` includes that baseline and adds the configured
+Neovim, Yazi, and the remaining interactive command-line tools.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
