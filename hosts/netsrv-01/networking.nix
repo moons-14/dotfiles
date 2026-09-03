@@ -20,6 +20,16 @@
           }
         ];
       };
+
+      ens20 = {
+        useDHCP = false;
+        ipv4.addresses = [
+          {
+            address = "10.50.77.21";
+            prefixLength = 24;
+          }
+        ];
+      };
     };
 
     defaultGateway = {
