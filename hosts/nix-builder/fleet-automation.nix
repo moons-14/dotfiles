@@ -45,12 +45,13 @@ in
       WorkingDirectory = stateDirectory;
       UMask = "0077";
       ExecCondition = cleanCheckoutConditions;
+      EnvironmentFile = "${fleetDirectory}/.env";
 
       # Work in a disposable copy so updating the dotfiles lock never dirties
       # the operator's nix-fleet checkout.
       ExecStart = [
         "${git} -C ${fleetDirectory} pull --ff-only"
-        "${rsync} --archive --delete --exclude=.git/ --exclude=.direnv/ --exclude=result --exclude=result-* ${fleetDirectory}/ ${sourceDirectory}/"
+        "${rsync} --archive --delete --exclude=.git/ --exclude=.direnv/ --exclude=.env --exclude=result --exclude=result-* ${fleetDirectory}/ ${sourceDirectory}/"
         "${nix} flake update --flake ${sourceDirectory} dotfiles"
         "${nix} run ${sourceDirectory}#converge -- ${sourceDirectory} ${stateDirectory}"
       ];
