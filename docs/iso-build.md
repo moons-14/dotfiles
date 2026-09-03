@@ -70,7 +70,10 @@ ssh root@<ip-address>
 
 root のパスワードログインとキーボード対話認証は無効で、
 `hosts/installer/nixos.nix` に登録された公開鍵だけが利用できる。
-以降の作業は [NixOS インストール手順](install.md) を参照する。
+以降の作業は、構成に応じて次の手順を参照する：
+
+- [SOPSなし・ディスク暗号化なし](install-simple.md)
+- [SOPS・ディスク暗号化あり](install.md)
 
 ## ISO に含まれる主な設定とツール
 

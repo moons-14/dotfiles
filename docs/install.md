@@ -1,4 +1,10 @@
-# NixOSインストール手順
+# NixOSインストール手順（SOPS・ディスク暗号化あり）
+
+この手順は、SOPSによるシークレット管理とLUKSによるディスク暗号化を
+使用するホスト向けである。
+
+どちらも使用しない場合は、
+[SOPSなし・ディスク暗号化なしの手順](install-simple.md)を参照。
 
 ## 事前準備
 
@@ -83,54 +89,36 @@ sops updatekeys secrets/hosts/<hostname>/*.yaml
 
 新しいホスト用の`hosts/<hostname>/disko.nix`を作成。
 
-#### シンプル構成（暗号化なし）
-
-```nix
-_:
-{
-  disko.enableConfig = true;
-
-  disko.devices.disk.main = {
-    type = "disk";
-    device = "/dev/sda";
-    content = {
-      type = "gpt";
-      partitions = {
-        ESP = {
-          size = "512M";
-          type = "EF00";
-          content = {
-            type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot";
-          };
-        };
-        root = {
-          size = "100%";
-          content = {
-            type = "filesystem";
-            format = "ext4";
-            mountpoint = "/";
-          };
-        };
-      };
-    };
-  };
-}
-```
-
-#### LUKS暗号化 + btrfs
-
-`hosts/x1g13/disko.nix`を参照。
+LUKS暗号化とbtrfsの構成は`hosts/x1g13/disko.nix`を参照。
 
 ### 7. ディスクのパーティション
 
 ```bash
 cd ~/dotfiles
-nix run github:nix-community/disko -- --mode disko hosts/<hostname>/disko.nix
+disko --mode destroy,format,mount hosts/<hostname>/disko.nix
 ```
 
-### 8. ホストキーのコピー
+### 8. ハードウェア設定の生成
+
+対象マシンのハードウェア設定を生成し、新しいホストのディレクトリへ直接保存：
+
+```bash
+nixos-generate-config --no-filesystems --root /mnt --show-hardware-config \
+  > ~/dotfiles/hosts/<hostname>/hardware-configuration.nix
+```
+
+`hosts/<hostname>/nixos.nix`から生成した設定とDisko設定を読み込む：
+
+```nix
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+  ];
+}
+```
+
+### 9. ホストキーのコピー
 
 ```bash
 mkdir -p /mnt/etc/ssh
@@ -138,13 +126,13 @@ cp /tmp/ssh_host_ed25519_key* /mnt/etc/ssh/
 chmod 600 /mnt/etc/ssh/ssh_host_ed25519_key
 ```
 
-### 9. NixOSインストール
+### 10. NixOSインストール
 
 ```bash
 nixos-install --flake ~/dotfiles#<hostname>
 ```
 
-### 10. 再起動
+### 11. 再起動
 
 ```bash
 reboot

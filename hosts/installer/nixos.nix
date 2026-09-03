@@ -76,6 +76,12 @@
     ║                                                              ║
     ║  Installation Workflow:                                      ║
     ║                                                              ║
+    ║  Choose a guide after cloning:                               ║
+    ║    Simple: docs/install-simple.md                            ║
+    ║    SOPS + LUKS: docs/install.md                              ║
+    ║                                                              ║
+    ║  The workflow below is for SOPS + LUKS:                      ║
+    ║                                                              ║
     ║  1. Clone dotfiles:                                          ║
     ║     git clone git@github.com:moons-14/dotfiles.git ~/dotfiles║
     ║                                                              ║
@@ -103,37 +109,25 @@
     ║     # See hosts/x1g13/disko.nix for reference                ║
     ║                                                              ║
     ║  7. Partition disk with disko:                               ║
-    ║     nix run github:nix-community/disko -- \                  ║
-    ║       --mode disko hosts/<host>/disko.nix                    ║
+    ║     disko --mode destroy,format,mount \                      ║
+    ║       hosts/<host>/disko.nix                                 ║
     ║                                                              ║
-    ║  8. Copy host key to installed system:                       ║
+    ║  8. Generate hardware configuration:                         ║
+    ║     nixos-generate-config --no-filesystems --root /mnt \     ║
+    ║       --show-hardware-config > \                             ║
+    ║       ~/dotfiles/hosts/<host>/hardware-configuration.nix     ║
+    ║     # Import hardware-configuration.nix and disko.nix        ║
+    ║     # from hosts/<host>/nixos.nix                            ║
+    ║                                                              ║
+    ║  9. Copy host key to installed system:                       ║
     ║     mkdir -p /mnt/etc/ssh                                    ║
     ║     cp /tmp/ssh_host_ed25519_key* /mnt/etc/ssh/              ║
     ║     chmod 600 /mnt/etc/ssh/ssh_host_ed25519_key              ║
     ║                                                              ║
-    ║  9. Install NixOS:                                           ║
+    ║  10. Install NixOS:                                          ║
     ║     nixos-install --flake ~/dotfiles#<host>                  ║
     ║                                                              ║
-    ║  Disko Configuration Examples:                               ║
-    ║                                                              ║
-    ║  Simple (no encryption):                                     ║
-    ║    disko.devices.disk.main = {                               ║
-    ║      type = "disk";                                          ║
-    ║      device = "/dev/sda";                                    ║
-    ║      content = {                                             ║
-    ║        type = "gpt";                                         ║
-    ║        partitions = {                                        ║
-    ║          ESP = { size = "512M"; type = "EF00";              ║
-    ║            content = { type = "filesystem";                  ║
-    ║              format = "vfat"; mountpoint = "/boot"; }; };   ║
-    ║          root = { size = "100%";                             ║
-    ║            content = { type = "filesystem";                  ║
-    ║              format = "ext4"; mountpoint = "/"; }; };       ║
-    ║        };                                                    ║
-    ║      };                                                      ║
-    ║    };                                                        ║
-    ║                                                              ║
-    ║  LUKS + btrfs (see hosts/x1g13/disko.nix):                  ║
+    ║  LUKS + btrfs (see hosts/x1g13/disko.nix):                   ║
     ║    - Use partuuid for device path                            ║
     ║    - Set askPassword = true for LUKS                         ║
     ║    - Configure btrfs subvolumes                              ║
