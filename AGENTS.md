@@ -549,6 +549,23 @@ A host registry may use a specification like this:
       "interface.minimal"
       "platform.vm"
       "workload.remote-access"
+      "workload.deploy-rs-target"
+    ];
+  };
+
+  netsrv-01 = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./netsrv-01;
+
+    profiles = [
+      "base"
+      "interface.minimal"
+      "platform.vm"
+      "workload.remote-access"
+      "workload.deploy-rs-target"
+      "workload.server"
     ];
   };
 
@@ -658,7 +675,8 @@ A host registry may use a specification like this:
 
 The current role assignment is intentional: nix-example is the development VM;
 ops is the minimal-interface remote-access VM with host-specific static
-networking; internal-app-01 is the minimal-interface container server VM;
+networking; netsrv-01 is the deploy-rs-managed container server VM;
+internal-app-01 is the minimal-interface container server VM;
 nix-builder is the minimal-interface remote Nix build VM with dedicated build
 and store disks; and installer builds the minimal installation ISO without Home
 Manager. x1g9 is a full NixOS desktop with niri,
@@ -702,6 +720,11 @@ hosts/
 ├── nix-builder/
 │   ├── disko.nix
 │   ├── hardware-configuration.nix
+│   └── nixos.nix
+├── netsrv-01/
+│   ├── disko.nix
+│   ├── hardware-configuration.nix
+│   ├── networking.nix
 │   └── nixos.nix
 ├── installer/
 │   └── nixos.nix
@@ -843,8 +866,9 @@ For profile changes, additionally:
   `homebrew.casks` selection as well as module evaluation.
 - Preserve the intended host roles: nix-example remains the development VM;
   ops remains the statically networked remote-access VM; internal-app-01 remains
-  the container server VM; installer remains the Home Manager-free installation
-  ISO; x1g9 provides niri, labwc, ly, and the personal application set; x1g13
+  the container server VM; netsrv-01 remains the deploy-rs-managed container
+  server VM; installer remains the Home Manager-free installation ISO; x1g9
+  provides niri, labwc, ly, and the personal application set; x1g13
   additionally provides the development, Tailscale client, secrets, Secure Boot,
   and TPM storage roles; galleria remains the Intel/NVIDIA dual-boot desktop
   with LUKS, Secure Boot, and TPM storage; m2 remains the daily-use development

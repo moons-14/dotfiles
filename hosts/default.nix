@@ -28,6 +28,22 @@
     ];
   };
 
+  netsrv-01 = {
+    system = "x86_64-linux";
+    stateVersion = "26.05";
+    user = "moons";
+    path = ./netsrv-01;
+
+    profiles = [
+      "base"
+      "interface.minimal"
+      "platform.vm"
+      "workload.remote-access"
+      "workload.deploy-rs-target"
+      "workload.server"
+    ];
+  };
+
   installer = {
     system = "x86_64-linux";
     stateVersion = "26.05";
