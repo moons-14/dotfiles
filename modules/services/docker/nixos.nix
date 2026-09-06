@@ -1,5 +1,7 @@
-{ primaryUser, ... }:
+{ config, primaryUser, ... }:
 {
+  hardware.nvidia-container-toolkit.enable = config.my.hardwares.nvidia.enable;
+
   virtualisation.docker = {
     enable = true;
     autoPrune = {
