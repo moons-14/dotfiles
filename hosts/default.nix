@@ -117,6 +117,7 @@
       "workload.game"
       "workload.machine-learning"
       "workload.personal"
+      "workload.photography"
       "workload.camera"
     ];
   };

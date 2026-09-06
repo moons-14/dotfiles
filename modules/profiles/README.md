@@ -42,6 +42,7 @@ required on every supported host.
 | `workload.game`                      | NixOS, macOS                                  |
 | `workload.machine-learning`          | NixOS with Home Manager                       |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
+| `workload.photography`               | NixOS with Home Manager                       |
 | `workload.remote-access`             | NixOS, macOS                                  |
 | `workload.camera`                    | NixOS                                         |
 | `workload.server`                    | NixOS, macOS with Home Manager                |
@@ -69,6 +70,12 @@ Neovim, Yazi, and the remaining interactive command-line tools.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
+
+`workload.photography` provides darktable with AI support from the locked
+unstable package set. Its ONNX Runtime uses CUDA when the NVIDIA hardware unit
+is enabled, and CPU inference otherwise. Keep the default CUDA capabilities
+and forward compatibility to reuse the CUDA binary cache; these targets include
+galleria's RTX 3060 Ti. OpenCL drivers remain owned by hardware units.
 
 `workload.deploy-rs-target` enables OpenSSH and provisions the `nixdeploy`
 service account with the narrowly scoped passwordless commands required for

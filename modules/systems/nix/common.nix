@@ -23,6 +23,7 @@
       "https://cache.numtide.com"
       "https://codex-desktop-linux.cachix.org"
       "https://cuda-maintainers.cachix.org"
+      "https://cache.nixos-cuda.org"
     ];
 
     extra-trusted-public-keys = [
@@ -35,6 +36,7 @@
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "codex-desktop-linux.cachix.org-1:nX/xy6AdK9hQE24A8ALGjkCKj2ObFmcnemiL5Cid4nk="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
       "nix-builder-1:aG/Y2Lac517isxGO+ZYdVgglj/SI54PkkWoZTQI9aOI="
     ];
   };

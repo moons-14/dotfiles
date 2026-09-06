@@ -374,6 +374,7 @@ modules/profiles/
 │   ├── game/
 │   ├── machine-learning/
 │   ├── personal/
+│   ├── photography/
 │   ├── server/
 │   └── remote-access/
 └── security/
@@ -652,6 +653,7 @@ A host registry may use a specification like this:
       "workload.game"
       "workload.machine-learning"
       "workload.personal"
+      "workload.photography"
     ];
   };
 
@@ -685,6 +687,9 @@ x1g13 is the secure NixOS development and personal ThinkPad, with the same
 desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk
 unlock. galleria is the Intel/NVIDIA physical desktop shared with Windows; it
 uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
+It selects `workload.photography` for AI-enabled darktable. The application
+chooses CUDA support from the NVIDIA hardware unit's enable state and keeps
+the default CUDA targets, including RTX 3060 Ti support, to reuse binary caches.
 m2 is the daily-use macOS development and personal machine with the macOS
 interface defaults. Keep the desktop sessions independently selectable, and
 keep the development and personal profiles usable across NixOS and Darwin.
