@@ -15,6 +15,8 @@
       ripgrep
       tio
       unrar
+      traceroute
+      tcpdump
     ]
     ++ lib.optionals stdenv.isLinux [
       lm_sensors
