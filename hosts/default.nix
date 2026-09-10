@@ -91,6 +91,7 @@
       "security.tpm-storage"
       "workload.development"
       "workload.game"
+      "workload.network-lab"
       "workload.personal"
     ];
 
@@ -116,6 +117,7 @@
       "workload.development"
       "workload.game"
       "workload.machine-learning"
+      "workload.network-lab"
       "workload.personal"
       "workload.photography"
       "workload.camera"

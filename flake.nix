@@ -114,6 +114,7 @@
 
     nani-translate-linux.url = "git+https://github.com/zunoser/nani-translate-linux.git";
 
+    containerlab.url = "github:srl-labs/containerlab";
   };
 
   outputs =

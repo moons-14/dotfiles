@@ -1,0 +1,3 @@
+{
+  programs.containerlab.enable = true;
+}
