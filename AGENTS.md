@@ -408,6 +408,8 @@ The profile layers have these responsibilities:
   niri remain independently selectable and do not imply CLI or personal
   workloads.
 - `platform` describes NixOS foundations and physical or virtual form factors.
+  `platform.nixos` selects the shared network foundation and `services.clatd`;
+  VM, laptop, and desktop platform profiles inherit both.
   macOS does not need an empty symmetric platform profile.
 - `workload` describes optional host uses. `workload.development` and
   `workload.personal` are cross-platform profiles, not `*-linux` variants.

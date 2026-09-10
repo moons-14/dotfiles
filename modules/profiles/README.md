@@ -63,6 +63,9 @@ selects labwc. A daily-use macOS development machine can combine
 `interface.macos`, `workload.development`, and `workload.personal`. Hardware
 support does not implicitly select an interface or workload.
 
+`platform.nixos` selects the shared network foundation and the clatd service.
+VM, laptop, and desktop platform profiles inherit both.
+
 `interface.minimal` provides SSH client access and key generation, Nano, htop,
 btop, fastfetch, unzip, wget, Direnv, Git, GnuPG, nh, Zellij, and Zsh for remote
 administration. `interface.cli` includes that baseline and adds the configured
