@@ -15,15 +15,6 @@ let
   nanokvm-usb = pkgs.appimageTools.wrapType2 {
     inherit pname src version;
 
-    extraInstallCommands = ''
-      install -m 444 -D ${appimageContents}/nanokvm-usb.desktop \
-        $out/share/applications/nanokvm-usb.desktop
-      install -m 444 -D ${appimageContents}/nanokvm-usb.png \
-        $out/share/icons/hicolor/512x512/apps/nanokvm-usb.png
-      substituteInPlace $out/share/applications/nanokvm-usb.desktop \
-        --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=nanokvm-usb --no-sandbox %U'
-    '';
-
     meta = {
       description = "Sipeed NanoKVM-USB desktop client";
       homepage = "https://github.com/sipeed/NanoKVM-USB";
@@ -32,7 +23,20 @@ let
       mainProgram = "nanokvm-usb";
     };
   };
+
+  desktopItem = pkgs.makeDesktopItem {
+    name = pname;
+    desktopName = "NanoKVM-USB";
+    comment = "NanoKVM-USB Desktop";
+    exec = "nanokvm-usb --no-sandbox %U";
+    icon = "${appimageContents}/nanokvm-usb.png";
+    categories = [ "Utility" ];
+    startupWMClass = "NanoKVM-USB";
+  };
 in
 {
-  environment.systemPackages = [ nanokvm-usb ];
+  environment.systemPackages = [
+    nanokvm-usb
+    desktopItem
+  ];
 }
