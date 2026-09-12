@@ -17,6 +17,8 @@
       unrar
       traceroute
       tcpdump
+      iw
+      nmap
     ]
     ++ lib.optionals stdenv.isLinux [
       lm_sensors
