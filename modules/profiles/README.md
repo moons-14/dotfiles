@@ -75,8 +75,9 @@ Neovim, Yazi, and the remaining interactive command-line tools.
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
 
-`workload.network-lab` provides containerlab using its upstream NixOS module
-and the Docker service. It is selected by galleria and x1g13.
+`workload.network-lab` provides containerlab using its upstream NixOS module,
+the Docker service, and the NanoKVM-USB desktop client with serial-port access.
+It is selected by galleria and x1g13.
 
 `workload.photography` provides darktable with AI support from the locked
 unstable package set. Its ONNX Runtime uses CUDA when the NVIDIA hardware unit

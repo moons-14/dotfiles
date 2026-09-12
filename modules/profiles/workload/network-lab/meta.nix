@@ -1,5 +1,8 @@
 {
-  description = "Container-based network lab environment";
+  description = "Network lab and hardware console environment";
 
-  includes = [ "applications.containerlab" ];
+  includes = [
+    "applications.containerlab"
+    "applications.nanokvm-usb"
+  ];
 }

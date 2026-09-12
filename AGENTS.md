@@ -695,7 +695,8 @@ uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
 It selects `workload.photography` for AI-enabled darktable. The application
 chooses CUDA support from the NVIDIA hardware unit's enable state and keeps
 the default CUDA targets, including RTX 3060 Ti support, to reuse binary caches.
-galleria and x1g13 select `workload.network-lab` for containerlab and Docker.
+galleria and x1g13 select `workload.network-lab` for containerlab, Docker, and
+the NanoKVM-USB desktop client with serial-port access.
 m2 is the daily-use macOS development and personal machine with the macOS
 interface defaults. Keep the desktop sessions independently selectable, and
 keep the development and personal profiles usable across NixOS and Darwin.
