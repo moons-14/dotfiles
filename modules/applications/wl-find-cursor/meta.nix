@@ -1,3 +1,0 @@
-{
-  description = "Wayland cursor locator";
-}

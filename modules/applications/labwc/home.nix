@@ -127,7 +127,6 @@ in
           (execute "W-C-j" "${lib.getExe' pkgs.xdg-utils "xdg-open"} naniapp://translate")
           (execute "W-space" "ghostty +toggle-quick-terminal")
           (execute "W-p" "wdisplays")
-          (execute "W-z" "wl-find-cursor -c 0xCCFF453A -s 160 -d 1200")
 
           # Function keys (sync with niri modules/applications/niri/home.nix)
           (execute "XF86AudioRaiseVolume" "noctalia msg volume-up")
