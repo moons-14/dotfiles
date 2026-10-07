@@ -89,6 +89,9 @@ galleria's RTX 3060 Ti. OpenCL drivers remain owned by hardware units.
 service account with the narrowly scoped passwordless commands required for
 deploy-rs activation and rollback confirmation.
 
+`workload.personal` provides Chrome and Firefox on both NixOS and macOS.
+Firefox uses Home Manager on NixOS and a Homebrew cask on macOS.
+
 `workload.personal` provides Pear Desktop on both NixOS and macOS. Home Manager
 enables performance improvements, synced lyrics, tracker blocking, the album
 color theme, and custom output-device selection while preserving user-owned

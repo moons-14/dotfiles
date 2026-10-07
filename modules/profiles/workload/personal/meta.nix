@@ -7,6 +7,7 @@
     "applications.chrome"
     "applications.discord"
     "applications.ffmpeg"
+    "applications.firefox"
     "applications.gnome-text-editor"
     "applications.kde"
     "applications.moonlight"

@@ -697,6 +697,8 @@ chooses CUDA support from the NVIDIA hardware unit's enable state and keeps
 the default CUDA targets, including RTX 3060 Ti support, to reuse binary caches.
 galleria and x1g13 select `workload.network-lab` for containerlab, Docker, and
 the NanoKVM-USB desktop client with serial-port access.
+`workload.personal` selects Chrome and Firefox for x1g9, x1g13, galleria, and
+m2. Firefox uses Home Manager on NixOS and a Homebrew cask on macOS.
 m2 is the daily-use macOS development and personal machine with the macOS
 interface defaults. Keep the desktop sessions independently selectable, and
 keep the development and personal profiles usable across NixOS and Darwin.
