@@ -91,6 +91,7 @@
       "security.tpm-storage"
       "workload.development"
       "workload.game"
+      "workload.game-development"
       "workload.network-lab"
       "workload.personal"
     ];

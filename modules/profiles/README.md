@@ -40,6 +40,7 @@ required on every supported host.
 | `workload.deploy-rs-target`          | NixOS                                         |
 | `workload.development`               | NixOS, macOS with Home Manager                |
 | `workload.game`                      | NixOS, macOS                                  |
+| `workload.game-development`          | x86_64 NixOS with Home Manager, macOS         |
 | `workload.machine-learning`          | NixOS with Home Manager                       |
 | `workload.network-lab`               | NixOS                                         |
 | `workload.personal`                  | NixOS, macOS with Home Manager                |
@@ -74,6 +75,21 @@ Neovim, Yazi, and the remaining interactive command-line tools.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
+
+`workload.game-development` provides Unity Hub using the official Nixpkgs
+`unityhub` package on x86_64 NixOS and the `unity-hub` Homebrew cask on macOS.
+It is selected by x1g13 independently of `workload.game` and
+`workload.development`. Nixpkgs supplies the FHS environment and Unity 6 runtime
+libraries; launch installed Editors through Hub to use that environment.
+
+The locked Nixpkgs does not package the Unity Editor itself. After activating
+the configuration, open Hub, sign in, and activate the appropriate Unity license.
+Install **6000.0.72f1** from the
+[official release page](https://unity.com/releases/editor/whats-new/6000.0.72f1)
+using its **Install** button to open Hub. Add build-support modules in Hub as
+needed. Editor versions, modules, downloads, and license state are managed by
+Hub in the user's home directory, not pinned or installed by the flake. Verify
+the installed version in Hub and create/open a project to check Editor startup.
 
 `workload.network-lab` provides containerlab using its upstream NixOS module,
 the Docker service, and the NanoKVM-USB desktop client with serial-port access.

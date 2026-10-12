@@ -12,6 +12,7 @@
     "applications.ghostty"
     "applications.grok"
     "applications.java"
+    "applications.k9s"
     "applications.opencode"
     "applications.vscode"
     "applications.xcode"
