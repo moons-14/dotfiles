@@ -37,6 +37,7 @@ required on every supported host.
 | `platform.laptop`                    | Physical NixOS laptop                         |
 | `platform.thinkpad-x1`               | Intel ThinkPad X1 running NixOS               |
 | `platform.vm`                        | UEFI QEMU NixOS guest with NFS client support |
+| `workload.circuit-simulation`        | x86_64 NixOS with Home Manager                |
 | `workload.deploy-rs-target`          | NixOS                                         |
 | `workload.development`               | NixOS, macOS with Home Manager                |
 | `workload.game`                      | NixOS, macOS                                  |
@@ -75,6 +76,11 @@ Neovim, Yazi, and the remaining interactive command-line tools.
 
 `workload.machine-learning` provides the Hugging Face Hub CLI for hosts used
 to download and publish machine learning models and datasets.
+
+`workload.circuit-simulation` provides stable Wine with WoW64 support through
+`wineWow64Packages.stable` for manually installed LTspice. It is selected by
+x1g13 and galleria. LTspice and Wine prefixes remain managed manually in the
+user's home directory; the profile installs only Wine.
 
 `workload.game-development` provides Unity Hub using the official Nixpkgs
 `unityhub` package on x86_64 NixOS and the `unity-hub` Homebrew cask on macOS.
