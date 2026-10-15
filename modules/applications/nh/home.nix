@@ -25,18 +25,18 @@
       done
 
       command nh "$@"
-      local status=$?
+      local exit_code=$?
 
       if [[ "$notify" == true ]]; then
         printf '\a'
-        if ((status == 0)); then
+        if ((exit_code == 0)); then
           print -P "%F{green}nh completed%f"
         else
-          print -P "%F{red}nh failed (exit $status)%f"
+          print -P "%F{red}nh failed (exit $exit_code)%f"
         fi
       fi
 
-      return "$status"
+      return "$exit_code"
     }
   '';
 }
