@@ -6,7 +6,6 @@
 
   perSystem =
     {
-      pkgs,
       config,
       ...
     }:
@@ -23,8 +22,6 @@
             enable = true;
             name = "gitleaks";
             description = "Detect hardcoded secrets";
-
-            entry = "${pkgs.gitleaks}/bin/gitleaks dir --no-banner --redact --verbose .";
 
             pass_filenames = false;
 

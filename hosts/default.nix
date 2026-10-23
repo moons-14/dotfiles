@@ -89,8 +89,10 @@
       "security.secrets"
       "security.secure-boot"
       "security.tpm-storage"
+      "workload.circuit-simulation"
       "workload.development"
       "workload.game"
+      "workload.game-development"
       "workload.network-lab"
       "workload.personal"
     ];
@@ -114,6 +116,7 @@
       "security.secure-boot"
       "security.tpm-storage"
       "security.fingerprint"
+      "workload.circuit-simulation"
       "workload.development"
       "workload.game"
       "workload.machine-learning"

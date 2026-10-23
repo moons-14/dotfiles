@@ -369,9 +369,11 @@ modules/profiles/
 │   └── vm/
 ├── workload/
 │   ├── camera/
+│   ├── circuit-simulation/
 │   ├── deploy-rs-target/
 │   ├── development/
 │   ├── game/
+│   ├── game-development/
 │   ├── machine-learning/
 │   ├── network-lab/
 │   ├── personal/
@@ -632,7 +634,9 @@ A host registry may use a specification like this:
       "security.secure-boot"
       "security.tpm-storage"
       "workload.camera"
+      "workload.circuit-simulation"
       "workload.development"
+      "workload.game-development"
       "workload.network-lab"
       "workload.personal"
     ];
@@ -655,6 +659,7 @@ A host registry may use a specification like this:
       "security.tpm-storage"
       "workload.development"
       "workload.game"
+      "workload.circuit-simulation"
       "workload.machine-learning"
       "workload.network-lab"
       "workload.personal"
@@ -690,13 +695,19 @@ Manager. x1g9 is a full NixOS desktop with niri,
 labwc, ly, the shared Linux desktop applications, and the personal workload.
 x1g13 is the secure NixOS development and personal ThinkPad, with the same
 desktop sessions plus Tailscale client, SOPS, Secure Boot, and TPM-backed disk
-unlock. galleria is the Intel/NVIDIA physical desktop shared with Windows; it
-uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
+unlock. It selects `workload.game-development` for Unity Hub from official
+Nixpkgs, targeting Unity Editor 6000.0.72f1 installed separately through Hub. The
+profile also supports macOS through the `unity-hub` Homebrew cask, but m2 does
+not select it. galleria is the Intel/NVIDIA physical desktop shared with Windows;
+it uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
 It selects `workload.photography` for AI-enabled darktable. The application
 chooses CUDA support from the NVIDIA hardware unit's enable state and keeps
 the default CUDA targets, including RTX 3060 Ti support, to reuse binary caches.
 galleria and x1g13 select `workload.network-lab` for Docker and
 the NanoKVM-USB desktop client with serial-port access.
+Both hosts also select `workload.circuit-simulation`, which installs only stable
+Wine with WoW64 support for manually installed LTspice on x86_64 NixOS with
+Home Manager. LTspice and Wine prefixes are managed manually by the user.
 `workload.personal` selects Chrome and Firefox for x1g9, x1g13, galleria, and
 m2. Firefox uses Home Manager on NixOS and a Homebrew cask on macOS.
 m2 is the daily-use macOS development and personal machine with the macOS
