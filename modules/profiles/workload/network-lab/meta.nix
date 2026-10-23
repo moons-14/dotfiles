@@ -2,7 +2,7 @@
   description = "Network lab and hardware console environment";
 
   includes = [
-    "applications.containerlab"
+    "services.docker"
     "applications.nanokvm-usb"
   ];
 }
