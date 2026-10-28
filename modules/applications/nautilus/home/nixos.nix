@@ -9,6 +9,7 @@ let
 in
 {
   home.packages = [
+    pkgs.ffmpegthumbnailer
     pkgs.nautilus
     pkgs.nautilus-python
     pkgs.sushi
