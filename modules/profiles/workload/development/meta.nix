@@ -13,6 +13,7 @@
     "applications.grok"
     "applications.java"
     "applications.k9s"
+    "applications.mise"
     "applications.opencode"
     "applications.vscode"
     "applications.xcode"
