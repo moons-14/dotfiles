@@ -16,6 +16,6 @@ for _, name in ipairs({
 end
 
 assert(vim.lsp.config.vtsls ~= nil, "TypeScript LSP configuration is missing")
-assert(vim.g.colors_name == "catppuccin", "colorscheme was not loaded")
+assert((vim.g.colors_name or ""):match("^catppuccin"), "colorscheme was not loaded")
 print("Portable Neovim configuration and tools loaded successfully")
 vim.cmd("qa!")

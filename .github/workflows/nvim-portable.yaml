@@ -104,7 +104,7 @@ jobs:
               ! command -v nix
               useradd --create-home --uid 2000 nvim-test
               su -s /bin/bash - nvim-test -c \
-                "/artifacts/moons-nvim-linux-$ARCH --headless -c '\''luafile /smoke.lua'\''"
+                "/artifacts/moons-nvim-linux-$ARCH --headless -c '\''lua local ok, err = pcall(dofile, \"/smoke.lua\"); if not ok then vim.api.nvim_err_writeln(err); vim.cmd(\"cquit 1\") end'\''"
             '
   publish:
     name: Publish Neovim releases
