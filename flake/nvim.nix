@@ -10,6 +10,7 @@
           {
             enableMan = false;
             enablePrintInit = false;
+            extraPackages = [ pkgs.nix ];
             nixpkgs = {
               source = inputs.nixpkgs;
               config.allowUnfree = true;

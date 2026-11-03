@@ -10,7 +10,7 @@ end
 
 for _, name in ipairs({
   "git", "rg", "fd", "node", "zellij", "vtsls", "prettier", "biome",
-  "stylua", "shfmt", "nixfmt", "nixd", "lazygit", "rust-analyzer", "cargo", "rustc",
+  "stylua", "shfmt", "nix", "nixfmt", "nixd", "lazygit", "rust-analyzer", "cargo", "rustc",
 }) do
   assert(vim.fn.executable(name) == 1, "missing bundled tool: " .. name)
 end
