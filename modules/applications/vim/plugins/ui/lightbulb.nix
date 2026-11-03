@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.plugins.nvim-lightbulb = {
+  plugins.nvim-lightbulb = {
     enable = true;
     settings.autocmd.enabled = true;
   };

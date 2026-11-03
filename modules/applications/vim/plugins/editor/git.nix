@@ -1,11 +1,9 @@
 { pkgs, ... }:
 {
-  programs.nixvim = {
-    extraPackages = [ pkgs.lazygit ];
+  extraPackages = [ pkgs.lazygit ];
 
-    plugins = {
-      lazygit.enable = true;
-      diffview.enable = true;
-    };
+  plugins = {
+    lazygit.enable = true;
+    diffview.enable = true;
   };
 }

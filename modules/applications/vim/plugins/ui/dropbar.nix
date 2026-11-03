@@ -1,3 +1,3 @@
 _: {
-  programs.nixvim.plugins.dropbar.enable = true;
+  plugins.dropbar.enable = true;
 }

@@ -1,3 +1,3 @@
 _: {
-  programs.nixvim.plugins.nvim-surround.enable = true;
+  plugins.nvim-surround.enable = true;
 }

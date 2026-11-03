@@ -1,0 +1,152 @@
+name: "Build: Portable Neovim"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - flake.nix
+      - flake.lock
+      - "flake/**"
+      - "modules/applications/vim/**"
+      - "tests/portable-nvim-installer.py"
+      - ".github/actions/setup-nix/**"
+      - ".github/workflows/nvim-portable.yaml"
+  pull_request:
+    paths:
+      - flake.nix
+      - flake.lock
+      - "flake/**"
+      - "modules/applications/vim/**"
+      - "tests/portable-nvim-installer.py"
+      - ".github/actions/setup-nix/**"
+      - ".github/workflows/nvim-portable.yaml"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Build (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Test installer
+        run: python3 tests/portable-nvim-installer.py
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+      - name: Build portable Neovim
+        run: nix build .#nvim-portable --max-jobs 2 --cores 2 --print-build-logs
+      - name: Prepare release assets
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          mkdir -p dist
+          asset="moons-nvim-linux-$ARCH"
+          install -m 0755 result/bin/nvim "dist/$asset"
+          cd dist
+          sha256sum "$asset" > "$asset.sha256"
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: moons-nvim-${{ matrix.arch }}
+          path: dist/*
+          compression-level: 0
+          if-no-files-found: error
+  smoke:
+    name: Ubuntu without Nix (${{ matrix.arch }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Download build artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: moons-nvim-${{ matrix.arch }}
+          path: dist
+      - name: Start offline Ubuntu with no Nix installation
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          cd dist
+          asset="moons-nvim-linux-$ARCH"
+          sha256sum --check "$asset.sha256"
+          chmod +x "$asset"
+          cd ..
+          docker pull ubuntu:24.04
+          docker run --rm --network none --security-opt seccomp=unconfined \
+            -e ARCH \
+            -v "$PWD/dist:/artifacts:ro" \
+            -v "$PWD/modules/applications/vim/portable-smoke.lua:/smoke.lua:ro" \
+            ubuntu:24.04 bash -euc '
+              test ! -e /nix
+              ! command -v nix
+              useradd --create-home --uid 2000 nvim-test
+              su -s /bin/bash - nvim-test -c \
+                "/artifacts/moons-nvim-linux-$ARCH --headless -c '\''lua local ok, err = pcall(dofile, \"/smoke.lua\"); if not ok then vim.api.nvim_err_writeln(err); vim.cmd(\"cquit 1\") end'\''"
+            '
+  publish:
+    name: Publish Neovim releases
+    needs: smoke
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Download build artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: moons-nvim-*
+          merge-multiple: true
+          path: dist
+      - name: Publish versioned and rolling releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          install -m 0755 modules/applications/vim/install-portable.sh dist/install-moons-nvim.sh
+          tag="nvim-$GITHUB_SHA"
+          cat > release-notes.md <<EOF
+          Nixvim configuration and bundled tools for Linux x86_64 and aarch64.
+
+          Source commit: $GITHUB_SHA
+
+          See the README for installation, updates, checksums, and rollback.
+          EOF
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" dist/* --target "$GITHUB_SHA" \
+              --title "Neovim $GITHUB_SHA" --notes-file release-notes.md --latest=false
+          fi
+          if gh release view nvim-portable >/dev/null 2>&1; then
+            gh release upload nvim-portable dist/* --clobber
+            gh release edit nvim-portable --notes-file release-notes.md --latest=false
+            gh api --method PATCH "repos/$GH_REPO/git/refs/tags/nvim-portable" \
+              -f sha="$GITHUB_SHA" -F force=true
+          else
+            gh release create nvim-portable dist/* --target "$GITHUB_SHA" \
+              --title "Portable Neovim (latest main)" --notes-file release-notes.md --latest=false
+          fi
