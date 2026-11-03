@@ -1,3 +1,3 @@
 _: {
-  programs.nixvim.plugins.nvim-autopairs.enable = true;
+  plugins.nvim-autopairs.enable = true;
 }

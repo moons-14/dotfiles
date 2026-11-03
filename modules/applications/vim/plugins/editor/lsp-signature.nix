@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.plugins.lsp-signature = {
+  plugins.lsp-signature = {
     enable = true;
     settings = {
       hint_enable = true;

@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.plugins.copilot-lua = {
+  plugins.copilot-lua = {
     enable = true;
     settings = {
       suggestion = {

@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.plugins.lualine = {
+  plugins.lualine = {
     enable = true;
     settings.sections.lualine_x = [
       {

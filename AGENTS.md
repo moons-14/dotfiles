@@ -868,8 +868,30 @@ automatically.
 
 ## Testing Guidelines
 
-There is no separate unit-test suite. Before submitting changes, run
-`nix flake check` and `pre-commit run --all-files`. For system-specific changes,
+### Portable Neovim
+
+`modules/applications/vim/config.nix` is the shared Nixvim module used by
+Home Manager and the standalone package. Its helper modules use Nixvim-scoped
+options without the `programs.nixvim` prefix; `home.nix` owns the Home Manager
+enable switch and session variables. Do not duplicate editor configuration for
+the portable build or introduce Registry fragments inside helper directories.
+
+`flake/nvim.nix` exports `packages.<system>.nvim` and the Linux-only
+`nvim-portable` package. The latter bundles the complete runtime closure using
+the locked nix-portable input. `.github/workflows/nvim-portable.yaml` builds
+both Linux CPU architectures, tests offline first launch as an unprivileged
+user in Ubuntu without Nix, and publishes versioned and rolling Releases only
+from main. `modules/applications/vim/install-portable.sh` owns installation and
+updates with checksums and a previous-version backup. Keep the root README's
+installation, update, and rollback instructions synchronized with this flow.
+
+For portable distribution changes, also run
+`python3 tests/portable-nvim-installer.py`, build `.#nvim-portable`, and verify
+the clean Ubuntu smoke jobs. Nixvim evaluation alone does not prove a portable
+bundle works without a host Nix installation.
+
+Before submitting changes, run `nix flake check` and
+`pre-commit run --all-files`. For system-specific changes,
 also build or evaluate the affected NixOS, nix-darwin, or Home Manager
 configuration without switching the live machine. Never commit generated
 secrets, `.age` plaintext, or local `.direnv/` state.

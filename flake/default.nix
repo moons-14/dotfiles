@@ -3,5 +3,6 @@
     ./formatter.nix
     ./git-hooks.nix
     ./registry.nix
+    ./nvim.nix
   ];
 }

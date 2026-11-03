@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.colorschemes.catppuccin = {
+  colorschemes.catppuccin = {
     enable = true;
     settings.transparent_background = true;
   };

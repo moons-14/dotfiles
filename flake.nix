@@ -54,6 +54,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-portable.url = "github:DavHau/nix-portable";
+
     # Secrets management
     sops-nix = {
       url = "github:Mic92/sops-nix";

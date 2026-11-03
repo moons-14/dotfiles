@@ -1,21 +1,22 @@
-{ lib, ... }@args:
-lib.mkMerge [
-  (import ./autopairs.nix args)
-  (import ./blink-cmp.nix args)
-  (import ./comment.nix args)
-  (import ./conform.nix args)
-  (import ./copilot.nix args)
-  (import ./flash.nix args)
-  (import ./git-conflict.nix args)
-  (import ./git.nix args)
-  (import ./gitsigns.nix args)
-  (import ./glance.nix args)
-  (import ./lsp-signature.nix args)
-  (import ./snacks.nix args)
-  (import ./spectre.nix args)
-  (import ./surround.nix args)
-  (import ./todo-comments.nix args)
-  (import ./treesitter.nix args)
-  (import ./trouble.nix args)
-  (import ./wakatime.nix args)
-]
+{
+  imports = [
+    ./autopairs.nix
+    ./blink-cmp.nix
+    ./comment.nix
+    ./conform.nix
+    ./copilot.nix
+    ./flash.nix
+    ./git-conflict.nix
+    ./git.nix
+    ./gitsigns.nix
+    ./glance.nix
+    ./lsp-signature.nix
+    ./snacks.nix
+    ./spectre.nix
+    ./surround.nix
+    ./todo-comments.nix
+    ./treesitter.nix
+    ./trouble.nix
+    ./wakatime.nix
+  ];
+}

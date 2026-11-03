@@ -1,3 +1,3 @@
 _: {
-  programs.nixvim.plugins.toggleterm.enable = true;
+  plugins.toggleterm.enable = true;
 }

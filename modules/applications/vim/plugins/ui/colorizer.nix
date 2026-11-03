@@ -1,5 +1,5 @@
 _: {
-  programs.nixvim.plugins.colorizer = {
+  plugins.colorizer = {
     enable = true;
 
     settings = {
