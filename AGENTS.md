@@ -857,7 +857,8 @@ When implementing or modifying modules:
 - `nix develop .#android` provides Android platform tools such as `adb` and
   `fastboot`.
 - `nix fmt` formats all supported files through treefmt.
-- `nix flake check` evaluates flake outputs and runs configured checks.
+- `nix flake check --no-build --option allow-import-from-derivation false`
+  evaluates flake outputs without building derivations.
 - `pre-commit run --all-files` runs formatting, dead-code and static Nix checks,
   shell linting, and secret scanning.
 - `nix flake update` refreshes pinned inputs in `flake.lock`; review lockfile
@@ -869,9 +870,12 @@ automatically.
 ## Testing Guidelines
 
 There is no separate unit-test suite. Before submitting changes, run
-`nix flake check` and `pre-commit run --all-files`. For system-specific changes,
-also build or evaluate the affected NixOS, nix-darwin, or Home Manager
-configuration without switching the live machine. Never commit generated
+`pre-commit run --all-files` and applicable static checks. Evaluate affected
+configurations when possible without building, using
+`--option allow-import-from-derivation false` for Nix evaluation. Do not run
+builds, including `nix flake check` without `--no-build`, unless the user
+explicitly requests them; the user runs builds. Report evaluations blocked by
+this restriction. Never switch the live machine for validation. Never commit generated
 secrets, `.age` plaintext, or local `.direnv/` state.
 
 For Registry changes, test discovery of each supported fragment combination,

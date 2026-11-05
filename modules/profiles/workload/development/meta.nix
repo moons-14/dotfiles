@@ -11,6 +11,7 @@
     "applications.drawio"
     "applications.ghostty"
     "applications.grok"
+    "applications.herdr"
     "applications.java"
     "applications.k9s"
     "applications.mise"

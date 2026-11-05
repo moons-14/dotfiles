@@ -74,6 +74,8 @@ user-owned mutable state unless the requested policy explicitly owns it.
 
 Run checks from the repository root and keep the exact results for the handoff.
 Do not switch or activate a live system merely to validate a change.
+Disable import-from-derivation for Nix evaluations so they cannot trigger builds;
+report evaluations that require it. Do not build unless explicitly requested.
 
 ### Always
 
@@ -81,14 +83,13 @@ Do not switch or activate a live system merely to validate a change.
    pass only task-owned paths to the configured formatter when supported.
 2. Run `git diff --check`.
 3. Review `git status --short`, `git diff --stat`, and the complete `git diff`.
-4. Run `nix flake check`.
+4. Run `nix flake check --no-build --option allow-import-from-derivation false`.
 5. Run `pre-commit run --all-files`.
 
 ### NixOS or Home Manager on NixOS
 
 - Evaluate each affected host's system toplevel derivation.
-- Build at least one affected NixOS configuration with `--no-link` when the
-  current system supports it.
+- Build an affected NixOS configuration only if the user explicitly requests it.
 - Inspect the resulting option that proves selection: for example
   `environment.systemPackages`, the user's `home.packages`,
   `systemd.services`, `users.users.<name>.extraGroups`, or the upstream
@@ -105,8 +106,8 @@ nix build .#nixosConfigurations.<host>.config.system.build.toplevel --no-link
 - Evaluate every affected Darwin host even when running on Linux.
 - Inspect `homebrew.casks` or `homebrew.brews` for Homebrew-backed additions.
 - Evaluate the relevant Home Manager program or package option.
-- Build a Darwin configuration only on a compatible Darwin builder; otherwise
-  report that build as an explicit runtime-validation gap.
+- Build a Darwin configuration only when explicitly requested and on a
+  compatible Darwin builder; otherwise report the validation gap.
 
 Typical evaluation shapes:
 

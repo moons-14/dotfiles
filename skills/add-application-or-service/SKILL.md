@@ -102,12 +102,12 @@ Run the validation matrix in
    `git diff --check`.
 2. Inspect the complete task diff for accidental files, duplication, leaked
    secrets, forced values, direct enable assignments, and unrelated rewrites.
-3. Run `nix flake check`.
+3. Run `nix flake check --no-build --option allow-import-from-derivation false`.
 4. Run `pre-commit run --all-files`.
 5. Evaluate every affected real host without switching it. For a
    cross-platform unit or profile, evaluate both NixOS and nix-darwin even if
-   only one class changed. Build an affected configuration with `--no-link`
-   when the current platform can build it.
+   only one class changed, without building derivations. Build only when the
+   user explicitly requests it.
 6. Verify selection as well as syntax: confirm that the expected package,
    program, service, group, cask, or external module appears in the resulting
    configuration.
