@@ -10,6 +10,7 @@ let
           dracula-theme.theme-dracula
           ms-vscode-remote.vscode-remote-extensionpack
           dbaeumer.vscode-eslint
+          esbenp.prettier-vscode
           ms-vscode-remote.remote-containers
           ms-vscode-remote.remote-ssh
           github.vscode-github-actions
@@ -23,8 +24,8 @@ let
           {
             name = "hadolint";
             publisher = "exiasr";
-            version = "1.1.2";
-            hash = "sha256-6GO1f8SP4CE8yYl87/tm60FdGHqHsJA4c2B6UKVdpgM=";
+            version = "1.2.0";
+            hash = "sha256-gHCt8bEi1YECL0k4n2Maj4vgG9VdapiyS24ttBq27Uw=";
           }
         ];
       userSettings = {
@@ -95,8 +96,8 @@ let
       extensions = with vsc; [ biomejs.biome ];
       userSettings = {
         "editor.defaultFormatter" = "biomejs.biome";
-        "[typescript].editor.defaultFormatter" = "biomejs.biome";
-        "[typescriptreact].editor.defaultFormatter" = "biomejs.biome";
+        "[typescript]"."editor.defaultFormatter" = "biomejs.biome";
+        "[typescriptreact]"."editor.defaultFormatter" = "biomejs.biome";
       };
     };
 
@@ -106,22 +107,21 @@ let
       ];
       userSettings = {
         "editor.defaultFormatter" = "oxc.oxc-vscode";
-        "[typescript].editor.defaultFormatter" = "oxc.oxc-vscode";
-        "[typescriptreact].editor.defaultFormatter" = "oxc.oxc-vscode";
+        "[typescript]"."editor.defaultFormatter" = "oxc.oxc-vscode";
+        "[typescriptreact]"."editor.defaultFormatter" = "oxc.oxc-vscode";
       };
     };
 
     nix = {
       extensions = with vsc; [
-        bbenoist.nix
         jnoortheen.nix-ide
       ];
       userSettings = {
         "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "nil";
+        "nix.serverPath" = lib.getExe pkgs.nixd;
         "nix.serverSettings" = {
           nixd = {
-            formatting.command = [ "nixfmt" ];
+            formatting.command = [ (lib.getExe pkgs.nixfmt) ];
           };
         };
 
@@ -173,7 +173,7 @@ let
       extensions = with vsc; [
         rust-lang.rust-analyzer
         vadimcn.vscode-lldb
-        serayuzgur.crates
+        fill-labs.dependi
         tamasfe.even-better-toml
       ];
       userSettings = {
@@ -181,8 +181,8 @@ let
           "editor.defaultFormatter" = "rust-lang.rust-analyzer";
           "editor.formatOnSave" = true;
           "editor.codeActionsOnSave" = {
-            "source.organizeImports" = true;
-            "source.fixAll" = true;
+            "source.organizeImports" = "explicit";
+            "source.fixAll" = "explicit";
           };
         };
         "rust-analyzer.checkOnSave" = true;

@@ -1,6 +1,6 @@
 local codexbar = "@codexbarPath@"
 local refreshIntervalMs = 60000
-local usagePage = "https://chatgpt.com/codex/settings/usage"
+local usagePage = "https://chatgpt.com/settings/usage"
 
 local refreshing = false
 local lastSuccessfulUsage = nil

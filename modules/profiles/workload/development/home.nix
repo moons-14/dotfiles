@@ -4,7 +4,7 @@
     bind
     bun
     nil
-    python314
+    python315
     uv
   ];
 }

@@ -7,14 +7,14 @@
 
   home.file.".omo/omo.jsonc".text = builtins.toJSON {
     agents = {
-      sisyphus.model = "openai/gpt-5.6-sol";
-      hephaestus.model = "openai/gpt-5.6-terra";
-      prometheus.model = "openai/gpt-5.6-terra";
-      oracle.model = "openai/gpt-5.6-terra";
-      momus.model = "openai/gpt-5.6-terra";
-      librarian.model = "openai/gpt-5.6-luna";
-      explore.model = "openai/gpt-5.6-luna";
-      atlas.model = "openai/gpt-5.6-luna";
+      sisyphus.model = "openai/gpt-6.1-sol";
+      hephaestus.model = "openai/gpt-6.1-terra";
+      prometheus.model = "openai/gpt-6.1-terra";
+      oracle.model = "openai/gpt-6.1-terra";
+      momus.model = "openai/gpt-6.1-terra";
+      librarian.model = "openai/gpt-6-luna";
+      explore.model = "openai/gpt-6-luna";
+      atlas.model = "openai/gpt-6-luna";
     };
   };
 }
