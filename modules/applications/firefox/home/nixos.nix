@@ -1,3 +1,1 @@
-_: {
-  programs.firefox.enable = true;
-}
+args: import ../settings.nix args

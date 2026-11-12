@@ -700,9 +700,9 @@ Nixpkgs, targeting Unity Editor 6000.0.72f1 installed separately through Hub. Th
 profile also supports macOS through the `unity-hub` Homebrew cask, but m2 does
 not select it. galleria is the Intel/NVIDIA physical desktop shared with Windows;
 it uses dedicated NixOS partitions, LUKS, Secure Boot, and TPM-backed disk unlock.
-It selects `workload.photography` for AI-enabled darktable. The application
-chooses CUDA support from the NVIDIA hardware unit's enable state and keeps
-the default CUDA targets, including RTX 3060 Ti support, to reuse binary caches.
+It selects `workload.photography` for LightCraft installed through Home Manager.
+The application uses the upstream flake overlay with unused egui patches removed
+for offline Cargo builds; the package override lives in `overlays/lightcraft.nix`.
 galleria and x1g13 select `workload.network-lab` for Docker and
 the NanoKVM-USB desktop client with serial-port access.
 Both hosts also select `workload.circuit-simulation`, which installs only stable

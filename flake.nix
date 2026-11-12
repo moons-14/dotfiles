@@ -23,6 +23,8 @@
     # Desktop
     niri-flake.url = "github:sodiboo/niri-flake";
 
+    lightcraft.url = "github:storytold/lightcraft";
+
     nix-hazkey = {
       url = "github:aster-void/nix-hazkey";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -101,11 +101,12 @@ the installed version in Hub and create/open a project to check Editor startup.
 client with serial-port access.
 It is selected by galleria and x1g13.
 
-`workload.photography` provides darktable with AI support from the locked
-unstable package set. Its ONNX Runtime uses CUDA when the NVIDIA hardware unit
-is enabled, and CPU inference otherwise. Keep the default CUDA capabilities
-and forward compatibility to reuse the CUDA binary cache; these targets include
-galleria's RTX 3060 Ti. OpenCL drivers remain owned by hardware units.
+`workload.photography` provides LightCraft through Home Manager using the
+upstream flake overlay, with unused egui patches removed for offline Cargo
+builds. It is selected by galleria. Graphics drivers remain owned by hardware
+units.
+The package skips the failing search-cancellation read-count test in upstream
+0.21.1 while retaining the rest of the test suite.
 
 `workload.deploy-rs-target` enables OpenSSH and provisions the `nixdeploy`
 service account with the narrowly scoped passwordless commands required for
