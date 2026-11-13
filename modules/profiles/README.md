@@ -67,7 +67,9 @@ selects labwc. A daily-use macOS development machine can combine
 support does not implicitly select an interface or workload.
 
 `platform.nixos` selects the shared network foundation and the clatd service.
-VM, laptop, and desktop platform profiles inherit both.
+VM, laptop, and desktop platform profiles inherit both. The network foundation
+uses systemd-resolved with DNS supplied by DHCP or other network configuration.
+When no DNS servers are configured, it falls back to `1.1.1.1`.
 
 `interface.minimal` provides SSH client access and key generation, Nano, htop,
 btop, fastfetch, unzip, wget, Direnv, Git, GnuPG, nh, Zellij, and Zsh for remote

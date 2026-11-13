@@ -2,7 +2,6 @@
   networking = {
     networkmanager = {
       enable = true;
-      dns = "none";
       wifi = {
         powersave = false;
         backend = "wpa_supplicant";

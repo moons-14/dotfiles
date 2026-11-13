@@ -119,8 +119,8 @@ in
         cpu-graph = {
           type = "sysmon";
           stat = "cpu_usage";
-          display = "graph";
-          show_label = false;
+          visualization = "graph";
+          show_value = false;
         };
         ram = {
           type = "sysmon";

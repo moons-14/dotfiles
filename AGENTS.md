@@ -412,7 +412,9 @@ The profile layers have these responsibilities:
   workloads.
 - `platform` describes NixOS foundations and physical or virtual form factors.
   `platform.nixos` selects the shared network foundation and `services.clatd`;
-  VM, laptop, and desktop platform profiles inherit both.
+  VM, laptop, and desktop platform profiles inherit both. The network foundation
+  uses systemd-resolved with network-provided DNS and falls back to `1.1.1.1`
+  only when no DNS servers are configured.
   macOS does not need an empty symmetric platform profile.
 - `workload` describes optional host uses. `workload.development` and
   `workload.personal` are cross-platform profiles, not `*-linux` variants.
