@@ -132,6 +132,45 @@ let
       };
     };
 
+    infrastructure = {
+      extensions = with vsc; [
+        hashicorp.terraform
+        redhat.vscode-yaml
+        ms-azuretools.vscode-docker
+        tamasfe.even-better-toml
+      ];
+      userSettings = {
+        "files.associations" = {
+          "*.tf" = "terraform";
+          "*.tfvars" = "terraform-vars";
+        };
+        "[terraform]" = {
+          "editor.defaultFormatter" = "hashicorp.terraform";
+          "editor.formatOnSave" = true;
+          "editor.tabSize" = 2;
+        };
+        "[terraform-vars]" = {
+          "editor.defaultFormatter" = "hashicorp.terraform";
+          "editor.formatOnSave" = true;
+          "editor.tabSize" = 2;
+        };
+        "[yaml]" = {
+          "editor.defaultFormatter" = "redhat.vscode-yaml";
+          "editor.tabSize" = 2;
+        };
+        "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
+        "yaml.format.enable" = true;
+        "files.watcherExclude" = {
+          "**/.terraform/**" = true;
+        };
+        "search.exclude" = {
+          "**/.terraform/**" = true;
+          "**/*.tfstate" = true;
+          "**/*.tfstate.*" = true;
+        };
+      };
+    };
+
     jupyter = {
       extensions = with vsc; [
         ms-toolsai.jupyter
@@ -244,6 +283,11 @@ in
         layers.common
         layers.web
         layers.web-oxc
+      ];
+      infrastructure = mkProfile [
+        layers.common
+        layers.nix
+        layers.infrastructure
       ];
       jupyter = mkProfile [
         layers.common
